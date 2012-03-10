@@ -10,3 +10,6 @@
 /jarvis/Server/services/obj
 /jarvis/Server/repositories/bin
 /jarvis/Server/repositories/obj
+/jarvis/_ReSharper.jarvis
+/jarvis/Tools/InitDatabase/obj
+/jarvis/Tools/InitDatabase/bin
