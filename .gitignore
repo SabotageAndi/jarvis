@@ -1,0 +1,12 @@
+# git ignore file
+*/bin/*
+*/obj/*
+
+/jarvis/Server/entities/bin
+/jarvis/Server/entities/obj
+/jarvis/Server/model/bin
+/jarvis/Server/model/obj
+/jarvis/Server/services/bin
+/jarvis/Server/services/obj
+/jarvis/Server/repositories/bin
+/jarvis/Server/repositories/obj
