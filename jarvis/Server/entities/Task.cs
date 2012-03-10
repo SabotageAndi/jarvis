@@ -16,7 +16,7 @@ namespace jarvis.server.entities
     {
         public TaskMap()
         {
-            Id(x => x.Id);
+            Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
         }
     }
 }

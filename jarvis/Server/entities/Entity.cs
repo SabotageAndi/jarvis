@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentNHibernate.Mapping;
 
 namespace jarvis.server.entities
 {
@@ -10,4 +11,6 @@ namespace jarvis.server.entities
     {
         public virtual int Id { get; set; }
     }
+
+   
 }

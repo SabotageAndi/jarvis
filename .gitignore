@@ -1,7 +1,6 @@
 # git ignore file
-*/bin/*
-*/obj/*
-
+/*/bin
+/*/obj
 /jarvis/Server/entities/bin
 /jarvis/Server/entities/obj
 /jarvis/Server/model/bin
@@ -13,3 +12,13 @@
 /jarvis/_ReSharper.jarvis
 /jarvis/Tools/InitDatabase/obj
 /jarvis/Tools/InitDatabase/bin
+/jarvis/Client/Trigger/common/obj
+/jarvis/Client/Trigger/common/bin
+/jarvis/Client/Trigger/windows/obj
+/jarvis/Client/Trigger/windows/bin
+/jarvis/Common/domain/bin
+/jarvis/Common/domain/obj
+/jarvis/Common/dtos/bin
+/jarvis/Common/dtos/obj
+/jarvis/Server/configuration/bin
+/jarvis/Server/configuration/obj

@@ -16,7 +16,7 @@ namespace jarvis.server.entities
     {
         public WorkflowMap()
         {
-            Id(x => x.Id);
+            Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
             HasMany(x => x.WorkflowSteps);
         }
     }

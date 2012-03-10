@@ -8,7 +8,7 @@ namespace jarvis.tools.initDatabase
     {
         static void Main(string[] args)
         {
-            var configuration = NHibernateConfiguration.GetConfiguration();
+            var configuration = new PostgreSqlConfiguration().GetConfiguration();
             var sessionFactory = configuration.BuildSessionFactory();
 
             using(ISession session = sessionFactory.OpenSession())

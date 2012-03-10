@@ -17,7 +17,7 @@ namespace jarvis.server.entities
     {
         public NextWorkflowStepMap()
         {
-            Id(x => x.Id);
+            Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
             References(x => x.NextStep);
             References(x => x.PreviousStep);
         }
