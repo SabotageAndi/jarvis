@@ -3,7 +3,6 @@ using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac.Integration.Mvc;
-using jarvis.server.services;
 
 namespace jarvis.server.web
 {

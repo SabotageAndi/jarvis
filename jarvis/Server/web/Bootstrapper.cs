@@ -6,11 +6,12 @@ using System.Web;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.Wcf;
+using jarvis.server.web.services;
 using log4net;
 using log4net.Config;
 using log4net.Repository.Hierarchy;
 
-namespace jarvis.server.services
+namespace jarvis.server.web
 {
     public class Bootstrapper
     {

@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace web.Models
+namespace jarvis.server.web.Models
 {
 
     public class ChangePasswordModel

@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
 using jarvis.server.model;
-using web.Models;
+using jarvis.server.web.Models;
 
-namespace web.Controllers
+namespace jarvis.server.web.Controllers
 {
     public class AccountController : Controller
     {

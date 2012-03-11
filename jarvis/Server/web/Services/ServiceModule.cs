@@ -5,7 +5,7 @@ using System.Web;
 using Autofac;
 using jarvis.server.model;
 
-namespace jarvis.server.services
+namespace jarvis.server.web.services
 {
     public class ServiceModule : Module
     {

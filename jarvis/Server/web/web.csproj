@@ -158,9 +158,9 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ITriggerService.cs" />
-    <Compile Include="Services\ServiceModule.cs" />
-    <Compile Include="Services\TriggerService.svc.cs">
+    <Compile Include="services\ITriggerService.cs" />
+    <Compile Include="services\ServiceModule.cs" />
+    <Compile Include="services\TriggerService.svc.cs">
       <DependentUpon>TriggerService.svc</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -202,7 +202,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
-    <Content Include="Services\TriggerService.svc" />
+    <Content Include="services\TriggerService.svc" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
