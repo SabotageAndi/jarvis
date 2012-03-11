@@ -20,7 +20,7 @@ namespace jarvis.client.trigger.common
 
         public void trigger(EventDto eventDto)
         {
-            var client = new RestClient("http://localhost:3125/TriggerService.svc");
+            var client = new RestClient("http://localhost:5368/Services/TriggerService.svc/");
 
             var request = new RestRequest("trigger", Method.POST);
             request.RequestFormat = DataFormat.Json;

@@ -1,0 +1,497 @@
+2012-03-11 18:15:02,239 [20] INFO  NHibernate.Cfg.Environment [(null)] - NHibernate 3.1.0.4000 (3.1.0.4000)
+2012-03-11 18:15:02,255 [20] INFO  NHibernate.Cfg.Environment [(null)] - hibernate-configuration section not found in application configuration file
+2012-03-11 18:15:02,255 [20] INFO  NHibernate.Cfg.Environment [(null)] - Bytecode provider name : lcg
+2012-03-11 18:15:02,255 [20] INFO  NHibernate.Cfg.Environment [(null)] - Using reflection optimizer
+2012-03-11 18:15:02,442 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Event, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Event`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="EventGroupType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventGroupTypes, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventGroupType" /></property><property name="EventType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventType, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventType" /></property><property name="TriggeredDate" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="TriggeredDate" /></property></class></hibernate-mapping>
+2012-03-11 18:15:02,520 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,551 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Event -> Event
+2012-03-11 18:15:02,582 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,598 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventGroupType -> EventGroupType, type: enumstring - EventGroupTypes
+2012-03-11 18:15:02,598 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventType -> EventType, type: enumstring - EventType
+2012-03-11 18:15:02,598 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: TriggeredDate -> TriggeredDate, type: DateTime
+2012-03-11 18:15:02,598 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Folder`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Parent"><column name="Parent_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Folder -> Folder
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Parent -> Parent_id, type: jarvis.server.entities.Folder
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.NextWorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`NextWorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="NextStep"><column name="NextStep_id" /></many-to-one><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="PreviousStep"><column name="PreviousStep_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.NextWorkflowStep -> NextWorkflowStep
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: NextStep -> NextStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: PreviousStep -> PreviousStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Task`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,613 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Task -> Task
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:15:02,613 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:15:02,629 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Workflow`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><bag name="WorkflowSteps"><key><column name="Workflow_id" /></key><one-to-many class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" /></bag><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:15:02,645 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,645 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Workflow -> Workflow
+2012-03-11 18:15:02,645 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: WorkflowSteps, type: System.Collections.Generic.ICollection`1[[jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]](jarvis.server.entities.Workflow.WorkflowSteps)
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`WorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Task"><column name="Task_id" /></many-to-one><many-to-one class="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Workflow"><column name="Workflow_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:15:02,660 [20] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:15:02,660 [20] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.WorkflowStep -> WorkflowStep
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Task -> Task_id, type: jarvis.server.entities.Task
+2012-03-11 18:15:02,660 [20] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Workflow -> Workflow_id, type: jarvis.server.entities.Workflow
+2012-03-11 18:15:02,660 [20] ERROR NHibernate.Util.ReflectHelper [(null)] - Could not load type NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle.
+System.IO.FileNotFoundException: Could not load file or assembly 'NHibernate.ByteCode.Castle' or one of its dependencies. The system cannot find the file specified.
+File name: 'NHibernate.ByteCode.Castle'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean forIntrospection)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, Boolean forIntrospection)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NHibernate.Util.ReflectHelper.TypeFromAssembly(AssemblyQualifiedTypeName name, Boolean throwOnError)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+2012-03-11 18:25:05,030 [10] INFO  NHibernate.Cfg.Environment [(null)] - NHibernate 3.1.0.4000 (3.1.0.4000)
+2012-03-11 18:25:05,046 [10] INFO  NHibernate.Cfg.Environment [(null)] - hibernate-configuration section not found in application configuration file
+2012-03-11 18:25:05,046 [10] INFO  NHibernate.Cfg.Environment [(null)] - Bytecode provider name : lcg
+2012-03-11 18:25:05,046 [10] INFO  NHibernate.Cfg.Environment [(null)] - Using reflection optimizer
+2012-03-11 18:25:05,296 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Event, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Event`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="EventGroupType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventGroupTypes, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventGroupType" /></property><property name="EventType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventType, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventType" /></property><property name="TriggeredDate" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="TriggeredDate" /></property></class></hibernate-mapping>
+2012-03-11 18:25:05,405 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,452 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Event -> Event
+2012-03-11 18:25:05,467 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,498 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventGroupType -> EventGroupType, type: enumstring - EventGroupTypes
+2012-03-11 18:25:05,498 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventType -> EventType, type: enumstring - EventType
+2012-03-11 18:25:05,498 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: TriggeredDate -> TriggeredDate, type: DateTime
+2012-03-11 18:25:05,498 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Folder`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Parent"><column name="Parent_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:25:05,514 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,514 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Folder -> Folder
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Parent -> Parent_id, type: jarvis.server.entities.Folder
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.NextWorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`NextWorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="NextStep"><column name="NextStep_id" /></many-to-one><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="PreviousStep"><column name="PreviousStep_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:25:05,514 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,514 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.NextWorkflowStep -> NextWorkflowStep
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: NextStep -> NextStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:25:05,514 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: PreviousStep -> PreviousStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:25:05,530 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Task`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:25:05,530 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,530 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Task -> Task
+2012-03-11 18:25:05,530 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,530 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:25:05,530 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:25:05,545 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Workflow`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><bag name="WorkflowSteps"><key><column name="Workflow_id" /></key><one-to-many class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" /></bag><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:25:05,561 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,561 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Workflow -> Workflow
+2012-03-11 18:25:05,561 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: WorkflowSteps, type: System.Collections.Generic.ICollection`1[[jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]](jarvis.server.entities.Workflow.WorkflowSteps)
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`WorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Task"><column name="Task_id" /></many-to-one><many-to-one class="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Workflow"><column name="Workflow_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:25:05,592 [10] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:25:05,592 [10] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.WorkflowStep -> WorkflowStep
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Task -> Task_id, type: jarvis.server.entities.Task
+2012-03-11 18:25:05,592 [10] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Workflow -> Workflow_id, type: jarvis.server.entities.Workflow
+2012-03-11 18:25:05,592 [10] ERROR NHibernate.Util.ReflectHelper [(null)] - Could not load type NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle.
+System.IO.FileNotFoundException: Could not load file or assembly 'NHibernate.ByteCode.Castle' or one of its dependencies. The system cannot find the file specified.
+File name: 'NHibernate.ByteCode.Castle'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean forIntrospection)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, Boolean forIntrospection)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NHibernate.Util.ReflectHelper.TypeFromAssembly(AssemblyQualifiedTypeName name, Boolean throwOnError)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+2012-03-11 18:27:17,018 [18] INFO  NHibernate.Cfg.Environment [(null)] - NHibernate 3.1.0.4000 (3.1.0.4000)
+2012-03-11 18:27:17,034 [18] INFO  NHibernate.Cfg.Environment [(null)] - hibernate-configuration section not found in application configuration file
+2012-03-11 18:27:17,034 [18] INFO  NHibernate.Cfg.Environment [(null)] - Bytecode provider name : lcg
+2012-03-11 18:27:17,034 [18] INFO  NHibernate.Cfg.Environment [(null)] - Using reflection optimizer
+2012-03-11 18:27:17,236 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Event, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Event`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="EventGroupType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventGroupTypes, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventGroupType" /></property><property name="EventType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventType, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventType" /></property><property name="TriggeredDate" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="TriggeredDate" /></property></class></hibernate-mapping>
+2012-03-11 18:27:17,329 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,365 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Event -> Event
+2012-03-11 18:27:17,389 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,406 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventGroupType -> EventGroupType, type: enumstring - EventGroupTypes
+2012-03-11 18:27:17,406 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventType -> EventType, type: enumstring - EventType
+2012-03-11 18:27:17,407 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: TriggeredDate -> TriggeredDate, type: DateTime
+2012-03-11 18:27:17,418 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Folder`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Parent"><column name="Parent_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:27:17,425 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,425 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Folder -> Folder
+2012-03-11 18:27:17,425 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,425 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:27:17,432 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Parent -> Parent_id, type: jarvis.server.entities.Folder
+2012-03-11 18:27:17,433 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.NextWorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`NextWorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="NextStep"><column name="NextStep_id" /></many-to-one><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="PreviousStep"><column name="PreviousStep_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:27:17,433 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,434 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.NextWorkflowStep -> NextWorkflowStep
+2012-03-11 18:27:17,434 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,434 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: NextStep -> NextStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:27:17,434 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: PreviousStep -> PreviousStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:27:17,435 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Task`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:27:17,435 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,435 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Task -> Task
+2012-03-11 18:27:17,435 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,435 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:27:17,435 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:27:17,456 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Workflow`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><bag name="WorkflowSteps"><key><column name="Workflow_id" /></key><one-to-many class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" /></bag><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:27:17,471 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,472 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Workflow -> Workflow
+2012-03-11 18:27:17,472 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: WorkflowSteps, type: System.Collections.Generic.ICollection`1[[jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]](jarvis.server.entities.Workflow.WorkflowSteps)
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`WorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Task"><column name="Task_id" /></many-to-one><many-to-one class="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Workflow"><column name="Workflow_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:27:17,473 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,473 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.WorkflowStep -> WorkflowStep
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Task -> Task_id, type: jarvis.server.entities.Task
+2012-03-11 18:27:17,473 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Workflow -> Workflow_id, type: jarvis.server.entities.Workflow
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.Configuration [(null)] - checking mappings queue
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing one-to-many association mappings
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Second pass for collection: jarvis.server.entities.Workflow.WorkflowSteps
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - mapping collection: jarvis.server.entities.Workflow.WorkflowSteps -> WorkflowStep
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped collection key: Workflow_id, one-to-many: jarvis.server.entities.WorkflowStep
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing one-to-one association property references
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing foreign key constraints
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.WorkflowStep
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.WorkflowStep
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Task
+2012-03-11 18:27:17,489 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Workflow
+2012-03-11 18:27:17,489 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing filters (second pass)
+2012-03-11 18:27:17,520 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:27:17,536 [18] INFO  NHibernate.Exceptions.SQLExceptionConverterFactory [(null)] - Using dialect defined converter
+2012-03-11 18:27:17,536 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Generate SQL with comments: disabled
+2012-03-11 18:27:17,536 [18] INFO  NHibernate.Connection.ConnectionProviderFactory [(null)] - Initializing connection provider: NHibernate.Connection.DriverConnectionProvider
+2012-03-11 18:27:17,536 [18] INFO  NHibernate.Connection.ConnectionProvider [(null)] - Configuring ConnectionProvider
+2012-03-11 18:27:17,536 [18] ERROR NHibernate.Util.ReflectHelper [(null)] - Could not load type Npgsql.NpgsqlConnection, Npgsql.
+System.IO.FileNotFoundException: Could not load file or assembly 'Npgsql' or one of its dependencies. The system cannot find the file specified.
+File name: 'Npgsql'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean forIntrospection)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, Boolean forIntrospection)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NHibernate.Util.ReflectHelper.TypeFromAssembly(AssemblyQualifiedTypeName name, Boolean throwOnError)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+2012-03-11 18:27:17,536 [18] ERROR NHibernate.Util.ReflectHelper [(null)] - Could not load type Npgsql.NpgsqlCommand, Npgsql.
+System.IO.FileNotFoundException: Could not load file or assembly 'Npgsql' or one of its dependencies. The system cannot find the file specified.
+File name: 'Npgsql'
+   at System.Reflection.RuntimeAssembly._nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.nLoad(AssemblyName fileName, String codeBase, Evidence assemblySecurity, RuntimeAssembly locationHint, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoadAssemblyName(AssemblyName assemblyRef, Evidence assemblySecurity, RuntimeAssembly reqAssembly, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean throwOnFileNotFound, Boolean forIntrospection, Boolean suppressSecurityChecks)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, IntPtr pPrivHostBinder, Boolean forIntrospection)
+   at System.Reflection.RuntimeAssembly.InternalLoad(String assemblyString, Evidence assemblySecurity, StackCrawlMark& stackMark, Boolean forIntrospection)
+   at System.Reflection.Assembly.Load(String assemblyString)
+   at NHibernate.Util.ReflectHelper.TypeFromAssembly(AssemblyQualifiedTypeName name, Boolean throwOnError)
+
+WRN: Assembly binding logging is turned OFF.
+To enable assembly bind failure logging, set the registry value [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD) to 1.
+Note: There is some performance penalty associated with assembly bind failure logging.
+To turn this feature off, remove the registry value [HKLM\Software\Microsoft\Fusion!EnableLog].
+
+2012-03-11 18:28:11,380 [18] INFO  NHibernate.Cfg.Environment [(null)] - NHibernate 3.1.0.4000 (3.1.0.4000)
+2012-03-11 18:28:11,396 [18] INFO  NHibernate.Cfg.Environment [(null)] - hibernate-configuration section not found in application configuration file
+2012-03-11 18:28:11,397 [18] INFO  NHibernate.Cfg.Environment [(null)] - Bytecode provider name : lcg
+2012-03-11 18:28:11,397 [18] INFO  NHibernate.Cfg.Environment [(null)] - Using reflection optimizer
+2012-03-11 18:28:11,582 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Event, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Event`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="EventGroupType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventGroupTypes, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventGroupType" /></property><property name="EventType" type="FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventType, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]], FluentNHibernate, Version=1.2.0.712, Culture=neutral, PublicKeyToken=8aa435e3cb308880"><column name="EventType" /></property><property name="TriggeredDate" type="System.DateTime, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="TriggeredDate" /></property></class></hibernate-mapping>
+2012-03-11 18:28:11,671 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,704 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Event -> Event
+2012-03-11 18:28:11,727 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,743 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventGroupType -> EventGroupType, type: enumstring - EventGroupTypes
+2012-03-11 18:28:11,744 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: EventType -> EventType, type: enumstring - EventType
+2012-03-11 18:28:11,744 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: TriggeredDate -> TriggeredDate, type: DateTime
+2012-03-11 18:28:11,755 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Folder`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Parent"><column name="Parent_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:28:11,762 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,763 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Folder -> Folder
+2012-03-11 18:28:11,763 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,763 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:28:11,769 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Parent -> Parent_id, type: jarvis.server.entities.Folder
+2012-03-11 18:28:11,770 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.NextWorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`NextWorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="NextStep"><column name="NextStep_id" /></many-to-one><many-to-one class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="PreviousStep"><column name="PreviousStep_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:28:11,771 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,771 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.NextWorkflowStep -> NextWorkflowStep
+2012-03-11 18:28:11,771 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,771 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: NextStep -> NextStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:11,771 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: PreviousStep -> PreviousStep_id, type: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:11,772 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Task`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:28:11,772 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,773 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Task -> Task
+2012-03-11 18:28:11,773 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,773 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:28:11,773 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:28:11,792 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`Workflow`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><bag name="WorkflowSteps"><key><column name="Workflow_id" /></key><one-to-many class="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" /></bag><property name="Name" type="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Name" /></property><many-to-one class="jarvis.server.entities.Folder, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="ParentFolder"><column name="ParentFolder_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:28:11,806 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,807 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.Workflow -> Workflow
+2012-03-11 18:28:11,807 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,821 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: WorkflowSteps, type: System.Collections.Generic.ICollection`1[[jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]](jarvis.server.entities.Workflow.WorkflowSteps)
+2012-03-11 18:28:11,821 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Name -> Name, type: String
+2012-03-11 18:28:11,821 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: ParentFolder -> ParentFolder_id, type: jarvis.server.entities.Folder
+2012-03-11 18:28:11,823 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - Mapping XML:
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"><class xmlns="urn:nhibernate-mapping-2.2" name="jarvis.server.entities.WorkflowStep, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" table="`WorkflowStep`"><id name="Id" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"><column name="Id" sql-type="Serial" /><generator class="native" /></id><many-to-one class="jarvis.server.entities.Task, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Task"><column name="Task_id" /></many-to-one><many-to-one class="jarvis.server.entities.Workflow, jarvis.server.entities, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null" name="Workflow"><column name="Workflow_id" /></many-to-one></class></hibernate-mapping>
+2012-03-11 18:28:11,823 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,823 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapping class: jarvis.server.entities.WorkflowStep -> WorkflowStep
+2012-03-11 18:28:11,823 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Id -> Id, type: Int32
+2012-03-11 18:28:11,823 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Task -> Task_id, type: jarvis.server.entities.Task
+2012-03-11 18:28:11,824 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped property: Workflow -> Workflow_id, type: jarvis.server.entities.Workflow
+2012-03-11 18:28:11,826 [18] INFO  NHibernate.Cfg.Configuration [(null)] - checking mappings queue
+2012-03-11 18:28:11,827 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing one-to-many association mappings
+2012-03-11 18:28:11,827 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Second pass for collection: jarvis.server.entities.Workflow.WorkflowSteps
+2012-03-11 18:28:11,828 [18] INFO  NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - mapping collection: jarvis.server.entities.Workflow.WorkflowSteps -> WorkflowStep
+2012-03-11 18:28:11,832 [18] DEBUG NHibernate.Cfg.XmlHbmBinding.Binder [(null)] - Mapped collection key: Workflow_id, one-to-many: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:11,832 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing one-to-one association property references
+2012-03-11 18:28:11,832 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing foreign key constraints
+2012-03-11 18:28:11,834 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Folder
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Task
+2012-03-11 18:28:11,835 [18] DEBUG NHibernate.Cfg.Configuration [(null)] - resolving reference to class: jarvis.server.entities.Workflow
+2012-03-11 18:28:11,835 [18] INFO  NHibernate.Cfg.Configuration [(null)] - processing filters (second pass)
+2012-03-11 18:28:11,855 [18] INFO  NHibernate.Dialect.Dialect [(null)] - Using dialect: NHibernate.Dialect.PostgreSQLDialect
+2012-03-11 18:28:11,873 [18] INFO  NHibernate.Exceptions.SQLExceptionConverterFactory [(null)] - Using dialect defined converter
+2012-03-11 18:28:11,873 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Generate SQL with comments: disabled
+2012-03-11 18:28:11,874 [18] INFO  NHibernate.Connection.ConnectionProviderFactory [(null)] - Initializing connection provider: NHibernate.Connection.DriverConnectionProvider
+2012-03-11 18:28:11,875 [18] INFO  NHibernate.Connection.ConnectionProvider [(null)] - Configuring ConnectionProvider
+2012-03-11 18:28:11,876 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Transaction factory: NHibernate.Transaction.AdoNetWithDistributedTransactionFactory
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Optimize cache for minimal puts: False
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Connection release mode: auto
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Default batch fetch size: 1
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Statistics: disabled
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Deleted entity synthetic identifier rollback: disabled
+2012-03-11 18:28:11,877 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Query translator: NHibernate.Hql.Ast.ANTLR.ASTQueryTranslatorFactory
+2012-03-11 18:28:11,878 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Query language substitutions: {}
+2012-03-11 18:28:11,879 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - cache provider: NHibernate.Cache.NoCacheProvider, NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4
+2012-03-11 18:28:11,879 [18] DEBUG NHibernate.Cfg.SettingsFactory [(null)] - Wrap result sets: disabled
+2012-03-11 18:28:11,880 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Batcher factory: NHibernate.AdoNet.NonBatchingBatcherFactory, NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4
+2012-03-11 18:28:11,880 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Default entity-mode: Poco
+2012-03-11 18:28:11,880 [18] INFO  NHibernate.Cfg.SettingsFactory [(null)] - Named query checking : enabled
+2012-03-11 18:28:11,894 [18] INFO  NHibernate.Impl.SessionFactoryImpl [(null)] - building session factory
+2012-03-11 18:28:11,894 [18] DEBUG NHibernate.Impl.SessionFactoryImpl [(null)] - Session factory constructed with filter configurations : {}
+2012-03-11 18:28:11,894 [18] DEBUG NHibernate.Impl.SessionFactoryImpl [(null)] - instantiating session factory with properties: {'connection.provider'='NHibernate.Connection.DriverConnectionProvider', 'proxyfactory.factory_class'='NHibernate.ByteCode.Castle.ProxyFactoryFactory, NHibernate.ByteCode.Castle', 'connection.driver_class'='NHibernate.Driver.NpgsqlDriver, NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4', 'dialect'='NHibernate.Dialect.PostgreSQLDialect, NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4', 'hibernate.dialect'='NHibernate.Dialect.PostgreSQLDialect, NHibernate, Version=3.1.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4', 'connection.connection_string'='User Id=jarvis;Password=jarvis;Host=localhost;Port=5432;Database=jarvis;'}
+2012-03-11 18:28:11,896 [18] DEBUG NHibernate.Connection.DriverConnectionProvider [(null)] - Obtaining IDbConnection from Driver
+2012-03-11 18:28:12,019 [18] DEBUG NHibernate.Connection.ConnectionProvider [(null)] - Closing connection
+2012-03-11 18:28:12,083 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Event
+2012-03-11 18:28:12,085 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Event
+2012-03-11 18:28:12,097 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.Event
+2012-03-11 18:28:12,117 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Folder
+2012-03-11 18:28:12,117 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Folder
+2012-03-11 18:28:12,117 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.Folder
+2012-03-11 18:28:12,118 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.NextWorkflowStep
+2012-03-11 18:28:12,119 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.NextWorkflowStep
+2012-03-11 18:28:12,119 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.NextWorkflowStep
+2012-03-11 18:28:12,119 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Task
+2012-03-11 18:28:12,119 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Task
+2012-03-11 18:28:12,119 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.Task
+2012-03-11 18:28:12,120 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Workflow
+2012-03-11 18:28:12,120 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.Workflow
+2012-03-11 18:28:12,120 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.Workflow
+2012-03-11 18:28:12,120 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:12,121 [18] DEBUG NHibernate.Tuple.Entity.AbstractEntityTuplizer [(null)] - No custom accessors found for entity: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:12,121 [18] DEBUG NHibernate.Tuple.Entity.PocoEntityTuplizer [(null)] - Create Instantiator using optimizer for:jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:12,142 [18] DEBUG NHibernate.Persister.Collection.ICollectionPersister [(null)] - Static SQL for collection: jarvis.server.entities.Workflow.WorkflowSteps
+2012-03-11 18:28:12,142 [18] DEBUG NHibernate.Persister.Collection.ICollectionPersister [(null)] -  Row insert: UPDATE "WorkflowStep" SET Workflow_id = ? WHERE Id = ?
+2012-03-11 18:28:12,142 [18] DEBUG NHibernate.Persister.Collection.ICollectionPersister [(null)] -  Row delete: UPDATE "WorkflowStep" SET Workflow_id = null WHERE Workflow_id = ? AND Id = ?
+2012-03-11 18:28:12,142 [18] DEBUG NHibernate.Persister.Collection.ICollectionPersister [(null)] -  One-shot delete: UPDATE "WorkflowStep" SET Workflow_id = null WHERE Workflow_id = ?
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.Event
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "Event" WHERE Id = ?
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT event_.Id, event_.EventGroupType as EventGro2_0_, event_.EventType as EventType0_, event_.TriggeredDate as Triggere4_0_ FROM "Event" event_ WHERE event_.Id=?
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "Event" (EventGroupType, EventType, TriggeredDate, Id) VALUES (?, ?, ?, ?)
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "Event" SET EventGroupType = ?, EventType = ?, TriggeredDate = ? WHERE Id = ?
+2012-03-11 18:28:12,174 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "Event" WHERE Id = ?
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=?
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=?
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Event" event0_
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=? for update
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Event" event0_
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=? for update
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Event" event0_
+2012-03-11 18:28:12,199 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=? for update
+2012-03-11 18:28:12,200 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=?
+2012-03-11 18:28:12,200 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.Event: SELECT event0_.Id as Id0_0_, event0_.EventGroupType as EventGro2_0_0_, event0_.EventType as EventType0_0_, event0_.TriggeredDate as Triggere4_0_0_ FROM "Event" event0_ WHERE event0_.Id=?
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.Folder
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "Folder" WHERE Id = ?
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT folder_.Id, folder_.Name as Name1_, folder_.Parent_id as Parent3_1_ FROM "Folder" folder_ WHERE folder_.Id=?
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "Folder" (Name, Parent_id, Id) VALUES (?, ?, ?)
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "Folder" SET Name = ?, Parent_id = ? WHERE Id = ?
+2012-03-11 18:28:12,201 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "Folder" WHERE Id = ?
+2012-03-11 18:28:12,203 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=?
+2012-03-11 18:28:12,203 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=?
+2012-03-11 18:28:12,203 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Folder" folder0_
+2012-03-11 18:28:12,203 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Folder" folder0_
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Folder" folder0_
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.Folder: SELECT folder0_.Id as Id1_0_, folder0_.Name as Name1_0_, folder0_.Parent_id as Parent3_1_0_ FROM "Folder" folder0_ WHERE folder0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.NextWorkflowStep
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "NextWorkflowStep" WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT nextworkfl_.Id, nextworkfl_.NextStep_id as NextStep2_2_, nextworkfl_.PreviousStep_id as Previous3_2_ FROM "NextWorkflowStep" nextworkfl_ WHERE nextworkfl_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "NextWorkflowStep" (NextStep_id, PreviousStep_id, Id) VALUES (?, ?, ?)
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "NextWorkflowStep" SET NextStep_id = ?, PreviousStep_id = ? WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "NextWorkflowStep" WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "NextWorkflowStep" nextworkfl0_
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "NextWorkflowStep" nextworkfl0_
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "NextWorkflowStep" nextworkfl0_
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=? for update
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.NextWorkflowStep: SELECT nextworkfl0_.Id as Id2_0_, nextworkfl0_.NextStep_id as NextStep2_2_0_, nextworkfl0_.PreviousStep_id as Previous3_2_0_ FROM "NextWorkflowStep" nextworkfl0_ WHERE nextworkfl0_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.Task
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "Task" WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT task_.Id, task_.Name as Name3_, task_.ParentFolder_id as ParentFo3_3_ FROM "Task" task_ WHERE task_.Id=?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "Task" (Name, ParentFolder_id, Id) VALUES (?, ?, ?)
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "Task" SET Name = ?, ParentFolder_id = ? WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "Task" WHERE Id = ?
+2012-03-11 18:28:12,204 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Task" task0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Task" task0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Task" task0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.Task: SELECT task0_.Id as Id3_0_, task0_.Name as Name3_0_, task0_.ParentFolder_id as ParentFo3_3_0_ FROM "Task" task0_ WHERE task0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.Workflow
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "Workflow" WHERE Id = ?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT workflow_.Id, workflow_.Name as Name4_, workflow_.ParentFolder_id as ParentFo3_4_ FROM "Workflow" workflow_ WHERE workflow_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "Workflow" (Name, ParentFolder_id, Id) VALUES (?, ?, ?)
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "Workflow" SET Name = ?, ParentFolder_id = ? WHERE Id = ?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "Workflow" WHERE Id = ?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Workflow" workflow0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Workflow" workflow0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "Workflow" workflow0_
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=? for update
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.Workflow: SELECT workflow0_.Id as Id4_0_, workflow0_.Name as Name4_0_, workflow0_.ParentFolder_id as ParentFo3_4_0_ FROM "Workflow" workflow0_ WHERE workflow0_.Id=?
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Static SQL for entity: jarvis.server.entities.WorkflowStep
+2012-03-11 18:28:12,205 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Version select: SELECT Id FROM "WorkflowStep" WHERE Id = ?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Snapshot select: SELECT workflowst_.Id, workflowst_.Task_id as Task2_5_, workflowst_.Workflow_id as Workflow3_5_ FROM "WorkflowStep" workflowst_ WHERE workflowst_.Id=?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Insert 0: INSERT INTO "WorkflowStep" (Task_id, Workflow_id, Id) VALUES (?, ?, ?)
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Update 0: UPDATE "WorkflowStep" SET Task_id = ?, Workflow_id = ? WHERE Id = ?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] -  Delete 0: DELETE FROM "WorkflowStep" WHERE Id = ?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "WorkflowStep" workflowst0_
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=? for update
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "WorkflowStep" workflowst0_
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=? for update
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.SqlCommand.SqlSelectBuilder [(null)] - The initial capacity was set too low at: 8 for the SelectSqlBuilder that needed a capacity of: 9 for the table "WorkflowStep" workflowst0_
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=? for update
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+MergeCascadingAction on entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=?
+2012-03-11 18:28:12,206 [18] DEBUG NHibernate.Loader.Entity.AbstractEntityLoader [(null)] - Static select for action NHibernate.Engine.CascadingAction+RefreshCascadingAction on entity jarvis.server.entities.WorkflowStep: SELECT workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Id=?
+2012-03-11 18:28:12,213 [18] DEBUG NHibernate.Loader.Collection.OneToManyLoader [(null)] - Static select for one-to-many jarvis.server.entities.Workflow.WorkflowSteps: SELECT workflowst0_.Workflow_id as Workflow3_1_, workflowst0_.Id as Id1_, workflowst0_.Id as Id5_0_, workflowst0_.Task_id as Task2_5_0_, workflowst0_.Workflow_id as Workflow3_5_0_ FROM "WorkflowStep" workflowst0_ WHERE workflowst0_.Workflow_id=?
+2012-03-11 18:28:12,214 [18] DEBUG NHibernate.Impl.SessionFactoryObjectFactory [(null)] - initializing class SessionFactoryObjectFactory
+2012-03-11 18:28:12,214 [18] DEBUG NHibernate.Impl.SessionFactoryObjectFactory [(null)] - registered: de9d02790a5b49968963746d2a9d39b3(unnamed)
+2012-03-11 18:28:12,214 [18] INFO  NHibernate.Impl.SessionFactoryObjectFactory [(null)] - no name configured
+2012-03-11 18:28:12,215 [18] DEBUG NHibernate.Impl.SessionFactoryImpl [(null)] - Instantiated session factory
+2012-03-11 18:28:12,218 [18] DEBUG NHibernate.Impl.SessionFactoryImpl [(null)] - Checking 0 named HQL queries
+2012-03-11 18:28:12,218 [18] DEBUG NHibernate.Impl.SessionFactoryImpl [(null)] - Checking 0 named SQL queries
+2012-03-11 18:28:12,228 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - [session-id=10ed98af-fe35-472f-8a63-d5d1b6956643] opened session at timestamp: 634670872922, for session factory: [/de9d02790a5b49968963746d2a9d39b3]
+2012-03-11 18:28:12,236 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - Begin (Unspecified)
+2012-03-11 18:28:12,236 [18] DEBUG NHibernate.Connection.DriverConnectionProvider [(null)] - Obtaining IDbConnection from Driver
+2012-03-11 18:28:12,247 [18] DEBUG NHibernate.Engine.IdentifierValue [(null)] - unsaved-value: 0
+2012-03-11 18:28:12,247 [18] DEBUG NHibernate.Event.Default.AbstractSaveEventListener [(null)] - transient instance of: jarvis.server.entities.Event
+2012-03-11 18:28:12,248 [18] DEBUG NHibernate.Event.Default.DefaultSaveOrUpdateEventListener [(null)] - saving transient instance
+2012-03-11 18:28:12,254 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Opened new IDbCommand, open IDbCommands: 1
+2012-03-11 18:28:12,254 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Building an IDbCommand object for the SqlString: select nextval ('hibernate_sequence')
+2012-03-11 18:28:12,257 [18] DEBUG NHibernate.SQL [(null)] - select nextval ('hibernate_sequence')
+2012-03-11 18:28:12,258 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - Enlist Command
+2012-03-11 18:28:12,260 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - ExecuteReader took 0 ms
+2012-03-11 18:28:12,260 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Opened IDataReader, open IDataReaders: 1
+2012-03-11 18:28:12,262 [18] DEBUG NHibernate.Type.Int32Type [(null)] - returning '2' as column: nextval
+2012-03-11 18:28:12,262 [18] DEBUG NHibernate.Id.SequenceGenerator [(null)] - Sequence identifier generated: 2
+2012-03-11 18:28:12,263 [18] DEBUG NHibernate.Driver.NHybridDataReader [(null)] - running NHybridDataReader.Dispose()
+2012-03-11 18:28:12,264 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Closed IDataReader, open IDataReaders :0
+2012-03-11 18:28:12,264 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - DataReader was closed after 4 ms
+2012-03-11 18:28:12,264 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Closed IDbCommand, open IDbCommands: 0
+2012-03-11 18:28:12,265 [18] DEBUG NHibernate.Event.Default.AbstractSaveEventListener [(null)] - generated identifier: 2, using strategy: NHibernate.Id.SequenceGenerator
+2012-03-11 18:28:12,265 [18] DEBUG NHibernate.Event.Default.AbstractSaveEventListener [(null)] - saving [jarvis.server.entities.Event#2]
+2012-03-11 18:28:12,277 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - Start Commit
+2012-03-11 18:28:12,280 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - flushing session
+2012-03-11 18:28:12,280 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - processing flush-time cascades
+2012-03-11 18:28:12,282 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - dirty checking collections
+2012-03-11 18:28:12,282 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - Flushing entities and processing referenced collections
+2012-03-11 18:28:12,289 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - Processing unreferenced collections
+2012-03-11 18:28:12,289 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - Scheduling collection removes/(re)creates/updates
+2012-03-11 18:28:12,290 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - Flushed: 1 insertions, 0 updates, 0 deletions to 1 objects
+2012-03-11 18:28:12,290 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - Flushed: 0 (re)creations, 0 updates, 0 removals to 0 collections
+2012-03-11 18:28:12,290 [18] DEBUG NHibernate.Impl.Printer [(null)] - listing entities:
+2012-03-11 18:28:12,292 [18] DEBUG NHibernate.Impl.Printer [(null)] - jarvis.server.entities.Event{'Id'='2', 'EventGroupType'='Filesystem', 'EventType'='Add', 'TriggeredDate'='11.03.2012 17:28:09'}
+2012-03-11 18:28:12,292 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - executing flush
+2012-03-11 18:28:12,292 [18] DEBUG NHibernate.AdoNet.ConnectionManager [(null)] - registering flush begin
+2012-03-11 18:28:12,296 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Inserting entity: [jarvis.server.entities.Event#2]
+2012-03-11 18:28:12,300 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Opened new IDbCommand, open IDbCommands: 1
+2012-03-11 18:28:12,300 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Building an IDbCommand object for the SqlString: INSERT INTO "Event" (EventGroupType, EventType, TriggeredDate, Id) VALUES (?, ?, ?, ?)
+2012-03-11 18:28:12,300 [18] DEBUG NHibernate.Persister.Entity.AbstractEntityPersister [(null)] - Dehydrating entity: [jarvis.server.entities.Event#2]
+2012-03-11 18:28:12,301 [18] DEBUG FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventGroupTypes, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]] [(null)] - binding 'Filesystem' to parameter: 0
+2012-03-11 18:28:12,302 [18] DEBUG FluentNHibernate.Mapping.GenericEnumMapper`1[[jarvis.common.domain.EventType, jarvis.common.domain, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null]] [(null)] - binding 'Add' to parameter: 1
+2012-03-11 18:28:12,302 [18] DEBUG NHibernate.Type.DateTimeType [(null)] - binding '11.03.2012 17:28:09' to parameter: 2
+2012-03-11 18:28:12,304 [18] DEBUG NHibernate.Type.Int32Type [(null)] - binding '2' to parameter: 3
+2012-03-11 18:28:12,306 [18] DEBUG NHibernate.SQL [(null)] - INSERT INTO "Event" (EventGroupType, EventType, TriggeredDate, Id) VALUES (:p0, :p1, :p2, :p3);:p0 = 'Filesystem' [Type: String (0)], :p1 = 'Add' [Type: String (0)], :p2 = 11.03.2012 17:28:09 [Type: DateTime (0)], :p3 = 2 [Type: Int32 (0)]
+2012-03-11 18:28:12,306 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - Enlist Command
+2012-03-11 18:28:12,313 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - ExecuteNonQuery took 7 ms
+2012-03-11 18:28:12,316 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - ExecuteBatch for 1 statements took 0 ms
+2012-03-11 18:28:12,316 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - Closed IDbCommand, open IDbCommands: 0
+2012-03-11 18:28:12,316 [18] DEBUG NHibernate.AdoNet.ConnectionManager [(null)] - registering flush end
+2012-03-11 18:28:12,317 [18] DEBUG NHibernate.Event.Default.AbstractFlushingEventListener [(null)] - post flush
+2012-03-11 18:28:12,318 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - before transaction completion
+2012-03-11 18:28:12,380 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - IDbTransaction Committed
+2012-03-11 18:28:12,381 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - transaction completion
+2012-03-11 18:28:12,381 [18] DEBUG NHibernate.AdoNet.ConnectionManager [(null)] - aggressively releasing database connection
+2012-03-11 18:28:12,381 [18] DEBUG NHibernate.Connection.ConnectionProvider [(null)] - Closing connection
+2012-03-11 18:28:12,383 [18] DEBUG NHibernate.Transaction.AdoTransaction [(null)] - IDbTransaction disposed.
+2012-03-11 18:28:12,384 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - [session-id=10ed98af-fe35-472f-8a63-d5d1b6956643] running ISession.Dispose()
+2012-03-11 18:28:12,384 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - [session-id=10ed98af-fe35-472f-8a63-d5d1b6956643] executing real Dispose(True)
+2012-03-11 18:28:12,385 [18] DEBUG NHibernate.Impl.SessionImpl [(null)] - closing session
+2012-03-11 18:28:12,386 [18] DEBUG NHibernate.AdoNet.AbstractBatcher [(null)] - running BatcherImpl.Dispose(true)

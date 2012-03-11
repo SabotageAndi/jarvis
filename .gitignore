@@ -22,3 +22,7 @@
 /jarvis/Common/dtos/obj
 /jarvis/Server/configuration/bin
 /jarvis/Server/configuration/obj
+/jarvis/Server/webui/bin
+/jarvis/Server/webui/obj
+/jarvis/Server/web/obj
+/jarvis/Server/web/bin
