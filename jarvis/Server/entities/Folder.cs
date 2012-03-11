@@ -7,19 +7,19 @@ using FluentNHibernate.Mapping;
 
 namespace jarvis.server.entities
 {
-    public class Task : Entity
+    public class Folder : Entity
     {
-        public virtual String Name { get; set; }
-        public virtual Folder ParentFolder { get; set; }
+        public virtual string Name { get; set; }
+        public virtual Folder Parent { get; set; }
     }
 
-    public class TaskMap : ClassMap<Task>
+    public class FolderMap : ClassMap<Folder>
     {
-        public TaskMap()
+        public FolderMap()
         {
             Id(x => x.Id).CustomSqlType("Serial").GeneratedBy.Native();
             Map(x => x.Name);
-            References(x => x.ParentFolder);
+            References(x => x.Parent);
         }
     }
 }

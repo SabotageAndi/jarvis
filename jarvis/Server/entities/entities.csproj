@@ -59,6 +59,7 @@
     </Compile>
     <Compile Include="Entity.cs" />
     <Compile Include="Event.cs" />
+    <Compile Include="Folder.cs" />
     <Compile Include="NextWorkflowStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Task.cs" />
