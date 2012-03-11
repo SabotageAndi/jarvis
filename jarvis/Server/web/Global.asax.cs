@@ -2,6 +2,7 @@
 using System.Data.Entity.Infrastructure;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac.Integration.Mvc;
 using jarvis.server.services;
 
 namespace jarvis.server.web
@@ -34,9 +35,9 @@ namespace jarvis.server.web
 
             AreaRegistration.RegisterAllAreas();
 
-            // Use LocalDB for Entity Framework by default
-            Database.DefaultConnectionFactory = new SqlConnectionFactory("Data Source=(localdb)\v11.0; Integrated Security=True; MultipleActiveResultSets=True");
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(Bootstrapper.Container));
 
+            
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }

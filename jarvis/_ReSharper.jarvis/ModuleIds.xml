@@ -1,6 +1,0 @@
-<Modules>
-  <Module PersistentId="2C7DBC3F-056E-4BDC-8E95-3D4E30E7286A" ModuleId="services" />
-  <Module PersistentId="21FD2661-DDF3-45B7-9240-13EA4BF9EFAB" ModuleId="entities" />
-  <Module PersistentId="7123A497-FB6E-4DB5-87DD-3979D59CBDEE" ModuleId="repositories" />
-  <Module PersistentId="24C400A0-4D15-4E3B-B958-522142F78839" ModuleId="model" />
-</Modules>

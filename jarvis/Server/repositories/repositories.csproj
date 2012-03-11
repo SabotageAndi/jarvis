@@ -71,6 +71,7 @@
     <Compile Include="RepositoryModule.cs" />
     <Compile Include="Infrastructure\SessionFactory.cs" />
     <Compile Include="TriggerRepository.cs" />
+    <Compile Include="UserRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

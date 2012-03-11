@@ -55,6 +55,7 @@
     <Compile Include="ModelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TriggerLogic.cs" />
+    <Compile Include="UserLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\domain\domain.csproj">

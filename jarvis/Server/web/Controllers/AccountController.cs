@@ -5,14 +5,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
+using jarvis.server.model;
 using web.Models;
 
 namespace web.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly IUserLogic _userLogic;
 
         //
+        public AccountController(IUserLogic userLogic)
+        {
+            _userLogic = userLogic;
+        }
+
         // GET: /Account/LogOn
 
         public ActionResult LogOn()
@@ -28,7 +35,7 @@ namespace web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                if (_userLogic.Login(model.UserName, model.Password) != null)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -78,17 +85,16 @@ namespace web.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                MembershipCreateStatus createStatus;
-                Membership.CreateUser(model.UserName, model.Password, model.Email, null, null, true, null, out createStatus);
+                var user = _userLogic.AddUser(model.UserName, model.Password);
 
-                if (createStatus == MembershipCreateStatus.Success)
+                if (user != null && user.Id != 0)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError("", ErrorCodeToString(createStatus));
+                    ModelState.AddModelError("", "");
                 }
             }
 
@@ -120,23 +126,20 @@ namespace web.Controllers
                 bool changePasswordSucceeded;
                 try
                 {
-                    MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-                    changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
+                    //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
+                    var user = _userLogic.GetUser(User.Identity.Name);
+                    if (user != null)
+                        _userLogic.ChangePassword(user, model.OldPassword, model.NewPassword);
+
+                    //changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
                 }
                 catch (Exception)
                 {
                     changePasswordSucceeded = false;
                 }
 
-                if (changePasswordSucceeded)
-                {
-                    return RedirectToAction("ChangePasswordSuccess");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-                }
-            }
+               return RedirectToAction("ChangePasswordSuccess");
+           }
 
             // If we got this far, something failed, redisplay form
             return View(model);

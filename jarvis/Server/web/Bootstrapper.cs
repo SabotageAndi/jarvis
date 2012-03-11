@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using Autofac;
+using Autofac.Integration.Mvc;
 using Autofac.Integration.Wcf;
 using log4net;
 using log4net.Config;
@@ -23,6 +25,10 @@ namespace jarvis.server.services
             var containerBuilder = new ContainerBuilder();
 
             containerBuilder.RegisterModule(new ServiceModule());
+            containerBuilder.RegisterControllers(Assembly.GetExecutingAssembly());
+            containerBuilder.RegisterModelBinders(Assembly.GetExecutingAssembly());
+            containerBuilder.RegisterModelBinderProvider();
+
 
             Container = containerBuilder.Build();
 
