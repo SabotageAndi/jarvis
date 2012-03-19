@@ -14,9 +14,12 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Autofac;
 using Autofac.Integration.Mvc;
+using jarvis.server.common.Database;
 
 namespace jarvis.server.web
 {
@@ -44,6 +47,7 @@ namespace jarvis.server.web
         protected void Application_Start()
         {
             Bootstrapper.init();
+           
 
             AreaRegistration.RegisterAllAreas();
 
@@ -52,6 +56,31 @@ namespace jarvis.server.web
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+        }
+        public override void Init()
+        {
+            BeginRequest += OnBeginRequest;
+            EndRequest += OnEndRequest;
+
+            base.Init();
+        }
+
+        private void OnEndRequest(object sender, EventArgs eventArgs)
+        {
+            GetTransactionProvider().CurrentScope.Commit();
+        }
+
+        private void OnBeginRequest(object sender, System.EventArgs e)
+        {
+            var transactionProvider = GetTransactionProvider();
+            transactionProvider.SetCurrentScope(transactionProvider.GetReadWriteTransaction());
+
+            transactionProvider.CurrentScope.CurrentSession.BeginTransaction();
+        }
+
+        private ITransactionProvider GetTransactionProvider()
+        {
+            return Bootstrapper.Container.Resolve<ITransactionProvider>();
         }
     }
 }

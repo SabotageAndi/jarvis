@@ -30,13 +30,10 @@ namespace jarvis.server.web.services
             _triggerLogic = triggerLogic;
         }
 
-        #region ITriggerService Members
 
         public void EventHappend(EventDto eventDto)
         {
             _triggerLogic.eventRaised(eventDto);
         }
-
-        #endregion
     }
 }

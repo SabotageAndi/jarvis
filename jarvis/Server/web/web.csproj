@@ -151,6 +151,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\Database\TransactionProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -244,6 +245,10 @@
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\common\common.csproj">
+      <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>
+      <Name>common %28Server\common%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\entities\entities.csproj">
       <Project>{21FD2661-DDF3-45B7-9240-13EA4BF9EFAB}</Project>
       <Name>entities</Name>
@@ -251,6 +256,10 @@
     <ProjectReference Include="..\model\model.csproj">
       <Project>{24C400A0-4D15-4E3B-B958-522142F78839}</Project>
       <Name>model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\repositories\repositories.csproj">
+      <Project>{7123A497-FB6E-4DB5-87DD-3979D59CBDEE}</Project>
+      <Name>repositories</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

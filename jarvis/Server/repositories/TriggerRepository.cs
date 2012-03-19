@@ -15,24 +15,25 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using NHibernate;
+using jarvis.server.common.Database;
 using jarvis.server.entities;
 
 namespace jarvis.server.repositories
 {
     public interface ITriggerRepository
     {
-        void saveTrigger(ISession session, Event raisedEvent);
+        void saveTrigger(Event raisedEvent);
     }
 
-    public class TriggerRepository : ITriggerRepository
+    public class TriggerRepository : RepositoryBase, ITriggerRepository
     {
-        #region ITriggerRepository Members
-
-        public void saveTrigger(ISession session, Event raisedEvent)
+        public TriggerRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {
-            session.SaveOrUpdate(raisedEvent);
         }
 
-        #endregion
+        public void saveTrigger(Event raisedEvent)
+        {
+            CurrentSession.SaveOrUpdate(raisedEvent);
+        }
     }
 }

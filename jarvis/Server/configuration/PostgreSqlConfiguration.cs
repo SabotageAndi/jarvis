@@ -31,8 +31,6 @@ namespace jarvis.server.configuration
     {
         private FluentConfiguration _configuration;
 
-        #region INHibernateConfiguration Members
-
         public ISessionFactory GetSessionFactory()
         {
             return GetConfiguration().BuildSessionFactory();
@@ -41,7 +39,9 @@ namespace jarvis.server.configuration
         public FluentConfiguration GetConfiguration()
         {
             if (_configuration != null)
+            {
                 return _configuration;
+            }
 
             _configuration = Fluently.Configure()
                 .Database(PostgreSQLConfiguration.Standard.ConnectionString(
@@ -51,7 +51,5 @@ namespace jarvis.server.configuration
 
             return _configuration;
         }
-
-        #endregion
     }
 }

@@ -14,21 +14,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.server.configuration;
-
-namespace jarvis.server.repositories
+namespace jarvis.server.common.Database
 {
-    public class RepositoryModule : Module
+    public interface ITransactionProvider
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ConfigurationModule());
+        ITransactionScope CurrentScope { get; }
+        void SetCurrentScope(ITransactionScope transactionScope);
 
-            builder.RegisterType<TriggerRepository>().As<ITriggerRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-
-            base.Load(builder);
-        }
+        ITransactionScope GetReadTransaction();
+        ITransactionScope GetReadWriteTransaction();
     }
 }

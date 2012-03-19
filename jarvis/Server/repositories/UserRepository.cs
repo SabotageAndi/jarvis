@@ -15,30 +15,32 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Linq;
-using NHibernate;
 using NHibernate.Linq;
+using jarvis.server.common.Database;
 using jarvis.server.entities;
 
 namespace jarvis.server.repositories
 {
     public interface IUserRepository
     {
-        User Login(ISession session, string username, string password);
-        User Add(ISession session, string username, string password);
-        void ChangePassword(ISession session, User user, string newPassword);
-        User GetUser(ISession session, string name);
+        User Login(string username, string password);
+        User Add(string username, string password);
+        void ChangePassword(User user, string newPassword);
+        User GetUser(string name);
     }
 
-    public class UserRepository : IUserRepository
+    public class UserRepository : RepositoryBase, IUserRepository
     {
-        #region IUserRepository Members
-
-        public User Login(ISession session, string username, string password)
+        public UserRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {
-            return session.Query<User>().Where(u => u.Username == username && u.Password == password).SingleOrDefault();
         }
 
-        public User Add(ISession session, string username, string password)
+        public User Login(string username, string password)
+        {
+            return CurrentSession.Query<User>().Where(u => u.Username == username && u.Password == password).SingleOrDefault();
+        }
+
+        public User Add(string username, string password)
         {
             var user = new User()
                            {
@@ -46,22 +48,20 @@ namespace jarvis.server.repositories
                                Password = password
                            };
 
-            session.SaveOrUpdate(user);
+            CurrentSession.SaveOrUpdate(user);
 
             return user;
         }
 
-        public void ChangePassword(ISession session, User user, string newPassword)
+        public void ChangePassword(User user, string newPassword)
         {
             user.Password = newPassword;
-            session.Update(user);
+            CurrentSession.SaveOrUpdate(user);
         }
 
-        public User GetUser(ISession session, string name)
+        public User GetUser(string name)
         {
-            return session.Query<User>().Where(u => u.Username == name).SingleOrDefault();
+            return CurrentSession.Query<User>().Where(u => u.Username == name).SingleOrDefault();
         }
-
-        #endregion
     }
 }

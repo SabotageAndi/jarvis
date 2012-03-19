@@ -140,7 +140,9 @@ namespace jarvis.server.web.Controllers
                     //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
                     var user = _userLogic.GetUser(User.Identity.Name);
                     if (user != null)
+                    {
                         _userLogic.ChangePassword(user, model.OldPassword, model.NewPassword);
+                    }
 
                     //changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
                 }
@@ -163,8 +165,6 @@ namespace jarvis.server.web.Controllers
         {
             return View();
         }
-
-        #region Status Codes
 
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
@@ -207,7 +207,5 @@ namespace jarvis.server.web.Controllers
                         "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
         }
-
-        #endregion
     }
 }

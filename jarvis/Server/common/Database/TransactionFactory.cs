@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+// J.A.R.V.I.S. - Just a really versatile intelligent system
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -15,31 +15,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using NHibernate;
-using jarvis.server.configuration;
 
-namespace jarvis.server.repositories
+namespace jarvis.server.common.Database
 {
-    public interface ISessionFactory
+    public interface ITransactionFactory
     {
-        ISession OpenSession();
+        ITransaction BeginTransaction(ISession session);
     }
 
-    public class SessionFactory : ISessionFactory
+    public class TransactionFactory : ITransactionFactory
     {
-        private readonly INHibernateConfiguration _nHibernateConfiguration;
-
-        public SessionFactory(INHibernateConfiguration nHibernateConfiguration)
+        public ITransaction BeginTransaction(ISession session)
         {
-            _nHibernateConfiguration = nHibernateConfiguration;
+            return session.BeginTransaction();
         }
-
-        #region ISessionFactory Members
-
-        public ISession OpenSession()
-        {
-            return _nHibernateConfiguration.GetSessionFactory().OpenSession();
-        }
-
-        #endregion
     }
 }
