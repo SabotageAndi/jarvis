@@ -1,4 +1,20 @@
-﻿using System;
+﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+// Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Web.Mvc;
 using System.Web.Security;
 using jarvis.server.model;
@@ -116,7 +132,6 @@ namespace jarvis.server.web.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 // ChangePassword will throw an exception rather
                 // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
@@ -134,8 +149,8 @@ namespace jarvis.server.web.Controllers
                     changePasswordSucceeded = false;
                 }
 
-               return RedirectToAction("ChangePasswordSuccess");
-           }
+                return RedirectToAction("ChangePasswordSuccess");
+            }
 
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -150,6 +165,7 @@ namespace jarvis.server.web.Controllers
         }
 
         #region Status Codes
+
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
             // See http://go.microsoft.com/fwlink/?LinkID=177550 for
@@ -160,7 +176,8 @@ namespace jarvis.server.web.Controllers
                     return "User name already exists. Please enter a different user name.";
 
                 case MembershipCreateStatus.DuplicateEmail:
-                    return "A user name for that e-mail address already exists. Please enter a different e-mail address.";
+                    return
+                        "A user name for that e-mail address already exists. Please enter a different e-mail address.";
 
                 case MembershipCreateStatus.InvalidPassword:
                     return "The password provided is invalid. Please enter a valid password value.";
@@ -178,15 +195,19 @@ namespace jarvis.server.web.Controllers
                     return "The user name provided is invalid. Please check the value and try again.";
 
                 case MembershipCreateStatus.ProviderError:
-                    return "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "The authentication provider returned an error. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
 
                 case MembershipCreateStatus.UserRejected:
-                    return "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "The user creation request has been canceled. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
 
                 default:
-                    return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
+                    return
+                        "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
         }
+
         #endregion
     }
 }
