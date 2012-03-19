@@ -22,7 +22,10 @@ namespace web.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Welcome to ASP.NET MVC!";
+            if (!Request.IsAuthenticated)
+            {
+                ViewBag.Message = "Please login";
+            }
 
             return View();
         }

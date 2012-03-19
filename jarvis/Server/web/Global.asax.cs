@@ -68,6 +68,7 @@ namespace jarvis.server.web
         private void OnEndRequest(object sender, EventArgs eventArgs)
         {
             GetTransactionProvider().CurrentScope.Commit();
+            GetTransactionProvider().CurrentScope.Close();
         }
 
         private void OnBeginRequest(object sender, System.EventArgs e)
@@ -75,7 +76,7 @@ namespace jarvis.server.web
             var transactionProvider = GetTransactionProvider();
             transactionProvider.SetCurrentScope(transactionProvider.GetReadWriteTransaction());
 
-            transactionProvider.CurrentScope.CurrentSession.BeginTransaction();
+            transactionProvider.CurrentScope.BeginTransaction();
         }
 
         private ITransactionProvider GetTransactionProvider()

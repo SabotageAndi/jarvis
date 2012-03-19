@@ -14,7 +14,11 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using jarvis.server.common.Database;
 using jarvis.server.entities;
 
@@ -23,6 +27,7 @@ namespace jarvis.server.repositories
     public interface ITriggerRepository
     {
         void saveTrigger(Event raisedEvent);
+        IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
     }
 
     public class TriggerRepository : RepositoryBase, ITriggerRepository
@@ -35,5 +40,29 @@ namespace jarvis.server.repositories
         {
             CurrentSession.SaveOrUpdate(raisedEvent);
         }
+
+        public IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria)
+        {
+            var events = CurrentSession.Query<Event>();
+
+            if (eventFilterCriteria.MaxTriggeredDate.HasValue)
+            {
+                events = events.Where(e => e.TriggeredDate <= eventFilterCriteria.MaxTriggeredDate);
+            }
+
+            if (eventFilterCriteria.MinTriggeredDate.HasValue)
+            {
+                events = events.Where(e => e.TriggeredDate >= eventFilterCriteria.MinTriggeredDate);
+            }
+
+            return events;
+        }
+    }
+
+    public class EventFilterCriteria
+    {
+        public DateTime? MaxTriggeredDate { get; set; }
+
+        public DateTime? MinTriggeredDate { get; set; }
     }
 }

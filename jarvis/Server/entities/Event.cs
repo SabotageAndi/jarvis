@@ -25,6 +25,7 @@ namespace jarvis.server.entities
         public virtual EventGroupTypes EventGroupType { get; set; }
         public virtual EventType EventType { get; set; }
         public virtual DateTime TriggeredDate { get; set; }
+        public virtual string Data { get; set; }
     }
 
     public class EventMap : ClassMap<Event>
@@ -35,6 +36,7 @@ namespace jarvis.server.entities
             Map(x => x.EventGroupType);
             Map(x => x.EventType);
             Map(x => x.TriggeredDate);
+            Map(x => x.Data);
         }
     }
 }

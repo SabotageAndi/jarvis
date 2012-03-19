@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Linq;
 using jarvis.common.dtos;
 using jarvis.server.entities;
 using jarvis.server.repositories;
@@ -23,6 +25,8 @@ namespace jarvis.server.model
     public interface ITriggerLogic
     {
         void eventRaised(EventDto eventDto);
+        List<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
+        List<Event> GetLastEvents();
     }
 
     public class TriggerLogic : ITriggerLogic
@@ -40,10 +44,21 @@ namespace jarvis.server.model
                                    {
                                        EventGroupType = eventDto.EventGroupTypes,
                                        EventType = eventDto.EventType,
-                                       TriggeredDate = eventDto.TriggeredDate
+                                       TriggeredDate = eventDto.TriggeredDate,
+                                       Data = eventDto.Data
                                    };
 
             _triggerRepository.saveTrigger(raisedEvent);
+        }
+
+        public List<Event> GetEvents(EventFilterCriteria eventFilterCriteria)
+        {
+            return _triggerRepository.GetEvents(eventFilterCriteria).ToList();
+        }
+
+        public List<Event> GetLastEvents()
+        {
+            return _triggerRepository.GetEvents(new EventFilterCriteria()).OrderByDescending(e => e.TriggeredDate).ToList();
         }
     }
 }

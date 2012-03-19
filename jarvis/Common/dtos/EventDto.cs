@@ -31,5 +31,8 @@ namespace jarvis.common.dtos
 
         [DataMember]
         public EventType EventType { get; set; }
+
+        [DataMember]
+        public String Data { get; set; }
     }
 }

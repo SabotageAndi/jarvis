@@ -45,7 +45,8 @@ namespace windows
                                       {
                                           EventGroupTypes = EventGroupTypes.Filesystem,
                                           EventType = EventType.Add,
-                                          TriggeredDate = DateTime.UtcNow
+                                          TriggeredDate = DateTime.UtcNow,
+                                          Data = e.FullPath
                                       });
             Console.WriteLine(e.FullPath);
         }
