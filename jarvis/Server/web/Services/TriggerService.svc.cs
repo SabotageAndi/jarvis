@@ -14,26 +14,26 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using jarvis.common.dtos;
+using System.ServiceModel;
+using jarvis.common.dtos.Eventhandling;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "TriggerService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select TriggerService.svc or TriggerService.svc.cs at the Solution Explorer and start debugging.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class TriggerService : ITriggerService
     {
-        private readonly ITriggerLogic _triggerLogic;
+        private readonly IEventLogic _eventLogic;
 
-        public TriggerService(ITriggerLogic triggerLogic)
+        public TriggerService(IEventLogic eventLogic)
         {
-            _triggerLogic = triggerLogic;
+            _eventLogic = eventLogic;
         }
 
 
         public void EventHappend(EventDto eventDto)
         {
-            _triggerLogic.eventRaised(eventDto);
+            _eventLogic.eventRaised(eventDto);
         }
     }
 }

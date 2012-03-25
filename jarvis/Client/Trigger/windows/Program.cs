@@ -19,6 +19,7 @@ using System.IO;
 using jarvis.client.trigger.common;
 using jarvis.common.domain;
 using jarvis.common.dtos;
+using jarvis.common.dtos.Eventhandling;
 
 namespace windows
 {

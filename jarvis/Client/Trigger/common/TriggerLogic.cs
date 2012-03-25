@@ -16,6 +16,7 @@
 
 using RestSharp;
 using jarvis.common.dtos;
+using jarvis.common.dtos.Eventhandling;
 
 namespace jarvis.client.trigger.common
 {

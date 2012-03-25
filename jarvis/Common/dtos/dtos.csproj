@@ -43,8 +43,11 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="EventDto.cs" />
+    <Compile Include="EventFilterCriteria.cs" />
+    <Compile Include="Eventhandling\EventDto.cs" />
+    <Compile Include="Eventhandling\EventHandlerDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow\WorkflowQueueDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\domain\domain.csproj">

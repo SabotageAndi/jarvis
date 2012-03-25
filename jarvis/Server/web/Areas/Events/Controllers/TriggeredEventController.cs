@@ -23,18 +23,18 @@ namespace jarvis.server.web.Areas.Events.Controllers
 {
     public class TriggeredEventController : Controller
     {
-        private readonly ITriggerLogic _triggerLogic;
+        private readonly IEventLogic _eventLogic;
 
-        public TriggeredEventController(ITriggerLogic triggerLogic)
+        public TriggeredEventController(IEventLogic eventLogic)
         {
-            _triggerLogic = triggerLogic;
+            _eventLogic = eventLogic;
         }
 
         //
         // GET: /Events/TriggeredEvent/
         public ActionResult Index()
         {
-            return View(_triggerLogic.GetLastEvents().Select(e => new TriggeredEvent
+            return View(_eventLogic.GetLastEvents().Select(e => new TriggeredEvent
                                                                       {
                                                                           EventGroupTypes = e.EventGroupType,
                                                                           EventType = e.EventType,

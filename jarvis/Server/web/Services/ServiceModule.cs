@@ -30,6 +30,7 @@ namespace jarvis.server.web.services
             builder.RegisterModule(new ModelModule());
 
             builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
+            builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
 
             base.Load(builder);
         }

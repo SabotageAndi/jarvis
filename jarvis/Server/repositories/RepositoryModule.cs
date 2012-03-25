@@ -25,8 +25,12 @@ namespace jarvis.server.repositories
         {
             builder.RegisterModule(new ConfigurationModule());
 
-            builder.RegisterType<TriggerRepository>().As<ITriggerRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<EventRepository>().As<IEventRepository>().InstancePerLifetimeScope();
             builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<EventHandlerRepository>().As<IEventHandlerRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<WorkflowQueueRepository>().As<IWorkflowQueueRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<DefinedWorkflowRepository>().As<IDefinedWorkflowRepository>().InstancePerLifetimeScope();
+
 
             base.Load(builder);
         }

@@ -18,6 +18,7 @@ using System.Linq;
 using NHibernate.Linq;
 using jarvis.server.common.Database;
 using jarvis.server.entities;
+using jarvis.server.entities.Management;
 
 namespace jarvis.server.repositories
 {

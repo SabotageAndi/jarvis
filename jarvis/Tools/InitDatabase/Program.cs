@@ -18,6 +18,9 @@ using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using jarvis.server.configuration;
 using jarvis.server.entities;
+using jarvis.server.entities.Eventhandling;
+using jarvis.server.entities.Management;
+using jarvis.server.entities.Workflow;
 
 namespace jarvis.tools.initDatabase
 {
@@ -34,14 +37,44 @@ namespace jarvis.tools.initDatabase
                 {
                     new SchemaExport(configuration.BuildConfiguration()).Create(false, true);
 
-                    var rootFolder = new Folder();
-                    rootFolder.Name = "/";
+                    CreateFolders(session);
+                    CreateUsers(session);
 
-                    session.SaveOrUpdate(rootFolder);
+                    CreateEventHandler(session);
 
                     transaction.Commit();
                 }
             }
+        }
+
+        private static void CreateEventHandler(ISession session)
+        {
+            var workflow = new DefinedWorkflow();
+            workflow.Name = "Test";
+
+            session.SaveOrUpdate(workflow);
+
+            var defaultEventHandler = new EventHandler();
+            defaultEventHandler.DefinedWorkflow = workflow;
+
+            session.SaveOrUpdate(defaultEventHandler);
+        }
+
+        private static void CreateUsers(ISession session)
+        {
+            var user = new User();
+            user.Username = "andreas";
+            user.Password = "123";
+
+            session.SaveOrUpdate(user);
+        }
+
+        private static void CreateFolders(ISession session)
+        {
+            var rootFolder = new Folder();
+            rootFolder.Name = "/";
+
+            session.SaveOrUpdate(rootFolder);
         }
     }
 }

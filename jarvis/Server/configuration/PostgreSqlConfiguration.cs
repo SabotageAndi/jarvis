@@ -18,6 +18,7 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using jarvis.server.entities;
+using jarvis.server.entities.Workflow;
 
 namespace jarvis.server.configuration
 {
@@ -47,7 +48,7 @@ namespace jarvis.server.configuration
                 .Database(PostgreSQLConfiguration.Standard.ConnectionString(
                     builder =>
                     builder.Database("jarvis").Host("localhost").Username("jarvis").Password("jarvis").Port(5432)))
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Workflow>());
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Entity>());
 
             return _configuration;
         }

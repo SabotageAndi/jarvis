@@ -58,14 +58,18 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Entity.cs" />
-    <Compile Include="Event.cs" />
-    <Compile Include="Folder.cs" />
-    <Compile Include="NextWorkflowStep.cs" />
+    <Compile Include="Eventhandling\Event.cs" />
+    <Compile Include="Eventhandling\EventHandler.cs" />
+    <Compile Include="Helper\MappingHelper.cs" />
+    <Compile Include="Management\Folder.cs" />
+    <Compile Include="Workflow\DefinedNextWorkflowStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Task.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="Workflow.cs" />
-    <Compile Include="WorkflowStep.cs" />
+    <Compile Include="Workflow\RunnedWorkflow.cs" />
+    <Compile Include="Workflow\DefinedTask.cs" />
+    <Compile Include="Management\User.cs" />
+    <Compile Include="Workflow\DefinedWorkflow.cs" />
+    <Compile Include="Workflow\WorkflowQueue.cs" />
+    <Compile Include="Workflow\DefinedWorkflowStep.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -76,6 +80,7 @@
       <Name>domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -19,5 +19,7 @@ namespace jarvis.server.entities
     public class Entity
     {
         public virtual int Id { get; set; }
+
+       
     }
 }

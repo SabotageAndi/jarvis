@@ -25,8 +25,10 @@ namespace jarvis.server.model
         {
             builder.RegisterModule(new RepositoryModule());
 
-            builder.RegisterType<TriggerLogic>().As<ITriggerLogic>().InstancePerDependency();
+            builder.RegisterType<EventLogic>().As<IEventLogic>().InstancePerDependency();
             builder.RegisterType<UserLogic>().As<IUserLogic>().InstancePerDependency();
+            builder.RegisterType<EventHandlingLogic>().As<IEventHandlingLogic>().InstancePerDependency();
+
             base.Load(builder);
         }
     }
