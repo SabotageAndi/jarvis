@@ -38,7 +38,7 @@ namespace EventHandler
 
             var eventHandlers = result.Data;
 
-            var getEvents = new RestRequest("events", Method.POST);
+            var getEvents = new RestRequest("events", Method.GET);
             getEvents.JsonSerializer = new JsonSerializer(Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Ignore,
@@ -48,7 +48,7 @@ namespace EventHandler
             }));
             
             getEvents.RequestFormat = DataFormat.Json;
-            getEvents.AddBody(new EventFilterCriteria {MinTriggeredDate = lastCheck});
+            getEvents.AddParameter("date", lastCheck);
 
             var restResponse = _client.Execute<List<EventDto>>(getEvents);
             var events = restResponse.Data;

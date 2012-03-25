@@ -30,7 +30,7 @@ namespace jarvis.server.model
         void eventRaised(EventDto eventDto);
         List<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
         List<Event> GetLastEvents();
-        List<EventDto> GetAllEventsSince(EventFilterCriteria eventFilterCriteria);
+        List<EventDto> GetAllEventsSince(DateTime date);
     }
 
     public class EventLogic : IEventLogic
@@ -65,10 +65,10 @@ namespace jarvis.server.model
             return _eventRepository.GetEvents(new EventFilterCriteria()).OrderByDescending(e => e.TriggeredDate).ToList();
         }
 
-        public List<EventDto> GetAllEventsSince(EventFilterCriteria eventFilterCriteria)
+        public List<EventDto> GetAllEventsSince(DateTime date)
         {
             return
-                _eventRepository.GetEvents(new EventFilterCriteria() { MinTriggeredDate = eventFilterCriteria.MinTriggeredDate }).OrderBy(e => e.TriggeredDate).Select(
+                _eventRepository.GetEvents(new EventFilterCriteria() { MinTriggeredDate = date }).OrderBy(e => e.TriggeredDate).Select(
                     e => new EventDto()
                     {
                         TriggeredDate = e.TriggeredDate,

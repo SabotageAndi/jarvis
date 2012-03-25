@@ -42,9 +42,9 @@ namespace jarvis.server.web.services
             return _eventHandlingLogic.GetAllEventHandler();
         }
 
-        public List<EventDto> GetAllEventsSince(EventFilterCriteria  eventFilterCriteria)
+        public List<EventDto> GetAllEventsSince(DateTime date)
         {
-            return _eventLogic.GetAllEventsSince(eventFilterCriteria);
+            return _eventLogic.GetAllEventsSince(date);
         }
 
         public void CreateNewItemInWorkflowQueue(WorkflowQueueDto workflowQueueDto)

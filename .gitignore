@@ -26,3 +26,7 @@
 /jarvis/Server/webui/obj
 /jarvis/Server/web/obj
 /jarvis/Server/web/bin
+/jarvis/Client/EventHandler/EventHandler/bin
+/jarvis/Client/EventHandler/EventHandler/obj
+/jarvis/Server/common/obj
+/jarvis/Server/common/bin
