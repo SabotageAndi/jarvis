@@ -60,7 +60,10 @@ namespace jarvis.server.model
         public void AddEntryInWorkflowQueue(WorkflowQueueDto workflowQueueDto)
         {
             var workflow =
-                _definedWorkflowRepository.GetWorkflow(new DefinedWorkflowFilterCriteria() {Id = workflowQueueDto.DefinedWorkflowId});
+                _definedWorkflowRepository.GetWorkflow(new DefinedWorkflowFilterCriteria()
+                                                           {
+                                                               Id = workflowQueueDto.DefinedWorkflowId
+                                                           });
 
 
             var workflowQueue = _workflowQueueRepository.Create();

@@ -67,15 +67,19 @@ namespace jarvis.server.model
         public List<EventDto> GetAllEventsSince(DateTime date)
         {
             return
-                _eventRepository.GetEvents(new EventFilterCriteria() {MinTriggeredDate = date, MaxTriggeredDate = DateTime.UtcNow}).OrderBy(
-                    e => e.TriggeredDate).Select(
-                        e => new EventDto()
-                                 {
-                                     TriggeredDate = e.TriggeredDate,
-                                     EventGroupTypes = e.EventGroupType,
-                                     EventType = e.EventType,
-                                     Data = e.Data
-                                 }).ToList();
+                _eventRepository.GetEvents(new EventFilterCriteria()
+                                               {
+                                                   MinTriggeredDate = date,
+                                                   MaxTriggeredDate = DateTime.UtcNow
+                                               }).OrderBy(
+                                                   e => e.TriggeredDate).Select(
+                                                       e => new EventDto()
+                                                                {
+                                                                    TriggeredDate = e.TriggeredDate,
+                                                                    EventGroupTypes = e.EventGroupType,
+                                                                    EventType = e.EventType,
+                                                                    Data = e.Data
+                                                                }).ToList();
         }
     }
 }

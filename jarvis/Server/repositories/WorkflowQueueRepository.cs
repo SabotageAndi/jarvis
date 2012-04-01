@@ -36,7 +36,8 @@ namespace jarvis.server.repositories
 
         public WorkflowQueue GetNextQueuedWorkflowAndSetStarttime()
         {
-            var workflowQueue = CurrentSession.Query<WorkflowQueue>().Where(wq => wq.StartDate == null).OrderBy(wq => wq.QueueDate).FirstOrDefault();
+            var workflowQueue =
+                CurrentSession.Query<WorkflowQueue>().Where(wq => wq.StartDate == null).OrderBy(wq => wq.QueueDate).FirstOrDefault();
             if (workflowQueue != null)
             {
                 workflowQueue.StartDate = DateTime.UtcNow;

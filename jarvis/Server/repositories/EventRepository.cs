@@ -22,7 +22,7 @@ using jarvis.server.entities.Eventhandling;
 
 namespace jarvis.server.repositories
 {
-    public interface IEventRepository:IRepositoryBase<Event>
+    public interface IEventRepository : IRepositoryBase<Event>
     {
         IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
     }

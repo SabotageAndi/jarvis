@@ -4,7 +4,10 @@
 
 @(Html.Telerik().Grid(Model)
                .Name("TriggeredEventsGrid")
-               .HtmlAttributes(new {style = "width:100%;"})
+               .HtmlAttributes(new
+                                   {
+                                       style = "width:100%;"
+                                   })
                .Columns(columns =>
                             {
                                 columns.Bound(o => o.TriggeredDate).Width("20%;").Format("{0:yyyy-MM-dd HH:mm:ss.fff}");

@@ -30,7 +30,6 @@ namespace jarvis.server.entities.Workflow
 
         public virtual DateTime? Starttime { get; set; }
         public virtual DateTime? Endtime { get; set; }
-
     }
 
 
