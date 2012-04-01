@@ -30,3 +30,5 @@
 /jarvis/Client/EventHandler/EventHandler/obj
 /jarvis/Server/common/obj
 /jarvis/Server/common/bin
+
+/jarvis/Server/web/log-file.txt
