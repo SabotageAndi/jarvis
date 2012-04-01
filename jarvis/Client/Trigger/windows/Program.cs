@@ -16,10 +16,12 @@
 
 using System;
 using System.IO;
+using jarvis.client.common;
 using jarvis.client.trigger.common;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Eventhandling.Parameter;
 
 namespace windows
 {
@@ -32,7 +34,10 @@ namespace windows
             _triggerLogic = new TriggerLogic();
 
             var fileSystemWatcher = new FileSystemWatcher(@"C:\temp");
-            fileSystemWatcher.Created += fileSystemWatcher_Created;
+            fileSystemWatcher.Created += fileSystemWatcher_EventHandler;
+            fileSystemWatcher.Changed += fileSystemWatcher_EventHandler;
+            fileSystemWatcher.Deleted += fileSystemWatcher_EventHandler;
+            fileSystemWatcher.Renamed += fileSystemWatcher_EventHandler;
 
             fileSystemWatcher.IncludeSubdirectories = true;
             fileSystemWatcher.EnableRaisingEvents = true;
@@ -40,14 +45,34 @@ namespace windows
             Console.ReadLine();
         }
 
-        private static void fileSystemWatcher_Created(object sender, FileSystemEventArgs e)
+        private static void fileSystemWatcher_EventHandler(object sender, FileSystemEventArgs e)
         {
+            EventType eventType;
+            switch (e.ChangeType)
+            {
+                case WatcherChangeTypes.Created:
+                    eventType = EventType.Add;
+                    break;
+                case WatcherChangeTypes.Deleted:
+                    eventType = EventType.Remove;
+                    break;
+                case WatcherChangeTypes.Changed:
+                    eventType = EventType.Changed;
+                    break;
+                case WatcherChangeTypes.Renamed:
+                    eventType = EventType.Renamed;
+                    break;
+                default:
+                    return; 
+            }
+
+
             _triggerLogic.trigger(new EventDto()
                                       {
                                           EventGroupTypes = EventGroupTypes.Filesystem,
-                                          EventType = EventType.Add,
+                                          EventType = eventType,
                                           TriggeredDate = DateTime.UtcNow,
-                                          Data = e.FullPath
+                                          Data = JsonParser.Serializer.Serialize(new FileEventParameterDto{Filename = e.Name, Path = Path.GetDirectoryName(e.FullPath)})  
                                       });
             Console.WriteLine(e.FullPath);
         }

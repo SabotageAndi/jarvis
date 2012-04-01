@@ -25,6 +25,7 @@ namespace jarvis.common.domain
     {
         Add = 1,
         Remove = 2,
-        Changed = 3
+        Changed = 3,
+        Renamed = 4,
     }
 }

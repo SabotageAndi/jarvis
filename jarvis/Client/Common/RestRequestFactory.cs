@@ -1,25 +1,16 @@
 using Newtonsoft.Json;
 using RestSharp;
-using JsonSerializer = RestSharp.Serializers.JsonSerializer;
+using jarvis.common.domain;
 
 namespace jarvis.client.common
 {
     public class RestRequestFactory
     {
-        private static JsonSerializer _jsonSerializer = new JsonSerializer(Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()
-                                                                                                                     {
-                                                                                                                         MissingMemberHandling = MissingMemberHandling.Ignore,
-                                                                                                                         NullValueHandling = NullValueHandling.Include,
-                                                                                                                         DefaultValueHandling = DefaultValueHandling.Include,
-                                                                                                                         DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
-                                                                                                                     }));
-
         public static RestRequest Create(string resource, Method method)
         {
             var restRequest = new RestRequest(resource, method);
-            restRequest.JsonSerializer = _jsonSerializer;
+            restRequest.JsonSerializer = JsonParser.Serializer;
             restRequest.RequestFormat = DataFormat.Json;
-
             return restRequest;
         }
 
