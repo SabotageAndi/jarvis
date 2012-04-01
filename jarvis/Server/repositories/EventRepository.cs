@@ -22,21 +22,15 @@ using jarvis.server.entities.Eventhandling;
 
 namespace jarvis.server.repositories
 {
-    public interface IEventRepository
+    public interface IEventRepository:IRepositoryBase<Event>
     {
-        void saveTrigger(Event raisedEvent);
         IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
     }
 
-    public class EventRepository : RepositoryBase, IEventRepository
+    public class EventRepository : RepositoryBase<Event>, IEventRepository
     {
         public EventRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {
-        }
-
-        public void saveTrigger(Event raisedEvent)
-        {
-            CurrentSession.SaveOrUpdate(raisedEvent);
         }
 
         public IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria)

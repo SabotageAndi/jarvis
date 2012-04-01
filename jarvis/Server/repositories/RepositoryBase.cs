@@ -16,10 +16,18 @@
 
 using NHibernate;
 using jarvis.server.common.Database;
+using jarvis.server.entities;
 
 namespace jarvis.server.repositories
 {
-    public class RepositoryBase
+    public interface IRepositoryBase<T> where T : Entity, new()
+    {
+        T Create();
+        void Save(T entity);
+        void Refresh(T entity);
+    }
+
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : Entity, new()
     {
         private readonly ITransactionProvider _transactionProvider;
 
@@ -31,6 +39,21 @@ namespace jarvis.server.repositories
         protected ISession CurrentSession
         {
             get { return _transactionProvider.CurrentScope.CurrentSession; }
+        }
+
+        public virtual T Create()
+        {
+            return new T();
+        }
+
+        public virtual void Save(T entity)
+        {
+            CurrentSession.SaveOrUpdate(entity);
+        }
+
+        public virtual void Refresh(T entity)
+        {
+            CurrentSession.Refresh(entity);
         }
     }
 }

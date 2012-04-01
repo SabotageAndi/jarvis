@@ -21,7 +21,7 @@ using jarvis.server.entities.Management;
 
 namespace jarvis.server.repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IRepositoryBase<User>
     {
         User Login(string username, string password);
         User Add(string username, string password);
@@ -29,7 +29,7 @@ namespace jarvis.server.repositories
         User GetUser(string name);
     }
 
-    public class UserRepository : RepositoryBase, IUserRepository
+    public class UserRepository : RepositoryBase<User>, IUserRepository
     {
         public UserRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {

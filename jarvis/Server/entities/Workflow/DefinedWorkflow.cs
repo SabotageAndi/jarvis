@@ -25,6 +25,7 @@ namespace jarvis.server.entities.Workflow
     public class DefinedWorkflow : Entity
     {
         public virtual IList<DefinedWorkflowStep> WorkflowSteps { get; set; }
+        public virtual IList<DefinedNextWorkflowStep> NextWorkflowSteps { get; set; }
         public virtual Folder ParentFolder { get; set; }
         public virtual String Name { get; set; }
     }
@@ -38,6 +39,7 @@ namespace jarvis.server.entities.Workflow
             References(x => x.ParentFolder);
 
             HasMany(x => x.WorkflowSteps);
+            HasMany(x => x.NextWorkflowSteps);
         }
     }
 }

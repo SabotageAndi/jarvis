@@ -50,8 +50,29 @@ namespace jarvis.tools.initDatabase
         {
             var workflow = new DefinedWorkflow();
             workflow.Name = "Test";
-
             session.SaveOrUpdate(workflow);
+
+            var definedTask = new DefinedTask();
+            definedTask.Name = "Test";
+            definedTask.RunCode = "return 0;";
+            session.SaveOrUpdate(definedTask);
+
+            var definedWorkflowStep = new DefinedWorkflowStep();
+            definedWorkflowStep.DefinedTask = definedTask;
+            definedWorkflowStep.DefinedWorkflow = workflow;
+            session.SaveOrUpdate(definedWorkflowStep);
+
+            var nextWorkflowStep = new DefinedNextWorkflowStep();
+            nextWorkflowStep.DefinedWorkflow = workflow;
+            nextWorkflowStep.NextStep = definedWorkflowStep;
+            nextWorkflowStep.PreviousStep = null;
+            session.SaveOrUpdate(nextWorkflowStep);
+
+            var lastWorkflowStep = new DefinedNextWorkflowStep();
+            lastWorkflowStep.DefinedWorkflow = workflow;
+            lastWorkflowStep.PreviousStep = definedWorkflowStep;
+            lastWorkflowStep.NextStep = null;
+            session.SaveOrUpdate(lastWorkflowStep);
 
             var defaultEventHandler = new EventHandler();
             defaultEventHandler.DefinedWorkflow = workflow;

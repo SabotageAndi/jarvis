@@ -26,13 +26,13 @@ namespace jarvis.server.repositories
         public int Id { get; set; }
     }
 
-    public interface IDefinedWorkflowRepository
+    public interface IDefinedWorkflowRepository : IRepositoryBase<DefinedWorkflow>
     {
         DefinedWorkflow GetWorkflow(DefinedWorkflowFilterCriteria definedWorkflowFilterCriteria);
     }
 
 
-    public class DefinedWorkflowRepository : RepositoryBase, IDefinedWorkflowRepository
+    public class DefinedWorkflowRepository : RepositoryBase<DefinedWorkflow>, IDefinedWorkflowRepository
     {
         public DefinedWorkflowRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {

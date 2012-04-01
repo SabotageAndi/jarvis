@@ -49,6 +49,7 @@
     <Compile Include="Eventhandling\Parameter\EventParameterDto.cs" />
     <Compile Include="Eventhandling\Parameter\FileEventParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow\RunnedWorkflowDto.cs" />
     <Compile Include="Workflow\WorkflowQueueDto.cs" />
   </ItemGroup>
   <ItemGroup>

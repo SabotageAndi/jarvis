@@ -14,32 +14,38 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Linq;
+using NHibernate.Linq;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Workflow;
 
 namespace jarvis.server.repositories
 {
-    public interface IWorkflowQueueRepository
+    public interface IWorkflowQueueRepository : IRepositoryBase<WorkflowQueue>
     {
-        WorkflowQueue Create();
-        void Save(WorkflowQueue workflowQueue);
+        WorkflowQueue GetNextQueuedWorkflowAndSetStarttime();
     }
 
-    public class WorkflowQueueRepository : RepositoryBase, IWorkflowQueueRepository
+    public class WorkflowQueueRepository : RepositoryBase<WorkflowQueue>, IWorkflowQueueRepository
     {
         public WorkflowQueueRepository(ITransactionProvider transactionProvider)
             : base(transactionProvider)
         {
         }
 
-        public WorkflowQueue Create()
+        public WorkflowQueue GetNextQueuedWorkflowAndSetStarttime()
         {
-            return new WorkflowQueue();
-        }
+            var workflowQueue = CurrentSession.Query<WorkflowQueue>().Where(wq => wq.StartDate == null).OrderBy(wq => wq.QueueDate).FirstOrDefault();
+            if (workflowQueue != null)
+            {
+                workflowQueue.StartDate = DateTime.UtcNow;
+                CurrentSession.SaveOrUpdate(workflowQueue);
 
-        public void Save(WorkflowQueue workflowQueue)
-        {
-            CurrentSession.SaveOrUpdate(workflowQueue);
+                return workflowQueue;
+            }
+
+            return null;
         }
     }
 }

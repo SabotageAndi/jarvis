@@ -51,7 +51,7 @@ namespace jarvis.server.model
                                       Data = eventDto.Data
                                   };
 
-            _eventRepository.saveTrigger(raisedEvent);
+            _eventRepository.Save(raisedEvent);
         }
 
         public List<Event> GetEvents(EventFilterCriteria eventFilterCriteria)

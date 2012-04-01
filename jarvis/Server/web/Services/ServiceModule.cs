@@ -31,6 +31,7 @@ namespace jarvis.server.web.services
 
             builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
             builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
+            builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
 
             base.Load(builder);
         }

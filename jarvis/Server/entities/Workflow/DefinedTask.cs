@@ -25,6 +25,7 @@ namespace jarvis.server.entities.Workflow
     {
         public virtual String Name { get; set; }
         public virtual Folder ParentFolder { get; set; }
+        public virtual String RunCode { get; set; }
     }
 
     public class DefinedTaskMap : ClassMap<DefinedTask>
@@ -33,6 +34,7 @@ namespace jarvis.server.entities.Workflow
         {
             MappingHelper.MapId(this);
             Map(x => x.Name);
+            Map(x => x.RunCode);
             References(x => x.ParentFolder);
         }
     }

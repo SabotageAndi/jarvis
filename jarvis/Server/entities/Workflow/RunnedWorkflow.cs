@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using jarvis.server.entities.Helper;
 
@@ -22,6 +24,13 @@ namespace jarvis.server.entities.Workflow
     public class RunnedWorkflow : Entity
     {
         public virtual DefinedWorkflow DefinedWorkflow { get; set; }
+
+        public virtual IList<RunnedWorkflowStep> WorkflowSteps { get; set; }
+        public virtual IList<RunnedNextWorkflowStep> NextWorkflowSteps { get; set; }
+
+        public virtual DateTime? Starttime { get; set; }
+        public virtual DateTime? Endtime { get; set; }
+
     }
 
 
@@ -31,6 +40,12 @@ namespace jarvis.server.entities.Workflow
         {
             MappingHelper.MapId(this);
             References(x => x.DefinedWorkflow);
+
+            HasMany(x => x.WorkflowSteps);
+            HasMany(x => x.NextWorkflowSteps);
+
+            Map(x => x.Starttime);
+            Map(x => x.Endtime);
         }
     }
 }

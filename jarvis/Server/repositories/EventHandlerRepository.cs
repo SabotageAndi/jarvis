@@ -21,12 +21,12 @@ using jarvis.server.entities.Eventhandling;
 
 namespace jarvis.server.repositories
 {
-    public interface IEventHandlerRepository
+    public interface IEventHandlerRepository : IRepositoryBase<EventHandler>
     {
         IQueryable<EventHandler> GetAllEventHandler();
     }
 
-    public class EventHandlerRepository : RepositoryBase, IEventHandlerRepository
+    public class EventHandlerRepository : RepositoryBase<EventHandler>, IEventHandlerRepository
     {
         public EventHandlerRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {

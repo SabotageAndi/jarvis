@@ -30,7 +30,10 @@ namespace jarvis.server.repositories
             builder.RegisterType<EventHandlerRepository>().As<IEventHandlerRepository>().InstancePerLifetimeScope();
             builder.RegisterType<WorkflowQueueRepository>().As<IWorkflowQueueRepository>().InstancePerLifetimeScope();
             builder.RegisterType<DefinedWorkflowRepository>().As<IDefinedWorkflowRepository>().InstancePerLifetimeScope();
-
+            builder.RegisterType<RunnedWorkflowRepository>().As<IRunnedWorkflowRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<RunnedWorkflowStepRepository>().As<IRunnedWorkflowStepRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<RunnedTaskRespository>().As<IRunnedTaskRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<RunnedNextWorkflowStepRepository>().As<IRunnedNextWorkflowStepRepository>().InstancePerLifetimeScope();
 
             base.Load(builder);
         }

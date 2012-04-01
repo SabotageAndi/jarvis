@@ -26,6 +26,7 @@ namespace jarvis.server.common.Database
         void Commit();
         void Rollback();
         void Close();
+        void Flush();
     }
 
     public class TransactionScope : ITransactionScope, IDisposable
@@ -82,6 +83,14 @@ namespace jarvis.server.common.Database
             if (_session != null)
             {
                 _session.Close();
+            }
+        }
+
+        public void Flush()
+        {
+            if (_session != null)
+            {
+                _session.Flush();
             }
         }
     }

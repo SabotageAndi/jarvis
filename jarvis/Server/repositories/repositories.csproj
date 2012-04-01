@@ -72,6 +72,10 @@
     <Compile Include="RepositoryBase.cs" />
     <Compile Include="RepositoryModule.cs" />
     <Compile Include="EventRepository.cs" />
+    <Compile Include="RunnedNextWorkflowStepRepository.cs" />
+    <Compile Include="RunnedTaskRespository.cs" />
+    <Compile Include="RunnedWorkflowRepository.cs" />
+    <Compile Include="RunnedWorkflowStepRepository.cs" />
     <Compile Include="UserRepository.cs" />
     <Compile Include="WorkflowQueueRepository.cs" />
   </ItemGroup>

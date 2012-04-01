@@ -21,6 +21,7 @@ namespace jarvis.server.entities.Workflow
 {
     public class DefinedNextWorkflowStep : Entity
     {
+        public virtual DefinedWorkflow DefinedWorkflow { get; set; }
         public virtual DefinedWorkflowStep NextStep { get; set; }
         public virtual DefinedWorkflowStep PreviousStep { get; set; }
     }
@@ -30,6 +31,7 @@ namespace jarvis.server.entities.Workflow
         public DefinedNextWorkflowStepMap()
         {
             MappingHelper.MapId(this);
+            References(x => x.DefinedWorkflow);
             References(x => x.NextStep);
             References(x => x.PreviousStep);
         }

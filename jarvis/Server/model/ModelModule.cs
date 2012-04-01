@@ -28,6 +28,7 @@ namespace jarvis.server.model
             builder.RegisterType<EventLogic>().As<IEventLogic>().InstancePerDependency();
             builder.RegisterType<UserLogic>().As<IUserLogic>().InstancePerDependency();
             builder.RegisterType<EventHandlingLogic>().As<IEventHandlingLogic>().InstancePerDependency();
+            builder.RegisterType<WorkflowLogic>().As<IWorkflowLogic>().InstancePerDependency();
 
             base.Load(builder);
         }
