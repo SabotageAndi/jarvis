@@ -34,3 +34,5 @@
 /jarvis/Server/web/log-file.txt
 /jarvis/Client/Common/obj
 /jarvis/Client/Common/bin
+/jarvis/Client/Worker/worker/obj
+/jarvis/Client/Worker/worker/bin
