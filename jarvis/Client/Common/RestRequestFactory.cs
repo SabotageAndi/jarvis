@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
-namespace EventHandler
+namespace jarvis.client.common
 {
     public class RestRequestFactory
     {

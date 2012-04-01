@@ -17,6 +17,7 @@
 using RestSharp;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.client.common;
 
 namespace jarvis.client.trigger.common
 {
@@ -30,8 +31,7 @@ namespace jarvis.client.trigger.common
         {
             var client = new RestClient("http://localhost:5368/Services/TriggerService.svc/");
 
-            var request = new RestRequest("trigger", Method.POST);
-            request.RequestFormat = DataFormat.Json;
+            var request = RestRequestFactory.Create("trigger", Method.POST);
             request.AddBody(eventDto);
 
             client.Execute(request);

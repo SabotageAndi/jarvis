@@ -9,6 +9,7 @@ using Newtonsoft.Json.Serialization;
 using RestSharp;
 using RestSharp.Contrib;
 using RestSharp.Serializers;
+using jarvis.client.common;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
