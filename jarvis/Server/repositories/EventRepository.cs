@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,13 +14,10 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Collections.Generic;
 using System.Linq;
-using NHibernate;
 using NHibernate.Linq;
 using jarvis.common.dtos;
 using jarvis.server.common.Database;
-using jarvis.server.entities;
 using jarvis.server.entities.Eventhandling;
 
 namespace jarvis.server.repositories

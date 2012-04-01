@@ -1,27 +1,36 @@
-﻿using System;
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
+// Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Newtonsoft.Json.Serialization;
 using RestSharp;
-using RestSharp.Contrib;
-using RestSharp.Serializers;
 using jarvis.client.common;
-using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
 
 namespace EventHandler
 {
-    class Program
+    internal class Program
     {
         public static DateTime lastCheck = DateTime.UtcNow;
         public static RestClient _client = new RestClient("http://localhost:5368/Services/EventHandlingService.svc/");
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Thread.Sleep(30000);
             while (true)
@@ -43,7 +52,9 @@ namespace EventHandler
         private static void HandleEvents(List<EventDto> events, List<EventHandlerDto> eventHandlers)
         {
             if (events == null)
+            {
                 return;
+            }
 
             foreach (var eventDto in events)
             {

@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -134,14 +134,14 @@ namespace jarvis.server.web.Controllers
             {
                 // ChangePassword will throw an exception rather
                 // than return false in certain failure scenarios.
-                bool changePasswordSucceeded;
+                bool changePasswordSucceeded = false;
                 try
                 {
                     //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
                     var user = _userLogic.GetUser(User.Identity.Name);
                     if (user != null)
                     {
-                        _userLogic.ChangePassword(user, model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = _userLogic.ChangePassword(user, model.OldPassword, model.NewPassword);
                     }
 
                     //changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);
@@ -151,7 +151,14 @@ namespace jarvis.server.web.Controllers
                     changePasswordSucceeded = false;
                 }
 
-                return RedirectToAction("ChangePasswordSuccess");
+                if (changePasswordSucceeded)
+                {
+                    return RedirectToAction("ChangePasswordSuccess");
+                }
+                else
+                {
+                    return RedirectToAction("ChangePassword");
+                }
             }
 
             // If we got this far, something failed, redisplay form

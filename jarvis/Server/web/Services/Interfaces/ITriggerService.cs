@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 
 namespace jarvis.server.web.services
@@ -25,7 +24,8 @@ namespace jarvis.server.web.services
     public interface ITriggerService
     {
         [OperationContract]
-        [WebInvoke(UriTemplate = "/trigger/", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
+        [WebInvoke(UriTemplate = "/trigger/", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST"
+            )]
         void EventHappend(EventDto eventDto);
     }
 }

@@ -3,14 +3,14 @@
 
 
 @(Html.Telerik().Grid(Model)
-.Name("TriggeredEventsGrid")
-.HtmlAttributes(new {style="width:100%;"})
-.Columns(columns =>
-             {
-                 columns.Bound(o => o.TriggeredDate).Width("20%;").Format("{0:yyyy-MM-dd HH:mm:ss.fff}");
-                 columns.Bound(o => o.EventGroupTypes).Width("15%;");
-                 columns.Bound(o => o.EventType).Width("15%;");
-                 columns.Bound(o => o.Data).Width("50%;");
-             })
-             )
+               .Name("TriggeredEventsGrid")
+               .HtmlAttributes(new {style = "width:100%;"})
+               .Columns(columns =>
+                            {
+                                columns.Bound(o => o.TriggeredDate).Width("20%;").Format("{0:yyyy-MM-dd HH:mm:ss.fff}");
+                                columns.Bound(o => o.EventGroupTypes).Width("15%;");
+                                columns.Bound(o => o.EventType).Width("15%;");
+                                columns.Bound(o => o.Data).Width("50%;");
+                            })
+      )
 

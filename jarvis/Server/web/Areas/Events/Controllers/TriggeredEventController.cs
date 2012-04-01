@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just A Really Versatile Intelligent System
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -35,12 +35,12 @@ namespace jarvis.server.web.Areas.Events.Controllers
         public ActionResult Index()
         {
             return View(_eventLogic.GetLastEvents().Select(e => new TriggeredEvent
-                                                                      {
-                                                                          EventGroupTypes = e.EventGroupType,
-                                                                          EventType = e.EventType,
-                                                                          TriggeredDate = e.TriggeredDate,
-                                                                          Data = e.Data
-                                                                      }));
+                                                                    {
+                                                                        EventGroupTypes = e.EventGroupType,
+                                                                        EventType = e.EventType,
+                                                                        TriggeredDate = e.TriggeredDate,
+                                                                        Data = e.Data
+                                                                    }));
         }
     }
 }

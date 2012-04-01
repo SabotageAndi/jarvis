@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
-using jarvis.server.entities;
 using jarvis.server.entities.Eventhandling;
 using jarvis.server.repositories;
 
@@ -45,12 +44,12 @@ namespace jarvis.server.model
         public void eventRaised(EventDto eventDto)
         {
             var raisedEvent = new Event()
-                                   {
-                                       EventGroupType = eventDto.EventGroupTypes,
-                                       EventType = eventDto.EventType,
-                                       TriggeredDate = eventDto.TriggeredDate,
-                                       Data = eventDto.Data
-                                   };
+                                  {
+                                      EventGroupType = eventDto.EventGroupTypes,
+                                      EventType = eventDto.EventType,
+                                      TriggeredDate = eventDto.TriggeredDate,
+                                      Data = eventDto.Data
+                                  };
 
             _eventRepository.saveTrigger(raisedEvent);
         }
@@ -68,15 +67,15 @@ namespace jarvis.server.model
         public List<EventDto> GetAllEventsSince(DateTime date)
         {
             return
-                _eventRepository.GetEvents(new EventFilterCriteria() { MinTriggeredDate = date, MaxTriggeredDate = DateTime.UtcNow}).OrderBy(e => e.TriggeredDate).Select(
-                    e => new EventDto()
-                    {
-                        TriggeredDate = e.TriggeredDate,
-                        EventGroupTypes = e.EventGroupType,
-                        EventType = e.EventType,
-                        Data = e.Data
-                    }).ToList();
-
+                _eventRepository.GetEvents(new EventFilterCriteria() {MinTriggeredDate = date, MaxTriggeredDate = DateTime.UtcNow}).OrderBy(
+                    e => e.TriggeredDate).Select(
+                        e => new EventDto()
+                                 {
+                                     TriggeredDate = e.TriggeredDate,
+                                     EventGroupTypes = e.EventGroupType,
+                                     EventType = e.EventType,
+                                     Data = e.Data
+                                 }).ToList();
         }
     }
 }

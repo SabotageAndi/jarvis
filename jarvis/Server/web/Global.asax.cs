@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -47,7 +47,7 @@ namespace jarvis.server.web
         protected void Application_Start()
         {
             Bootstrapper.init();
-           
+
 
             AreaRegistration.RegisterAllAreas();
 
@@ -57,6 +57,7 @@ namespace jarvis.server.web
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
+
         public override void Init()
         {
             BeginRequest += OnBeginRequest;

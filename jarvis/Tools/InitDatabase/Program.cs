@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using jarvis.server.configuration;
-using jarvis.server.entities;
 using jarvis.server.entities.Eventhandling;
 using jarvis.server.entities.Management;
 using jarvis.server.entities.Workflow;

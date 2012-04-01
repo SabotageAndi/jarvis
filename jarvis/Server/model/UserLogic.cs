@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using jarvis.server.entities;
 using jarvis.server.entities.Management;
 using jarvis.server.repositories;
 
@@ -24,7 +23,7 @@ namespace jarvis.server.model
     {
         User AddUser(string username, string password);
         User Login(string username, string password);
-        void ChangePassword(User user, string oldPassword, string newPassword);
+        bool ChangePassword(User user, string oldPassword, string newPassword);
         User GetUser(string name);
     }
 
@@ -48,12 +47,15 @@ namespace jarvis.server.model
             return _userRepository.Login(username, password);
         }
 
-        public void ChangePassword(User user, string oldPassword, string newPassword)
+        public bool ChangePassword(User user, string oldPassword, string newPassword)
         {
             if (user.Password == oldPassword)
             {
                 _userRepository.ChangePassword(user, newPassword);
+                return true;
             }
+
+            return false;
         }
 
         public User GetUser(string name)

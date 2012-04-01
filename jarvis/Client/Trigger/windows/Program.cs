@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,8 @@
 
 using System;
 using System.IO;
-using jarvis.client.common;
 using jarvis.client.trigger.common;
 using jarvis.common.domain;
-using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Eventhandling.Parameter;
 
@@ -63,7 +61,7 @@ namespace windows
                     eventType = EventType.Renamed;
                     break;
                 default:
-                    return; 
+                    return;
             }
 
 
@@ -72,7 +70,12 @@ namespace windows
                                           EventGroupTypes = EventGroupTypes.Filesystem,
                                           EventType = eventType,
                                           TriggeredDate = DateTime.UtcNow,
-                                          Data = JsonParser.Serializer.Serialize(new FileEventParameterDto{Filename = e.Name, Path = Path.GetDirectoryName(e.FullPath)})  
+                                          Data =
+                                              JsonParser.Serializer.Serialize(new FileEventParameterDto
+                                                                                  {
+                                                                                      Filename = e.Name,
+                                                                                      Path = Path.GetDirectoryName(e.FullPath)
+                                                                                  })
                                       });
             Console.WriteLine(e.FullPath);
         }

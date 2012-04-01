@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just A Really Versatile Intelligent System
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -17,11 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.ServiceModel;
-using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
 using jarvis.server.model;
-using jarvis.server.repositories;
 
 namespace jarvis.server.web.services
 {

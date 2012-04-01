@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -15,9 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using RestSharp;
-using jarvis.common.dtos;
-using jarvis.common.dtos.Eventhandling;
 using jarvis.client.common;
+using jarvis.common.dtos.Eventhandling;
 
 namespace jarvis.client.trigger.common
 {

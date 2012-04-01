@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -38,6 +38,19 @@ namespace jarvis.server.common.Database
             _session = session;
         }
 
+        public void Dispose()
+        {
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+            }
+
+            if (_session != null)
+            {
+                _session.Dispose();
+            }
+        }
+
         public ISession CurrentSession
         {
             get { return _session; }
@@ -61,19 +74,6 @@ namespace jarvis.server.common.Database
             if (_transaction != null)
             {
                 _transaction.Rollback();
-            }
-        }
-
-        public void Dispose()
-        {
-            if (_transaction != null)
-            {
-                _transaction.Dispose();
-            }
-
-            if (_session != null)
-            {
-                _session.Dispose();
             }
         }
 
