@@ -67,8 +67,13 @@ namespace jarvis.server.web
 
         private void OnEndRequest(object sender, EventArgs eventArgs)
         {
-            GetTransactionProvider().CurrentScope.Commit();
-            GetTransactionProvider().CurrentScope.Close();
+            var transactionScope = GetTransactionProvider().CurrentScope;
+
+            if (transactionScope != null)
+            {
+                transactionScope.Commit();
+                transactionScope.Close();
+            }
         }
 
         private void OnBeginRequest(object sender, System.EventArgs e)

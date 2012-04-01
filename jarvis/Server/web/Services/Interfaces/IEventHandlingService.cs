@@ -19,8 +19,8 @@ namespace jarvis.server.web.services
         List<EventHandlerDto> GetAllEventhandler();
 
         [OperationContract]
-        [WebInvoke(UriTemplate = "/events/{date}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "GET")]
-        List<EventDto> GetAllEventsSince(DateTime date);
+        [WebGet(UriTemplate = "/events/{ticks}", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        List<EventDto> GetAllEventsSince(String ticks);
         
         [OperationContract]
         [WebInvoke(UriTemplate = "/workflowqueue/", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]

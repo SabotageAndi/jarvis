@@ -18,13 +18,13 @@ namespace jarvis.common.domain
 {
     public enum EventGroupTypes
     {
-        Filesystem
+        Filesystem = 1
     }
 
     public enum EventType
     {
-        Add,
-        Remove,
-        Changed
+        Add = 1,
+        Remove = 2,
+        Changed = 3
     }
 }

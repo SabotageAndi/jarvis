@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using RestSharp;
+using RestSharp.Contrib;
 using RestSharp.Serializers;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
-using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
 namespace EventHandler
 {
@@ -21,62 +22,67 @@ namespace EventHandler
 
         static void Main(string[] args)
         {
+            Thread.Sleep(30000);
             while (true)
             {
                 Thread.Sleep(10000);
                 Do();
-                lastCheck = DateTime.UtcNow;
             }
         }
 
         private static void Do()
         {
-            var getEventHandler = new RestRequest("eventhandler", Method.GET);
-            getEventHandler.RequestFormat = DataFormat.Json;
+            var eventHandlers = GetEventhandlers();
+            var events = GetEvents();
+            lastCheck = DateTime.UtcNow;
+
+            HandleEvents(events, eventHandlers);
+        }
+
+        private static void HandleEvents(List<EventDto> events, List<EventHandlerDto> eventHandlers)
+        {
+            if (events == null)
+                return;
+
+            foreach (var eventDto in events)
+            {
+                var hittedEventHandler = from eh in eventHandlers
+                                         where (eh.EventGroupTypes == null || eh.EventGroupTypes == eventDto.EventGroupTypes)
+                                               && (eh.EventType == null || eh.EventType == eventDto.EventType)
+                                         select eh;
+
+                foreach (var eventHandlerDto in hittedEventHandler)
+                {
+                    var addWorkflowQueueRequest = RestRequestFactory.Create("workflowqueue", Method.POST);
+
+                    addWorkflowQueueRequest.AddBody(new WorkflowQueueDto
+                                                        {
+                                                            EventHandlerId = eventHandlerDto.Id,
+                                                            DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId
+                                                        });
+
+                    _client.Execute(addWorkflowQueueRequest);
+                }
+            }
+        }
+
+        private static List<EventDto> GetEvents()
+        {
+            var getEvents = RestRequestFactory.Create("events/{ticks}", Method.GET);
+
+            getEvents.AddParameter("ticks", lastCheck.Ticks, ParameterType.UrlSegment);
+
+            var restResponse = _client.Execute<List<EventDto>>(getEvents);
+            return restResponse.Data;
+        }
+
+        private static List<EventHandlerDto> GetEventhandlers()
+        {
+            var getEventHandler = RestRequestFactory.Create("eventhandler", Method.GET);
 
             var result = _client.Execute<List<EventHandlerDto>>(getEventHandler);
 
-            var eventHandlers = result.Data;
-
-            var getEvents = new RestRequest("events", Method.GET);
-            getEvents.JsonSerializer = new JsonSerializer(Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()
-            {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                NullValueHandling = NullValueHandling.Include,
-                DefaultValueHandling = DefaultValueHandling.Include,
-                DateFormatHandling = DateFormatHandling.MicrosoftDateFormat
-            }));
-            
-            getEvents.RequestFormat = DataFormat.Json;
-            getEvents.AddParameter("date", lastCheck);
-
-            var restResponse = _client.Execute<List<EventDto>>(getEvents);
-            var events = restResponse.Data;
-
-            if (events != null)
-            {
-                foreach (var eventDto in events)
-                {
-                    var hittedEventHandler = from eh in eventHandlers
-                                             where (eh.EventGroupTypes == null || eh.EventGroupTypes == eventDto.EventGroupTypes)
-                                                   && (eh.EventType == null || eh.EventType == eventDto.EventType)
-                                             select eh;
-
-                    foreach (var eventHandlerDto in hittedEventHandler)
-                    {
-                        var addWorkflowQueueRequest = new RestRequest("workflowqueue", Method.POST);
-                        addWorkflowQueueRequest.RequestFormat = DataFormat.Json;
-
-                        addWorkflowQueueRequest.AddBody(new WorkflowQueueDto
-                                                            {
-                                                                EventHandlerId = eventHandlerDto.Id,
-                                                                DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId
-                                                            });
-
-                        _client.Execute(addWorkflowQueueRequest);
-                    }
-                }
-            }
+            return result.Data;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// J.A.R.V.I.S. - Just a really versatile intelligent system
+﻿// J.A.R.V.I.S. - Just A Really Versatile Intelligent System
 // Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
 // 
 // This program is free software: you can redistribute it and/or modify
@@ -26,11 +26,23 @@ namespace jarvis.common.dtos.Eventhandling
         [DataMember]
         public DateTime TriggeredDate { get; set; }
 
-        [DataMember]
-        public EventGroupTypes EventGroupTypes { get; set; }
+        public EventGroupTypes EventGroupTypes
+        {
+            get { return (EventGroupTypes) EventGroupTypesValue; }
+            set { EventGroupTypesValue = (int) value; }
+        }
+
+        public EventType EventType
+        {
+            get { return (EventType) EventTypeValue; }
+            set { EventTypeValue = (int) value; }
+        }
 
         [DataMember]
-        public EventType EventType { get; set; }
+        public int EventGroupTypesValue { get; set; }
+
+        [DataMember]
+        public int EventTypeValue { get; set; }
 
         [DataMember]
         public String Data { get; set; }

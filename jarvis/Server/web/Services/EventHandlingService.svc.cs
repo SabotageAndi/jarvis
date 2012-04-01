@@ -42,8 +42,10 @@ namespace jarvis.server.web.services
             return _eventHandlingLogic.GetAllEventHandler();
         }
 
-        public List<EventDto> GetAllEventsSince(DateTime date)
+        public List<EventDto> GetAllEventsSince(String ticks)
         {
+            var date = new DateTime(Convert.ToInt64(ticks));
+
             return _eventLogic.GetAllEventsSince(date);
         }
 
