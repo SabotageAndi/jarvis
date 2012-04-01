@@ -1,4 +1,20 @@
-﻿using System;
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
+// Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
@@ -12,14 +28,14 @@ using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.worker
 {
-    class Program
+    internal class Program
     {
-        static RestClient  _client = new RestClient("http://localhost:5368/Services/WorkflowService.svc");
+        private static readonly RestClient _client = new RestClient("http://localhost:5368/Services/WorkflowService.svc");
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Thread.Sleep(30000);
-            while(true)
+            while (true)
             {
                 if (!Do())
                 {
@@ -35,7 +51,9 @@ namespace jarvis.client.worker
             var restResponse = _client.Execute<RunnedWorkflowDto>(workflowToExecuteRequest);
 
             if (restResponse == null || restResponse.Data == null)
+            {
                 return false;
+            }
 
             ExecuteWorkflow(restResponse.Data);
 
@@ -53,9 +71,12 @@ namespace jarvis.client.worker
 
             foreach (var runnedNextWorkflowStepDto in nextSteps2Execute)
             {
-                var step2Execute = runnedWorkflowDto.WorkflowSteps.Where(ws => ws.Id == runnedNextWorkflowStepDto.NextStepId).SingleOrDefault();
+                var step2Execute =
+                    runnedWorkflowDto.WorkflowSteps.Where(ws => ws.Id == runnedNextWorkflowStepDto.NextStepId).SingleOrDefault();
                 if (step2Execute == null)
+                {
                     continue;
+                }
 
                 ExecuteStep(step2Execute);
             }
@@ -63,7 +84,9 @@ namespace jarvis.client.worker
             foreach (var runnedNextWorkflowStepDto in nextSteps2Execute)
             {
                 if (runnedNextWorkflowStepDto.NextStepId != null)
+                {
                     ExecuteStepsAfterStep(runnedWorkflowDto, runnedNextWorkflowStepDto.NextStepId.Value);
+                }
             }
         }
 
