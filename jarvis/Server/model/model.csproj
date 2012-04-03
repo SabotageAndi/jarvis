@@ -52,6 +52,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ClientLogic.cs" />
     <Compile Include="EventHandlingLogic.cs" />
     <Compile Include="ModelModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

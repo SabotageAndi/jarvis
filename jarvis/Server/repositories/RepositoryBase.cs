@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Linq;
 using NHibernate;
+using NHibernate.Linq;
 using jarvis.server.common.Database;
 using jarvis.server.entities;
 
@@ -25,6 +27,7 @@ namespace jarvis.server.repositories
         T Create();
         void Save(T entity);
         void Refresh(T entity);
+        T GetById(int id);
     }
 
     public class RepositoryBase<T> : IRepositoryBase<T> where T : Entity, new()
@@ -54,6 +57,11 @@ namespace jarvis.server.repositories
         public virtual void Refresh(T entity)
         {
             CurrentSession.Refresh(entity);
+        }
+
+        public virtual T GetById(int id)
+        {
+            return CurrentSession.Query<T>().Where(e => e.Id == id).SingleOrDefault();
         }
     }
 }

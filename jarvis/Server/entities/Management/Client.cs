@@ -14,27 +14,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.server.model;
+using FluentNHibernate.Mapping;
+using jarvis.common.domain;
+using jarvis.server.entities.Helper;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.entities.Management
 {
-    public class ServiceModule : Module
+    public class Client : Entity
     {
-        public ServiceModule()
+        public virtual string Name { get; set; }
+        public virtual bool IsOnline { get; set; }
+        public virtual string Hostname { get; set; }
+        public virtual ClientTypeEnum Type { get; set; }
+    }
+
+    public class ClientMap : ClassMap<Client>
+    {
+        public ClientMap()
         {
-        }
-
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ModelModule());
-
-            builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
-            builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
-            builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
-            builder.RegisterType<ClientService>().Named<object>("jarvis.server.web.services.ClientService");
-
-            base.Load(builder);
+            MappingHelper.MapId(this);
+            Map(x => x.IsOnline);
+            Map(x => x.Hostname);
+            Map(x => x.Type);
         }
     }
 }

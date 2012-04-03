@@ -61,6 +61,7 @@
     <Compile Include="Eventhandling\Event.cs" />
     <Compile Include="Eventhandling\EventHandler.cs" />
     <Compile Include="Helper\MappingHelper.cs" />
+    <Compile Include="Management\Client.cs" />
     <Compile Include="Management\Folder.cs" />
     <Compile Include="Workflow\DefinedNextWorkflowStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -14,27 +14,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.server.model;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using jarvis.common.dtos.Management;
 
 namespace jarvis.server.web.services
 {
-    public class ServiceModule : Module
+    [ServiceContract]
+    public interface IClientService
     {
-        public ServiceModule()
-        {
-        }
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "client", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        ClientDto RegisterClient(ClientDto clientDto);
 
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ModelModule());
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "client/logon", RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json)]
+        void LogonClient(ClientDto clientDto);
 
-            builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
-            builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
-            builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
-            builder.RegisterType<ClientService>().Named<object>("jarvis.server.web.services.ClientService");
-
-            base.Load(builder);
-        }
+        [OperationContract]
+        [WebInvoke(Method = "POST", UriTemplate = "client/logoff", RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json)]
+        void LogoffClient(ClientDto clientDto);
     }
 }

@@ -14,27 +14,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.server.model;
+using jarvis.common.domain;
 
-namespace jarvis.server.web.services
+namespace jarvis.common.dtos.Management
 {
-    public class ServiceModule : Module
+    public class ClientDto
     {
-        public ServiceModule()
-        {
-        }
-
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ModelModule());
-
-            builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
-            builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
-            builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
-            builder.RegisterType<ClientService>().Named<object>("jarvis.server.web.services.ClientService");
-
-            base.Load(builder);
-        }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Hostname { get; set; }
+        public ClientTypeEnum Type { get; set; }
     }
 }

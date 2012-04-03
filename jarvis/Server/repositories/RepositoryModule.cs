@@ -34,6 +34,7 @@ namespace jarvis.server.repositories
             builder.RegisterType<RunnedWorkflowStepRepository>().As<IRunnedWorkflowStepRepository>().InstancePerLifetimeScope();
             builder.RegisterType<RunnedTaskRespository>().As<IRunnedTaskRepository>().InstancePerLifetimeScope();
             builder.RegisterType<RunnedNextWorkflowStepRepository>().As<IRunnedNextWorkflowStepRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<ClientRepository>().As<IClientRepository>().InstancePerLifetimeScope();
 
             base.Load(builder);
         }
