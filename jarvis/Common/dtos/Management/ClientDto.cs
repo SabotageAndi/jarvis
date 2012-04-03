@@ -14,15 +14,23 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Runtime.Serialization;
 using jarvis.common.domain;
 
 namespace jarvis.common.dtos.Management
 {
+    [DataContract]
     public class ClientDto
     {
+        [DataMember]
         public int Id { get; set; }
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public string Hostname { get; set; }
-        public ClientTypeEnum Type { get; set; }
+
+        [DataMember]
+        public int TypeValue { get; set; }
+        public ClientTypeEnum Type { get { return (ClientTypeEnum) TypeValue; } set { TypeValue = (int)value; } }
     }
 }

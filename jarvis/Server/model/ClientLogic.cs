@@ -16,6 +16,7 @@
 
 using System;
 using jarvis.common.dtos.Management;
+using jarvis.server.common.Database;
 using jarvis.server.repositories;
 
 namespace jarvis.server.model
@@ -30,10 +31,12 @@ namespace jarvis.server.model
     public class ClientLogic : IClientLogic
     {
         private readonly IClientRepository _clientRepository;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public ClientLogic(IClientRepository clientRepository)
+        public ClientLogic(IClientRepository clientRepository, ITransactionProvider transactionProvider)
         {
             _clientRepository = clientRepository;
+            _transactionProvider = transactionProvider;
         }
 
         public ClientDto RegisterClient(ClientDto clientDto)
@@ -43,7 +46,12 @@ namespace jarvis.server.model
             client.Hostname = clientDto.Hostname;
             client.Type = clientDto.Type;
 
+
+
             _clientRepository.Save(client);
+
+            _transactionProvider.CurrentScope.Flush();
+
             _clientRepository.Refresh(client);
 
             clientDto.Id = client.Id;

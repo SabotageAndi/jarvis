@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading;
 using RestSharp;
 using jarvis.client.common;
+using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
 
@@ -28,7 +29,7 @@ namespace EventHandler
     internal class Program
     {
         public static DateTime lastCheck = DateTime.UtcNow;
-        public static RestClient _client = new RestClient("http://localhost:5368/Services/EventHandlingService.svc/");
+        public static JarvisRestClient _client = new JarvisRestClient() { BaseUrl = "http://localhost:5368/Services/EventHandlingService.svc/" };
 
         private static void Main(string[] args)
         {
@@ -65,7 +66,7 @@ namespace EventHandler
 
                 foreach (var eventHandlerDto in hittedEventHandler)
                 {
-                    var addWorkflowQueueRequest = RestRequestFactory.Create("workflowqueue", Method.POST);
+                    var addWorkflowQueueRequest = _client.CreateRequest("workflowqueue", Method.POST);
 
                     addWorkflowQueueRequest.AddBody(new WorkflowQueueDto
                                                         {
@@ -80,21 +81,21 @@ namespace EventHandler
 
         private static List<EventDto> GetEvents()
         {
-            var getEvents = RestRequestFactory.Create("events/{ticks}", Method.GET);
+            var getEvents = _client.CreateRequest("events/{ticks}", Method.GET);
 
             getEvents.AddParameter("ticks", lastCheck.Ticks, ParameterType.UrlSegment);
 
             var restResponse = _client.Execute<List<EventDto>>(getEvents);
-            return restResponse.Data;
+            return restResponse;
         }
 
         private static List<EventHandlerDto> GetEventhandlers()
         {
-            var getEventHandler = RestRequestFactory.Create("eventhandler", Method.GET);
+            var getEventHandler = _client.CreateRequest("eventhandler", Method.GET);
 
             var result = _client.Execute<List<EventHandlerDto>>(getEventHandler);
 
-            return result.Data;
+            return result;
         }
     }
 }

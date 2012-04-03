@@ -24,13 +24,14 @@ using System.Threading;
 using Microsoft.CSharp;
 using RestSharp;
 using jarvis.client.common;
+using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.worker
 {
     internal class Program
     {
-        private static readonly RestClient _client = new RestClient("http://localhost:5368/Services/WorkflowService.svc");
+        private static readonly JarvisRestClient _client = new JarvisRestClient(){BaseUrl = "http://localhost:5368/Services/WorkflowService.svc"};
 
         private static void Main(string[] args)
         {
@@ -46,16 +47,16 @@ namespace jarvis.client.worker
 
         private static bool Do()
         {
-            var workflowToExecuteRequest = RestRequestFactory.Create("workflow", Method.GET);
+            var workflowToExecuteRequest = _client.CreateRequest("workflow", Method.GET);
 
             var restResponse = _client.Execute<RunnedWorkflowDto>(workflowToExecuteRequest);
 
-            if (restResponse == null || restResponse.Data == null)
+            if (restResponse == null)
             {
                 return false;
             }
 
-            ExecuteWorkflow(restResponse.Data);
+            ExecuteWorkflow(restResponse);
 
             return true;
         }
