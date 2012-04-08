@@ -36,7 +36,7 @@ namespace jarvis.server.entities.Workflow
             MappingHelper.MapId(this);
             References(x => x.DefinedTask);
 
-            Map(x => x.RunCode);
+            Map(x => x.RunCode).CustomSqlType("text");
             Map(x => x.Starttime);
             Map(x => x.Endtime);
         }

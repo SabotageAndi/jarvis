@@ -34,7 +34,7 @@ namespace jarvis.server.entities.Workflow
         {
             MappingHelper.MapId(this);
             Map(x => x.Name);
-            Map(x => x.RunCode);
+            Map(x => x.RunCode).CustomSqlType("text");
             References(x => x.ParentFolder);
         }
     }

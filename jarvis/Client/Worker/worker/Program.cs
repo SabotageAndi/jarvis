@@ -81,7 +81,7 @@ namespace jarvis.client.worker
                     continue;
                 }
 
-                ExecuteStep(step2Execute);
+                ExecuteStep(step2Execute, runnedWorkflowDto.Parameters);
             }
 
             foreach (var runnedNextWorkflowStepDto in nextSteps2Execute)
@@ -93,15 +93,15 @@ namespace jarvis.client.worker
             }
         }
 
-        private static void ExecuteStep(RunnedWorkflowStepDto step2Execute)
+        private static void ExecuteStep(RunnedWorkflowStepDto step2Execute, List<ParameterDto> parameters)
         {
             if (step2Execute.RunnedTask != null)
             {
-                ExecuteTask(step2Execute.RunnedTask);
+                ExecuteTask(step2Execute.RunnedTask, parameters);
             }
         }
 
-        private static void ExecuteTask(RunnedTaskDto runnedTask)
+        private static void ExecuteTask(RunnedTaskDto runnedTask, List<ParameterDto> parameters)
         {
             var source = GenerateSource(runnedTask);
             var compile = Compile(source);
@@ -115,16 +115,16 @@ namespace jarvis.client.worker
             }
             else
             {
-                var result = Run(compile, runnedTask);
+                var result = Run(compile, runnedTask, parameters);
                 Console.WriteLine(result);
             }
         }
 
-        private static int Run(CompilerResults compile, RunnedTaskDto runnedTask)
+        private static int Run(CompilerResults compile, RunnedTaskDto runnedTask, List<ParameterDto> parameters)
         {
             var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + runnedTask.Name) as ICompiledTask;
 
-            return instance.run();
+            return instance.run(parameters);
         }
 
         private static CompilerResults Compile(string source)
@@ -137,6 +137,7 @@ namespace jarvis.client.worker
             cp.ReferencedAssemblies.Add("mscorlib.dll");
             cp.ReferencedAssemblies.Add("System.Windows.Forms.dll");
             cp.ReferencedAssemblies.Add("jarvis.client.worker.exe");
+            cp.ReferencedAssemblies.Add("jarvis.common.dtos.dll");
             cp.CompilerOptions = "/target:library";
             cp.GenerateExecutable = false;
             cp.GenerateInMemory = true;
@@ -160,6 +161,6 @@ namespace jarvis.client.worker
 
     public interface ICompiledTask
     {
-        int run();
+        int run(List<ParameterDto> parameters);
     }
 }

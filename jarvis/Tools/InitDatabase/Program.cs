@@ -54,7 +54,12 @@ namespace jarvis.tools.initDatabase
 
             var definedTask = new DefinedTask();
             definedTask.Name = "Test";
-            definedTask.RunCode = "return 0;";
+            definedTask.RunCode = @"foreach(var parameter in parameters)
+                                    {
+                                        System.Console.WriteLine(""{0}:{1}:{2}"", parameter.Category, parameter.Name, parameter.Value);
+                                    }
+
+                                    return 0;";
             session.SaveOrUpdate(definedTask);
 
             var definedWorkflowStep = new DefinedWorkflowStep();
