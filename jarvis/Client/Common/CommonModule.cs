@@ -14,8 +14,9 @@ namespace jarvis.client.common
         {
             base.Load(builder);
             builder.RegisterModule<ServiceClients.ServiceClientModule>();
-            builder.RegisterType<Client>();
+            builder.RegisterType<Client>().SingleInstance();
             builder.RegisterType<JarvisRestClient>().As<IJarvisRestClient>().InstancePerDependency();
+            
         }
     }
 }

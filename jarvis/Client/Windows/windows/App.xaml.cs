@@ -1,7 +1,10 @@
-﻿using System.Threading;
+﻿using System.Drawing;
+using System.Threading;
 using System.Windows;
+using System.Windows.Forms;
 using Autofac;
 using jarvis.client.common;
+using Application = System.Windows.Application;
 
 namespace jarvis.client.windows
 {
@@ -11,6 +14,7 @@ namespace jarvis.client.windows
     public partial class App : Application
     {
         private static IContainer _container;
+        private NotifyIcon _systray; 
 
         static void Bootstrap()
         {
@@ -30,12 +34,34 @@ namespace jarvis.client.windows
             //TODO check if server online
             Thread.Sleep(30000);
 
-            client.Init();
+            client.Init(_container);
+            client.OnShutDown += client_OnShutDown;
 
-            var window = new MainWindow();
-            window.Show();
-
+            InitSystray();
             client.Run();
+            
+        }
+
+        void client_OnShutDown()
+        {
+            App.Current.Shutdown();
+        }
+
+        private void InitSystray()
+        {
+            _systray = new NotifyIcon
+                           {
+                               Icon = new Icon("app.ico"),
+                               Text = "J.A.R.V.I.S. - Just A Rather Very Intelligent System"
+                           };
+
+            var contextMenu = new ContextMenu();
+            
+            var exitMenuItem = new MenuItem("Exit", (sender, args) => Client.Current.Shutdown());
+            contextMenu.MenuItems.Add(exitMenuItem);
+
+            _systray.ContextMenu = contextMenu;
+            _systray.Visible = true;
         }
 
     }

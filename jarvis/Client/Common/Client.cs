@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using Autofac;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos.Management;
@@ -21,8 +23,36 @@ using log4net;
 
 namespace jarvis.client.common
 {
+    public enum State
+    {
+        Instanciated,
+        Initialized,
+        Running,
+        Shutdown,
+    }
+
     public class Client
     {
+        public State State { get; set; }
+
+        private static IContainer _container;
+        public static Client Current
+        {
+            get { return _container.Resolve<Client>(); }
+        }
+
+        public delegate void OnShutdownDelegate();
+        public event  OnShutdownDelegate OnShutDown;
+
+        private void OnOnShutDown()
+        {
+            OnShutdownDelegate handler = OnShutDown;
+            if (handler != null)
+            {
+                handler();
+            }
+        }
+
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
         private readonly ILog _log = LogManager.GetLogger("client");
@@ -31,11 +61,12 @@ namespace jarvis.client.common
 
         public Client(IClientService clientService, IConfiguration configuration)
         {
+            State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
         }
 
-        public ClientDto ClientDto
+        private ClientDto ClientDto
         {
             get
             {
@@ -53,28 +84,41 @@ namespace jarvis.client.common
             set { _clientDto = value; }
         }
 
-        public void Init()
+        public void Init(IContainer container)
         {
+            if (State >= State.Initialized)
+            {
+                throw new Exception("Client already initialized");
+            }
+
+            _container = container;
+
             LoadLocalClientInformation();
 
             if (!isAlreadyRegistered())
             {
                 ClientDto = _clientService.Register(ClientDto);
                 _log.InfoFormat("Client {0} ({1}) with Id {2} registered", _clientDto.Name, _clientDto.Hostname, _clientDto.Id);
+                SaveSettings();
             }
             
-
             Logon();
 
+            State = State.Initialized;
+        }
 
+        public void Shutdown()
+        {
+            State = State.Shutdown;
             SaveSettings();
             Logoff();
+
+            OnOnShutDown();
         }
 
         private void LoadLocalClientInformation()
         {
             ClientDto.Id = _configuration.ClientId.Value;
-             
         }
 
         private void SaveSettings()
@@ -97,6 +141,7 @@ namespace jarvis.client.common
 
         public void Run()
         {
+            State = State.Running;
         }
 
         private bool isAlreadyRegistered()
