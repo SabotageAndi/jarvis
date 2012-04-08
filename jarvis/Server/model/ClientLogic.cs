@@ -47,7 +47,6 @@ namespace jarvis.server.model
             client.Type = clientDto.Type;
 
 
-
             _clientRepository.Save(client);
 
             _transactionProvider.CurrentScope.Flush();
@@ -72,7 +71,7 @@ namespace jarvis.server.model
         private void SetIsOnlineState(ClientDto clientDto, bool isOnline)
         {
             var client = _clientRepository.GetById(clientDto.Id);
-            
+
             if (client == null)
             {
                 throw new Exception("client not registered");

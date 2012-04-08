@@ -24,13 +24,20 @@ namespace jarvis.common.dtos.Management
     {
         [DataMember]
         public int Id { get; set; }
+
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public string Hostname { get; set; }
 
         [DataMember]
         public int TypeValue { get; set; }
-        public ClientTypeEnum Type { get { return (ClientTypeEnum) TypeValue; } set { TypeValue = (int)value; } }
+
+        public ClientTypeEnum Type
+        {
+            get { return (ClientTypeEnum) TypeValue; }
+            set { TypeValue = (int) value; }
+        }
     }
 }
