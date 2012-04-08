@@ -33,6 +33,7 @@ namespace jarvis.server.web.services
             builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
             builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
             builder.RegisterType<ClientService>().Named<object>("jarvis.server.web.services.ClientService");
+            builder.RegisterType<ServerStatusService>().Named<object>("jarvis.server.web.services.ServerStatusService");
 
             base.Load(builder);
         }

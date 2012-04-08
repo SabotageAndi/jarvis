@@ -177,6 +177,10 @@
     <Compile Include="services\Interfaces\IEventHandlingService.cs" />
     <Compile Include="services\Interfaces\ITriggerService.cs" />
     <Compile Include="services\Interfaces\IWorkflowService.cs" />
+    <Compile Include="services\Interfaces\IServerStatusService.cs" />
+    <Compile Include="services\ServerStatusService.svc.cs">
+      <DependentUpon>ServerStatusService.svc</DependentUpon>
+    </Compile>
     <Compile Include="services\ServiceModule.cs" />
     <Compile Include="services\TriggerService.svc.cs">
       <DependentUpon>TriggerService.svc</DependentUpon>
@@ -225,6 +229,7 @@
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="services\ClientService.svc" />
     <Content Include="services\EventHandlingService.svc" />
+    <Content Include="services\ServerStatusService.svc" />
     <Content Include="services\TriggerService.svc" />
     <Content Include="services\WorkflowService.svc" />
     <Content Include="Web.config" />

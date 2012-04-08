@@ -18,7 +18,9 @@ using System.Reflection;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.Wcf;
+using jarvis.common.domain;
 using jarvis.server.common.Database;
+using jarvis.server.entities.Management;
 using jarvis.server.web.Common.Database;
 using jarvis.server.web.services;
 using log4net.Config;
@@ -33,8 +35,12 @@ namespace jarvis.server.web
         {
             XmlConfigurator.Configure();
 
+            var serverStatus = new ServerStatus();
+            serverStatus.State = State.Instanciated;
+
 
             var containerBuilder = new ContainerBuilder();
+            containerBuilder.RegisterInstance(serverStatus).As<ServerStatus>().SingleInstance();
 
             containerBuilder.RegisterType<SessionFactory>().As<ISessionFactory>().SingleInstance();
             containerBuilder.RegisterType<TransactionProvider>().As<ITransactionProvider>().SingleInstance();

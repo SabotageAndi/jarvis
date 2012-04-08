@@ -29,27 +29,30 @@ namespace jarvis.server.configuration
 
     public class PostgreSqlConfiguration : INHibernateConfiguration
     {
-        private FluentConfiguration _configuration;
+        private readonly FluentConfiguration _configuration;
+        private readonly ISessionFactory _sessionFactory;
+
+        public PostgreSqlConfiguration()
+        {
+            _configuration = GetConfiguration();
+            _sessionFactory = _configuration.BuildSessionFactory();
+        }
 
         public ISessionFactory GetSessionFactory()
         {
-            return GetConfiguration().BuildSessionFactory();
+            return _sessionFactory;
         }
 
         public FluentConfiguration GetConfiguration()
         {
-            if (_configuration != null)
-            {
-                return _configuration;
-            }
-
-            _configuration = Fluently.Configure()
+           
+            return Fluently.Configure()
                 .Database(PostgreSQLConfiguration.Standard.ConnectionString(
                     builder =>
                     builder.Database("jarvis").Host("localhost").Username("jarvis").Password("jarvis").Port(5432)))
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Entity>());
 
-            return _configuration;
+            
         }
     }
 }

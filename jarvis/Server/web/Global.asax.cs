@@ -19,7 +19,9 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.Mvc;
+using jarvis.common.domain;
 using jarvis.server.common.Database;
+using jarvis.server.entities.Management;
 
 namespace jarvis.server.web
 {
@@ -53,7 +55,6 @@ namespace jarvis.server.web
         {
             Bootstrapper.init();
 
-
             AreaRegistration.RegisterAllAreas();
 
             DependencyResolver.SetResolver(new AutofacDependencyResolver(Bootstrapper.Container));
@@ -61,13 +62,20 @@ namespace jarvis.server.web
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            Status.State = State.Running;
+        }
+        
+        protected ServerStatus Status
+        {
+            get { return Bootstrapper.Container.Resolve<ServerStatus>(); }
         }
 
         public override void Init()
         {
             BeginRequest += OnBeginRequest;
             EndRequest += OnEndRequest;
-
+         
             base.Init();
         }
 

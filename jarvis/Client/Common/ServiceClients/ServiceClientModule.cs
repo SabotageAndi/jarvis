@@ -26,6 +26,7 @@ namespace jarvis.client.common.ServiceClients
 
             builder.RegisterType<ClientService>().As<IClientService>().SingleInstance();
             builder.RegisterType<TriggerService>().As<ITriggerService>().SingleInstance();
+            builder.RegisterType<ServerStatusService>().As<IServerStatusService>().SingleInstance();
         }
     }
 }

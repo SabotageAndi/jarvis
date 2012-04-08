@@ -29,6 +29,7 @@ namespace jarvis.client.common
         string TriggerService { get; }
 
         bool FileSystemTriggerEnabled { get; set; }
+        string ServerStatusService { get; }
         void Save();
     }
 
@@ -80,6 +81,11 @@ namespace jarvis.client.common
         public string TriggerService
         {
             get { return JarvisClientConfigurationSection.TriggerService.Value; }
+        }
+
+        public string ServerStatusService
+        {
+            get { return JarvisClientConfigurationSection.ServerStatusService.Value; }
         }
 
         public void Save()

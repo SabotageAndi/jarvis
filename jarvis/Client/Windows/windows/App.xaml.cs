@@ -47,9 +47,7 @@ namespace jarvis.client.windows
 
             var client = _container.Resolve<Client>();
 
-            //TODO check if server online
-            Thread.Sleep(30000);
-
+         
             client.Init(_container);
             client.OnShutDown += client_OnShutDown;
 

@@ -53,5 +53,12 @@ namespace jarvis.client.common.Configuration
             get { return (JarvisConfigElement) this["ClientId"]; }
             set { this["ClientId"] = value; }
         }
+
+        [ConfigurationProperty("ServerStatusService", IsRequired = true)]
+        public JarvisConfigElement ServerStatusService
+        {
+            get { return (JarvisConfigElement)this["ServerStatusService"]; }
+            set { this["ServerStatusService"] = value; }
+        }
     }
 }

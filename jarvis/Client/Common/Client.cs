@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Autofac;
 using jarvis.client.common.ServiceClients;
 using jarvis.client.common.Triggers;
@@ -24,16 +25,9 @@ using jarvis.common.domain;
 using jarvis.common.dtos.Management;
 using log4net;
 
+
 namespace jarvis.client.common
 {
-    public enum State
-    {
-        Instanciated,
-        Initialized,
-        Running,
-        Shutdown,
-    }
-
     public class Client
     {
         public delegate void OnShutdownDelegate();
@@ -42,15 +36,17 @@ namespace jarvis.client.common
 
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
+        private readonly IServerStatusService _serverStatusService;
         private readonly ILog _log = LogManager.GetLogger("client");
 
         private ClientDto _clientDto;
 
-        public Client(IClientService clientService, IConfiguration configuration)
+        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService)
         {
             State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
+            _serverStatusService = serverStatusService;
 
             Triggers = new List<Trigger>();
         }
@@ -103,6 +99,9 @@ namespace jarvis.client.common
 
             LoadLocalClientInformation();
 
+            CheckIfServerIsOnlineAndWait();
+
+
             if (!isAlreadyRegistered())
             {
                 ClientDto = _clientService.Register(ClientDto);
@@ -121,6 +120,22 @@ namespace jarvis.client.common
             }
 
             State = State.Initialized;
+        }
+
+        private void CheckIfServerIsOnlineAndWait()
+        {
+            while(true)
+            {
+                if (CheckIfServerIsOnline()) 
+                    break;
+
+                Thread.Sleep(10000);
+            }
+        }
+
+        private bool CheckIfServerIsOnline()
+        {
+            return _serverStatusService.isOnline();
         }
 
         public void Shutdown()

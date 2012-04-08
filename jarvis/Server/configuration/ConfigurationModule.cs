@@ -22,7 +22,7 @@ namespace jarvis.server.configuration
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<PostgreSqlConfiguration>().As<INHibernateConfiguration>().InstancePerLifetimeScope();
+            builder.RegisterType<PostgreSqlConfiguration>().As<INHibernateConfiguration>().SingleInstance();
 
             base.Load(builder);
         }

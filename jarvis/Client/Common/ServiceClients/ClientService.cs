@@ -42,7 +42,7 @@ namespace jarvis.client.common.ServiceClients
             var registerRequest = JarvisRestClient.CreateRequest("client", Method.POST);
             registerRequest.AddBody(clientDto);
 
-            return _jarvisRestClient.Execute<ClientDto>(registerRequest);
+            return JarvisRestClient.Execute<ClientDto>(registerRequest);
         }
 
         public void Logon(ClientDto clientDto)
@@ -50,7 +50,7 @@ namespace jarvis.client.common.ServiceClients
             var logonRequest = JarvisRestClient.CreateRequest("client/logon", Method.POST);
             logonRequest.AddBody(clientDto);
 
-            _jarvisRestClient.Execute(logonRequest);
+            JarvisRestClient.Execute(logonRequest);
         }
 
         public void Logoff(ClientDto clientDto)
@@ -58,7 +58,7 @@ namespace jarvis.client.common.ServiceClients
             var logonRequest = JarvisRestClient.CreateRequest("client/logoff", Method.POST);
             logonRequest.AddBody(clientDto);
 
-            _jarvisRestClient.Execute(logonRequest);
+            JarvisRestClient.Execute(logonRequest);
         }
     }
 }
