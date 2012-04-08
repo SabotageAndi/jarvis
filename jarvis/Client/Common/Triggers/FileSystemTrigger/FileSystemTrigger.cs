@@ -39,6 +39,12 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
 
         public List<FileSystemWatcher> FileSystemWatchers { get; set; }
 
+        public override bool IsEnabled
+        {
+            get { return _configuration.FileSystemTriggerEnabled; }
+            set { _configuration.FileSystemTriggerEnabled = value; }
+        }
+
         public override void init()
         {
             foreach (var fileSystemTriggerConfigElement in GetPathsToWatch())
@@ -70,12 +76,6 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
 
                 FileSystemWatchers.Add(fileSystemWatcher);
             }
-        }
-
-        public override bool IsEnabled
-        {
-            get { return _configuration.FileSystemTriggerEnabled; }
-            set {_configuration.FileSystemTriggerEnabled = value; }
         }
 
         public override void deinit()
@@ -117,10 +117,10 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
                                                  EventType = eventType,
                                                  TriggeredDate = DateTime.UtcNow,
                                                  Data = JsonParser.Serializer.Serialize(new FileEventParameterDto
-                                                                                         {
-                                                                                             Filename = e.Name,
-                                                                                             Path = Path.GetDirectoryName(e.FullPath)
-                                                                                         })
+                                                                                            {
+                                                                                                Filename = e.Name,
+                                                                                                Path = Path.GetDirectoryName(e.FullPath)
+                                                                                            })
                                              });
         }
 

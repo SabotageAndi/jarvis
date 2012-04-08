@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using RestSharp;
-using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
@@ -29,7 +28,11 @@ namespace EventHandler
     internal class Program
     {
         public static DateTime lastCheck = DateTime.UtcNow;
-        public static JarvisRestClient _client = new JarvisRestClient() { BaseUrl = "http://localhost:5368/Services/EventHandlingService.svc/" };
+
+        public static JarvisRestClient _client = new JarvisRestClient()
+                                                     {
+                                                         BaseUrl = "http://localhost:5368/Services/EventHandlingService.svc/"
+                                                     };
 
         private static void Main(string[] args)
         {

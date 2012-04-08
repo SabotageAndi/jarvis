@@ -23,7 +23,6 @@ using System.Reflection;
 using System.Threading;
 using Microsoft.CSharp;
 using RestSharp;
-using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos.Workflow;
 
@@ -31,7 +30,10 @@ namespace jarvis.client.worker
 {
     internal class Program
     {
-        private static readonly JarvisRestClient _client = new JarvisRestClient(){BaseUrl = "http://localhost:5368/Services/WorkflowService.svc"};
+        private static readonly JarvisRestClient _client = new JarvisRestClient()
+                                                               {
+                                                                   BaseUrl = "http://localhost:5368/Services/WorkflowService.svc"
+                                                               };
 
         private static void Main(string[] args)
         {

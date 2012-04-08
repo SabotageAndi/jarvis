@@ -118,7 +118,7 @@ namespace jarvis.client.common
             foreach (var trigger in Triggers)
             {
                 trigger.init();
-            } 
+            }
 
             State = State.Initialized;
         }

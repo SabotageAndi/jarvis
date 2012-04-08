@@ -21,21 +21,45 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
     public class FileSystemTriggerConfigElement : ConfigurationElement
     {
         [ConfigurationProperty("Path", IsRequired = true, IsKey = true)]
-        public string Path { get { return (string)this["Path"]; } set { this["Path"] = value; } }
+        public string Path
+        {
+            get { return (string) this["Path"]; }
+            set { this["Path"] = value; }
+        }
 
         [ConfigurationProperty("FileFilter", DefaultValue = null)]
-        public string FileFilter { get { return (string)this["FileFilter"]; } set { this["FileFilter"] = value; } }
+        public string FileFilter
+        {
+            get { return (string) this["FileFilter"]; }
+            set { this["FileFilter"] = value; }
+        }
 
         [ConfigurationProperty("OnCreate", DefaultValue = true)]
-        public bool OnCreate { get { return (bool)this["OnCreate"]; } set { this["OnCreate"] = value; } }
+        public bool OnCreate
+        {
+            get { return (bool) this["OnCreate"]; }
+            set { this["OnCreate"] = value; }
+        }
 
         [ConfigurationProperty("OnDelete", DefaultValue = true)]
-        public bool OnDelete { get { return (bool)this["OnDelete"]; } set { this["OnDelete"] = value; } }
+        public bool OnDelete
+        {
+            get { return (bool) this["OnDelete"]; }
+            set { this["OnDelete"] = value; }
+        }
 
         [ConfigurationProperty("OnChange", DefaultValue = true)]
-        public bool OnChange { get { return (bool)this["OnChange"]; } set { this["OnChange"] = value; } }
+        public bool OnChange
+        {
+            get { return (bool) this["OnChange"]; }
+            set { this["OnChange"] = value; }
+        }
 
         [ConfigurationProperty("OnRename", DefaultValue = true)]
-        public bool OnRename { get { return (bool)this["OnRename"]; } set { this["OnRename"] = value; } }
+        public bool OnRename
+        {
+            get { return (bool) this["OnRename"]; }
+            set { this["OnRename"] = value; }
+        }
     }
 }

@@ -1,4 +1,20 @@
-﻿using System.Drawing;
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
+// Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System.Drawing;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
@@ -14,9 +30,9 @@ namespace jarvis.client.windows
     public partial class App : Application
     {
         private static IContainer _container;
-        private NotifyIcon _systray; 
+        private NotifyIcon _systray;
 
-        static void Bootstrap()
+        private static void Bootstrap()
         {
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<CommonModule>();
@@ -39,10 +55,9 @@ namespace jarvis.client.windows
 
             InitSystray();
             client.Run();
-            
         }
 
-        void client_OnShutDown()
+        private void client_OnShutDown()
         {
             App.Current.Shutdown();
         }
@@ -56,13 +71,12 @@ namespace jarvis.client.windows
                            };
 
             var contextMenu = new ContextMenu();
-            
+
             var exitMenuItem = new MenuItem("Exit", (sender, args) => Client.Current.Shutdown());
             contextMenu.MenuItems.Add(exitMenuItem);
 
             _systray.ContextMenu = contextMenu;
             _systray.Visible = true;
         }
-
     }
 }

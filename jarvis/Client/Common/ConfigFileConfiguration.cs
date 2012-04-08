@@ -91,7 +91,11 @@ namespace jarvis.client.common
 
         public bool FileSystemTriggerEnabled
         {
-            get { return FileSystemTriggerConfigurationSection != null && Convert.ToBoolean(FileSystemTriggerConfigurationSection.IsEnabled.Value); }
+            get
+            {
+                return FileSystemTriggerConfigurationSection != null &&
+                       Convert.ToBoolean(FileSystemTriggerConfigurationSection.IsEnabled.Value);
+            }
             set { FileSystemTriggerConfigurationSection.IsEnabled.Value = value.ToString(); }
         }
 
