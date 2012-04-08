@@ -15,8 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using Autofac;
 using jarvis.client.common.ServiceClients;
+using jarvis.client.common.Triggers;
+using jarvis.client.common.Triggers.FileSystemTrigger;
 using jarvis.common.domain;
 using jarvis.common.dtos.Management;
 using log4net;
@@ -33,25 +36,9 @@ namespace jarvis.client.common
 
     public class Client
     {
-        public State State { get; set; }
+        public delegate void OnShutdownDelegate();
 
         private static IContainer _container;
-        public static Client Current
-        {
-            get { return _container.Resolve<Client>(); }
-        }
-
-        public delegate void OnShutdownDelegate();
-        public event  OnShutdownDelegate OnShutDown;
-
-        private void OnOnShutDown()
-        {
-            OnShutdownDelegate handler = OnShutDown;
-            if (handler != null)
-            {
-                handler();
-            }
-        }
 
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
@@ -64,6 +51,16 @@ namespace jarvis.client.common
             State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
+
+            Triggers = new List<Trigger>();
+        }
+
+        public State State { get; set; }
+        private List<Trigger> Triggers { get; set; }
+
+        public static Client Current
+        {
+            get { return _container.Resolve<Client>(); }
         }
 
         private ClientDto ClientDto
@@ -84,6 +81,17 @@ namespace jarvis.client.common
             set { _clientDto = value; }
         }
 
+        public event OnShutdownDelegate OnShutDown;
+
+        private void OnOnShutDown()
+        {
+            OnShutdownDelegate handler = OnShutDown;
+            if (handler != null)
+            {
+                handler();
+            }
+        }
+
         public void Init(IContainer container)
         {
             if (State >= State.Initialized)
@@ -99,16 +107,29 @@ namespace jarvis.client.common
             {
                 ClientDto = _clientService.Register(ClientDto);
                 _log.InfoFormat("Client {0} ({1}) with Id {2} registered", _clientDto.Name, _clientDto.Hostname, _clientDto.Id);
+                _configuration.ClientId = ClientDto.Id;
                 SaveSettings();
             }
-            
+
             Logon();
+
+            Triggers.Add(_container.Resolve<FileSystemTrigger>());
+
+            foreach (var trigger in Triggers)
+            {
+                trigger.init();
+            } 
 
             State = State.Initialized;
         }
 
         public void Shutdown()
         {
+            foreach (var trigger in Triggers)
+            {
+                trigger.deinit();
+            }
+
             State = State.Shutdown;
             SaveSettings();
             Logoff();
@@ -118,12 +139,14 @@ namespace jarvis.client.common
 
         private void LoadLocalClientInformation()
         {
-            ClientDto.Id = _configuration.ClientId.Value;
+            if (_configuration.ClientId != null)
+            {
+                ClientDto.Id = _configuration.ClientId.Value;
+            }
         }
 
         private void SaveSettings()
         {
-            _configuration.ClientId = ClientDto.Id;
             _configuration.Save();
         }
 
@@ -141,6 +164,11 @@ namespace jarvis.client.common
 
         public void Run()
         {
+            foreach (var trigger in Triggers)
+            {
+                trigger.run();
+            }
+
             State = State.Running;
         }
 

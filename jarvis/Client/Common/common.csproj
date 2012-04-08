@@ -69,6 +69,13 @@
     <Compile Include="ServiceClients\JarvisRestClient.cs" />
     <Compile Include="ServiceClients\ServiceBase.cs" />
     <Compile Include="ServiceClients\ServiceClientModule.cs" />
+    <Compile Include="ServiceClients\TriggerService.cs" />
+    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigElement.cs" />
+    <Compile Include="Triggers\FileSystemTrigger\FileSystemTrigger.cs" />
+    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigElementCollection.cs" />
+    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigurationSection.cs" />
+    <Compile Include="Triggers\Trigger.cs" />
+    <Compile Include="Triggers\TriggerModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -83,6 +90,7 @@
       <Name>dtos</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

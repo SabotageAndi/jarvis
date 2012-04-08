@@ -13,6 +13,8 @@ namespace jarvis.client.common.Configuration
         {
         }
 
+        public const string SectionName = "client";
+
         [ConfigurationProperty("ServerUrl", IsRequired = true)]
         public JarvisConfigElement ServerUrl { get { return (JarvisConfigElement)this["ServerUrl"]; } set { this["ServerUrl"] = value; } }
 

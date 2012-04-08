@@ -14,27 +14,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using RestSharp;
-using jarvis.client.common.ServiceClients;
-using jarvis.common.dtos.Eventhandling;
-
-namespace jarvis.client.trigger.common
+namespace jarvis.client.common.Triggers
 {
-    public class TriggerLogic
+    public abstract class Trigger
     {
-        public TriggerLogic()
+        public virtual bool IsEnabled { get; set; }
+        public abstract void run();
+        public abstract void deinit();
+        public abstract void init();
+
+        public void configChanged()
         {
-        }
-
-        public void trigger(EventDto eventDto)
-        {
-            var client = new JarvisRestClient();
-            client.BaseUrl = "http://localhost:5368/Services/TriggerService.svc/";
-
-            var request = client.CreateRequest("trigger", Method.POST);
-            request.AddBody(eventDto);
-
-            client.Execute(request);
+            deinit();
+            init();
         }
     }
 }

@@ -4,8 +4,8 @@ namespace jarvis.client.common.ServiceClients
 {
     public abstract class ServiceBase
     {
-        protected IJarvisRestClient _jarvisRestClient;
-        protected IConfiguration _configuration;
+        protected readonly IJarvisRestClient _jarvisRestClient;
+        protected readonly IConfiguration _configuration;
         private bool _clientInitialized = false;
 
         protected ServiceBase(IJarvisRestClient jarvisRestClient, IConfiguration configuration)

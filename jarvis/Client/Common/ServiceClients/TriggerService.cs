@@ -15,26 +15,33 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using RestSharp;
-using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos.Eventhandling;
 
-namespace jarvis.client.trigger.common
+namespace jarvis.client.common.ServiceClients
 {
-    public class TriggerLogic
+    public interface ITriggerService
     {
-        public TriggerLogic()
+        void EventHappend(EventDto eventDto);
+    }
+
+    public class TriggerService : ServiceBase, ITriggerService
+    {
+        public TriggerService(IJarvisRestClient jarvisRestClient, IConfiguration configuration) : base(jarvisRestClient, configuration)
         {
         }
 
-        public void trigger(EventDto eventDto)
+        protected override string ServiceName
         {
-            var client = new JarvisRestClient();
-            client.BaseUrl = "http://localhost:5368/Services/TriggerService.svc/";
+            get { return _configuration.TriggerService; }
+        }
 
-            var request = client.CreateRequest("trigger", Method.POST);
-            request.AddBody(eventDto);
+        public void EventHappend(EventDto eventDto)
+        {
+            var eventHappendRequest = JarvisRestClient.CreateRequest("trigger", Method.POST);
+            eventHappendRequest.AddBody(eventDto);
 
-            client.Execute(request);
+
+            JarvisRestClient.Execute(eventHappendRequest);
         }
     }
 }
