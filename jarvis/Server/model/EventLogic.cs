@@ -75,6 +75,7 @@ namespace jarvis.server.model
                                                    e => e.TriggeredDate).Select(
                                                        e => new EventDto()
                                                                 {
+                                                                    Id = e.Id,
                                                                     TriggeredDate = e.TriggeredDate,
                                                                     EventGroupTypes = e.EventGroupType,
                                                                     EventType = e.EventType,

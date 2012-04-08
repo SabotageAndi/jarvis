@@ -74,7 +74,8 @@ namespace EventHandler
                     addWorkflowQueueRequest.AddBody(new WorkflowQueueDto
                                                         {
                                                             EventHandlerId = eventHandlerDto.Id,
-                                                            DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId
+                                                            DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId,
+                                                            EventId = eventDto.Id
                                                         });
 
                     _client.Execute(addWorkflowQueueRequest);

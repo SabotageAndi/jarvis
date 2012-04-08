@@ -24,6 +24,9 @@ namespace jarvis.common.dtos.Eventhandling
     public class EventDto
     {
         [DataMember]
+        public int Id { get; set; }
+
+        [DataMember]
         public DateTime TriggeredDate { get; set; }
 
         public EventGroupTypes EventGroupTypes

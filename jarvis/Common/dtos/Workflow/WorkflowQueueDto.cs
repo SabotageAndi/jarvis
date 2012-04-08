@@ -20,5 +20,6 @@ namespace jarvis.common.dtos.Workflow
     {
         public int EventHandlerId { get; set; }
         public int DefinedWorkflowId { get; set; }
+        public int EventId { get; set; }
     }
 }

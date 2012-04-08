@@ -27,6 +27,7 @@ namespace jarvis.server.entities.Workflow
 
         public virtual IList<RunnedWorkflowStep> WorkflowSteps { get; set; }
         public virtual IList<RunnedNextWorkflowStep> NextWorkflowSteps { get; set; }
+        public virtual IList<Parameter> Parameters { get; set; } 
 
         public virtual DateTime? Starttime { get; set; }
         public virtual DateTime? Endtime { get; set; }
@@ -42,6 +43,7 @@ namespace jarvis.server.entities.Workflow
 
             HasMany(x => x.WorkflowSteps);
             HasMany(x => x.NextWorkflowSteps);
+            HasMany(x => x.Parameters);
 
             Map(x => x.Starttime);
             Map(x => x.Endtime);

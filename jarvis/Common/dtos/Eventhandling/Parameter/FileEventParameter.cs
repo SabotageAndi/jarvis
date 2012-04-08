@@ -18,6 +18,11 @@ namespace jarvis.common.dtos.Eventhandling.Parameter
 {
     public class FileEventParameterDto : EventParameterDto
     {
+        public FileEventParameterDto()
+        {
+            ParameterType = GetType().Name;
+        }
+
         public string Filename { get; set; }
         public string Path { get; set; }
     }

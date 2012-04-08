@@ -66,6 +66,7 @@
     <Compile Include="Management\ServerStatus.cs" />
     <Compile Include="Workflow\DefinedNextWorkflowStep.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Workflow\Parameter.cs" />
     <Compile Include="Workflow\RunnedNextWorkflowStep.cs" />
     <Compile Include="Workflow\RunnedTask.cs" />
     <Compile Include="Workflow\RunnedWorkflow.cs" />

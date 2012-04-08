@@ -14,10 +14,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Newtonsoft.Json;
+using jarvis.common.domain;
+using jarvis.common.dtos.Eventhandling.Parameter;
 using jarvis.common.dtos.Workflow;
 using jarvis.server.common.Database;
+using jarvis.server.entities.Eventhandling;
 using jarvis.server.entities.Workflow;
 using jarvis.server.repositories;
 
@@ -31,6 +38,7 @@ namespace jarvis.server.model
     public class WorkflowLogic : IWorkflowLogic
     {
         private readonly IRunnedNextWorkflowStepRepository _runnedNextWorkflowStepRepository;
+        private readonly IParameterRepository _parameterRepository;
         private readonly IRunnedTaskRepository _runnedTaskRepository;
         private readonly IRunnedWorkflowRepository _runnedWorkflowRepository;
         private readonly IRunnedWorkflowStepRepository _runnedWorkflowStepRepository;
@@ -39,13 +47,14 @@ namespace jarvis.server.model
 
         public WorkflowLogic(IWorkflowQueueRepository workflowQueueRepository, IRunnedWorkflowRepository runnedWorkflowRepository,
                              IRunnedWorkflowStepRepository runnedWorkflowStepRepository, IRunnedTaskRepository runnedTaskRepository,
-                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, ITransactionProvider transactionProvider)
+                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, IParameterRepository parameterRepository, ITransactionProvider transactionProvider)
         {
             _workflowQueueRepository = workflowQueueRepository;
             _runnedWorkflowRepository = runnedWorkflowRepository;
             _runnedWorkflowStepRepository = runnedWorkflowStepRepository;
             _runnedTaskRepository = runnedTaskRepository;
             _runnedNextWorkflowStepRepository = runnedNextWorkflowStepRepository;
+            _parameterRepository = parameterRepository;
             _transactionProvider = transactionProvider;
         }
 
@@ -58,7 +67,7 @@ namespace jarvis.server.model
                 return null;
             }
 
-            var runnedWorkflow = CreateRunnedWorkflow(workflowToExecute.DefinedWorkflow);
+            var runnedWorkflow = CreateRunnedWorkflow(workflowToExecute.DefinedWorkflow, workflowToExecute.Event);
             workflowToExecute.RunnedWorkflow = runnedWorkflow;
 
             _workflowQueueRepository.Save(workflowToExecute);
@@ -77,8 +86,20 @@ namespace jarvis.server.model
                                             Id = runnedWorkflow.Id,
                                             WorkflowSteps = runnedWorkflow.WorkflowSteps.Select(TranslateToDto).ToList(),
                                             NextWorkflowSteps = runnedWorkflow.NextWorkflowSteps.Select(TranslateToDto).ToList(),
+                                            Parameters = runnedWorkflow.Parameters.Select(TranslateToDto).ToList(),
                                         };
             return runnedWorkflowDto;
+        }
+
+        private ParameterDto TranslateToDto(Parameter parameter)
+        {
+            return new ParameterDto()
+                       {
+                           Id = parameter.Id,
+                           Category =  parameter.Category,
+                           Name = parameter.Name,
+                           Value = parameter.Value,
+                       };
         }
 
         private RunnedNextWorkflowStepDto TranslateToDto(RunnedNextWorkflowStep runnedNextWorkflowStep)
@@ -86,9 +107,9 @@ namespace jarvis.server.model
             return new RunnedNextWorkflowStepDto()
                        {
                            Id = runnedNextWorkflowStep.Id,
-                           NextStepId = runnedNextWorkflowStep.NextStep == null ? (int?) null : runnedNextWorkflowStep.NextStep.Id,
+                           NextStepId = runnedNextWorkflowStep.NextStep == null ? (int?)null : runnedNextWorkflowStep.NextStep.Id,
                            PreviousStepId =
-                               runnedNextWorkflowStep.PreviousStep == null ? (int?) null : runnedNextWorkflowStep.PreviousStep.Id
+                               runnedNextWorkflowStep.PreviousStep == null ? (int?)null : runnedNextWorkflowStep.PreviousStep.Id
                        };
         }
 
@@ -111,7 +132,7 @@ namespace jarvis.server.model
                        };
         }
 
-        private RunnedWorkflow CreateRunnedWorkflow(DefinedWorkflow definedWorkflow)
+        private RunnedWorkflow CreateRunnedWorkflow(DefinedWorkflow definedWorkflow, Event eventInformation)
         {
             var runnedWorkflow = _runnedWorkflowRepository.Create();
             runnedWorkflow.DefinedWorkflow = definedWorkflow;
@@ -120,7 +141,25 @@ namespace jarvis.server.model
             var runnedWorkflowSteps = CreateRunnedWorkflowSteps(definedWorkflow.WorkflowSteps, runnedWorkflow);
             CreateRunnedNextWorkflowSteps(definedWorkflow.NextWorkflowSteps, runnedWorkflow, runnedWorkflowSteps);
 
+            CreateParameters(runnedWorkflow, eventInformation);
+
             return runnedWorkflow;
+        }
+
+        private void CreateParameters(RunnedWorkflow runnedWorkflow, Event eventInformation)
+        {
+            var reader =(Newtonsoft.Json.Linq.JObject)JsonParser.NewtonsoftSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
+
+            foreach (var row in reader)
+            {
+                var parameter = _parameterRepository.Create();
+                parameter.RunnedWorkflow = runnedWorkflow;
+                parameter.Category = "EventParameter";
+                parameter.Name = row.Key;
+                parameter.Value = row.Value.ToString(); 
+
+                _parameterRepository.Save(parameter);
+            }
         }
 
         private void CreateRunnedNextWorkflowSteps(IList<DefinedNextWorkflowStep> nextWorkflowSteps, RunnedWorkflow runnedWorkflow,

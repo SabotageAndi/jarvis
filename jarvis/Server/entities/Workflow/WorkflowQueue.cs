@@ -16,6 +16,7 @@
 
 using System;
 using FluentNHibernate.Mapping;
+using jarvis.server.entities.Eventhandling;
 using jarvis.server.entities.Helper;
 
 namespace jarvis.server.entities.Workflow
@@ -27,6 +28,7 @@ namespace jarvis.server.entities.Workflow
         public virtual DateTime? EndDate { get; set; }
         public virtual DefinedWorkflow DefinedWorkflow { get; set; }
         public virtual RunnedWorkflow RunnedWorkflow { get; set; }
+        public virtual Event Event { get; set; }
     }
 
     public class WorkflowQuereMap : ClassMap<WorkflowQueue>
@@ -39,6 +41,7 @@ namespace jarvis.server.entities.Workflow
             Map(x => x.EndDate);
             References(x => x.DefinedWorkflow);
             References(x => x.RunnedWorkflow);
+            References(x => x.Event);
         }
     }
 }

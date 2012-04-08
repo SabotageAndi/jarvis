@@ -34,13 +34,15 @@ namespace jarvis.server.model
         private readonly IDefinedWorkflowRepository _definedWorkflowRepository;
         private readonly IEventHandlerRepository _eventHandlerRepository;
         private readonly IWorkflowQueueRepository _workflowQueueRepository;
+        private readonly IEventRepository _eventRepository;
 
         public EventHandlingLogic(IEventHandlerRepository eventHandlerRepository, IDefinedWorkflowRepository definedWorkflowRepository,
-                                  IWorkflowQueueRepository workflowQueueRepository)
+                                  IWorkflowQueueRepository workflowQueueRepository, IEventRepository eventRepository)
         {
             _eventHandlerRepository = eventHandlerRepository;
             _definedWorkflowRepository = definedWorkflowRepository;
             _workflowQueueRepository = workflowQueueRepository;
+            _eventRepository = eventRepository;
         }
 
         public List<EventHandlerDto> GetAllEventHandler()
@@ -69,6 +71,7 @@ namespace jarvis.server.model
             var workflowQueue = _workflowQueueRepository.Create();
             workflowQueue.DefinedWorkflow = workflow;
             workflowQueue.QueueDate = DateTime.UtcNow;
+            workflowQueue.Event = _eventRepository.GetById(workflowQueueDto.EventId);
 
             _workflowQueueRepository.Save(workflowQueue);
         }

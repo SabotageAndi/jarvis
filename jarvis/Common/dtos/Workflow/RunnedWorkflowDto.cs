@@ -26,6 +26,16 @@ namespace jarvis.common.dtos.Workflow
         public List<RunnedWorkflowStepDto> WorkflowSteps { get; set; }
 
         public List<RunnedNextWorkflowStepDto> NextWorkflowSteps { get; set; }
+
+        public List<ParameterDto> Parameters { get; set; }
+    }
+
+    public class ParameterDto
+    {
+        public int Id { get; set; }
+        public String Category { get; set; }
+        public String Name { get; set; }
+        public String Value { get; set; }
     }
 
     public class RunnedNextWorkflowStepDto
