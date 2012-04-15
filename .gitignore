@@ -38,3 +38,6 @@
 /jarvis/Client/Worker/worker/bin
 /jarvis/Client/Windows/windows/obj
 /jarvis/Client/Windows/windows/bin
+/jarvis/Client/Android/bin
+/jarvis/Client/Android/gen
+/jarvis/Client/.metadata
