@@ -58,6 +58,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Entity.cs" />
+    <Compile Include="EnumConvention.cs" />
     <Compile Include="Eventhandling\Event.cs" />
     <Compile Include="Eventhandling\EventHandler.cs" />
     <Compile Include="Helper\MappingHelper.cs" />

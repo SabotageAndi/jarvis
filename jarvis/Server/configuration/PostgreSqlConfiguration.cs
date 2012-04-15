@@ -45,14 +45,18 @@ namespace jarvis.server.configuration
 
         public FluentConfiguration GetConfiguration()
         {
-           
+
             return Fluently.Configure()
                 .Database(PostgreSQLConfiguration.Standard.ConnectionString(
                     builder =>
                     builder.Database("jarvis").Host("localhost").Username("jarvis").Password("jarvis").Port(5432)))
-                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Entity>());
+                .Mappings(m =>
+                              {
+                                  m.FluentMappings.AddFromAssemblyOf<Entity>();
+                                  m.FluentMappings.Conventions.AddFromAssemblyOf<Entity>();
+                              });
 
-            
+
         }
     }
 }
