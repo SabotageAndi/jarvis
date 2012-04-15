@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
 using System.Collections.Generic;
 
 namespace jarvis.common.dtos.Workflow
@@ -28,37 +27,5 @@ namespace jarvis.common.dtos.Workflow
         public List<RunnedNextWorkflowStepDto> NextWorkflowSteps { get; set; }
 
         public List<ParameterDto> Parameters { get; set; }
-    }
-
-    public class ParameterDto
-    {
-        public int Id { get; set; }
-        public String Category { get; set; }
-        public String Name { get; set; }
-        public String Value { get; set; }
-    }
-
-    public class RunnedNextWorkflowStepDto
-    {
-        public int Id { get; set; }
-
-        public int? NextStepId { get; set; }
-
-        public int? PreviousStepId { get; set; }
-    }
-
-    public class RunnedWorkflowStepDto
-    {
-        public int Id { get; set; }
-
-        public RunnedTaskDto RunnedTask { get; set; }
-    }
-
-    public class RunnedTaskDto
-    {
-        public int Id { get; set; }
-        public String Name { get; set; }
-
-        public string RunCode { get; set; }
     }
 }

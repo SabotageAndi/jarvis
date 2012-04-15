@@ -24,6 +24,7 @@ using System.Threading;
 using Microsoft.CSharp;
 using RestSharp;
 using jarvis.client.common.ServiceClients;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.worker

@@ -21,6 +21,7 @@ using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
 using jarvis.common.domain;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling.Parameter;
 using jarvis.common.dtos.Workflow;
 using jarvis.server.common.Database;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.worker

@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Autofac;
+using jarvis.client.common.Actions;
 using jarvis.client.common.ServiceClients;
 using jarvis.client.common.Triggers;
 using jarvis.client.common.Triggers.FileSystemTrigger;
@@ -37,16 +38,18 @@ namespace jarvis.client.common
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
         private readonly IServerStatusService _serverStatusService;
+        private readonly IActionServiceHost _actionServiceHost;
         private readonly ILog _log = LogManager.GetLogger("client");
 
         private ClientDto _clientDto;
 
-        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService)
+        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService, IActionServiceHost actionServiceHost)
         {
             State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
             _serverStatusService = serverStatusService;
+            _actionServiceHost = actionServiceHost;
 
             Triggers = new List<Trigger>();
         }
@@ -118,6 +121,8 @@ namespace jarvis.client.common
             {
                 trigger.init();
             }
+
+            _actionServiceHost.Start();
 
             State = State.Initialized;
         }
