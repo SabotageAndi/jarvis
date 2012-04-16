@@ -13,13 +13,13 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System.Configuration;
 
 namespace jarvis.client.common.Configuration
 {
     public class JarvisClientConfigurationSection : ConfigurationSection
     {
+        private JarvisConfigElement _name;
         public const string SectionName = "client";
 
         public JarvisClientConfigurationSection()
@@ -66,6 +66,13 @@ namespace jarvis.client.common.Configuration
         {
             get { return (JarvisConfigElement) this["LocalPort"]; }
             set { this["LocalPort"] = value; }
+        }
+
+        [ConfigurationProperty("Name", IsRequired = true)]
+        public JarvisConfigElement Name
+        {
+            get { return (JarvisConfigElement) this["Name"]; }
+            set { this["Name"] = value; }
         }
     }
 }

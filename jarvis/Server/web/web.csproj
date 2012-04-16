@@ -167,12 +167,16 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\ActionService.svc.cs">
+      <DependentUpon>ActionService.svc</DependentUpon>
+    </Compile>
     <Compile Include="services\ClientService.svc.cs">
       <DependentUpon>ClientService.svc</DependentUpon>
     </Compile>
     <Compile Include="services\EventHandlingService.svc.cs">
       <DependentUpon>EventHandlingService.svc</DependentUpon>
     </Compile>
+    <Compile Include="services\Interfaces\IActionService.cs" />
     <Compile Include="services\Interfaces\IClientService.cs" />
     <Compile Include="services\Interfaces\IEventHandlingService.cs" />
     <Compile Include="services\Interfaces\ITriggerService.cs" />
@@ -227,6 +231,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
+    <Content Include="services\ActionService.svc" />
     <Content Include="services\ClientService.svc" />
     <Content Include="services\EventHandlingService.svc" />
     <Content Include="services\ServerStatusService.svc" />

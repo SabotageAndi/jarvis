@@ -21,7 +21,7 @@ namespace jarvis.client.common.ServiceClients
 
         protected override string ServiceName
         {
-            get { return _configuration.ServerStatusService; }
+            get { return "ServerStatusService"; }
         }
 
         public bool isOnline()

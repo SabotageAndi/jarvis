@@ -63,6 +63,10 @@
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\logic\logic.csproj">
+      <Project>{65E668FE-B2D3-4A78-B8CA-187279F46365}</Project>
+      <Name>logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\common.csproj">
       <Project>{477FC303-4CDE-403A-9D9B-A62935DAED98}</Project>
       <Name>common %28Client\common%29</Name>

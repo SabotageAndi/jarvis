@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using FluentNHibernate.Mapping;
 using jarvis.common.domain;
 using jarvis.server.entities.Helper;
@@ -33,6 +32,7 @@ namespace jarvis.server.entities.Management
         public ClientMap()
         {
             MappingHelper.MapId(this);
+            Map(x => x.Name);
             Map(x => x.IsOnline);
             Map(x => x.Hostname);
             Map(x => x.Type);

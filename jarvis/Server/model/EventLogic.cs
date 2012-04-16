@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,20 +34,25 @@ namespace jarvis.server.model
     public class EventLogic : IEventLogic
     {
         private readonly IEventRepository _eventRepository;
+        private readonly IClientRepository _clientRepository;
 
-        public EventLogic(IEventRepository eventRepository)
+        public EventLogic(IEventRepository eventRepository, IClientRepository clientRepository)
         {
             _eventRepository = eventRepository;
+            _clientRepository = clientRepository;
         }
 
         public void eventRaised(EventDto eventDto)
         {
+            var client = _clientRepository.GetById(eventDto.ClientId);
+
             var raisedEvent = new Event()
                                   {
                                       EventGroupType = eventDto.EventGroupTypes,
                                       EventType = eventDto.EventType,
                                       TriggeredDate = eventDto.TriggeredDate,
-                                      Data = eventDto.Data
+                                      Data = eventDto.Data,
+                                      Client = client
                                   };
 
             _eventRepository.Save(raisedEvent);

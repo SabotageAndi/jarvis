@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using System.Configuration;
 using jarvis.client.common.Configuration;
@@ -25,12 +24,10 @@ namespace jarvis.client.common
     {
         int LocalPort { get; }
         string ServerUrl { get; }
-        string ClientService { get; }
         int? ClientId { get; set; }
-        string TriggerService { get; }
+        string Name { get; }
 
         bool FileSystemTriggerEnabled { get; set; }
-        string ServerStatusService { get; }
         void Save();
     }
 
@@ -79,26 +76,16 @@ namespace jarvis.client.common
             get { return JarvisClientConfigurationSection.ServerUrl.Value; }
         }
 
-        public string ClientService
-        {
-            get { return JarvisClientConfigurationSection.ClientService.Value; }
-        }
-
-        public string TriggerService
-        {
-            get { return JarvisClientConfigurationSection.TriggerService.Value; }
-        }
-
-        public string ServerStatusService
-        {
-            get { return JarvisClientConfigurationSection.ServerStatusService.Value; }
-        }
-
         public void Save()
         {
             JarvisClientConfigurationSection.SectionInformation.ForceSave = true;
 
             Configuration.Save(ConfigurationSaveMode.Full);
+        }
+
+        public string Name
+        {
+            get { return JarvisClientConfigurationSection.Name.Value; }
         }
 
         public bool FileSystemTriggerEnabled

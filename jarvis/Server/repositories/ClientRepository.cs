@@ -13,7 +13,8 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+using System.Linq;
+using NHibernate.Linq;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 
@@ -21,12 +22,18 @@ namespace jarvis.server.repositories
 {
     public interface IClientRepository : IRepositoryBase<Client>
     {
+        Client GetByName(string name);
     }
 
     public class ClientRepository : RepositoryBase<Client>, IClientRepository
     {
         public ClientRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
         {
+        }
+
+        public Client GetByName(string name)
+        {
+            return CurrentSession.Query<Client>().Where(c => c.Name == name).SingleOrDefault();
         }
     }
 }

@@ -13,14 +13,18 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+using System.Collections.Generic;
 using System.Drawing;
-using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using Autofac;
 using jarvis.client.common;
+using jarvis.client.common.Actions;
+using jarvis.client.common.Actions.ActionHandlers;
+using jarvis.client.common.ServiceClients;
+using jarvis.client.common.Triggers.FileSystemTrigger;
 using Application = System.Windows.Application;
+using Trigger = jarvis.client.common.Triggers.Trigger;
 
 namespace jarvis.client.windows
 {
@@ -37,6 +41,7 @@ namespace jarvis.client.windows
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<CommonModule>();
             containerBuilder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
+            containerBuilder.RegisterType<ActionTriggerClient>().SingleInstance();
 
             _container = containerBuilder.Build();
         }
@@ -45,9 +50,9 @@ namespace jarvis.client.windows
         {
             Bootstrap();
 
-            var client = _container.Resolve<Client>();
+            var client = _container.Resolve<ActionTriggerClient>();
 
-         
+
             client.Init(_container);
             client.OnShutDown += client_OnShutDown;
 
@@ -75,6 +80,60 @@ namespace jarvis.client.windows
 
             _systray.ContextMenu = contextMenu;
             _systray.Visible = true;
+        }
+
+
+        public class ActionTriggerClient : Client
+        {
+            private readonly IActionServiceHost _actionServiceHost;
+            private readonly IActionRegistry _actionRegistry;
+
+            public ActionTriggerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService,
+                                       IActionServiceHost actionServiceHost, IActionRegistry actionRegistry)
+                : base(clientService, configuration, serverStatusService)
+            {
+                _actionServiceHost = actionServiceHost;
+                _actionRegistry = actionRegistry;
+                Triggers = new List<Trigger>();
+            }
+
+            private List<Trigger> Triggers { get; set; }
+
+            public override void Init(IContainer container)
+            {
+                base.Init(container);
+
+                _actionRegistry.RegisterActionHandler(new FileActionHandler());
+
+                _actionServiceHost.Start();
+
+                Triggers.Add(_container.Resolve<FileSystemTrigger>());
+
+                foreach (var trigger in Triggers)
+                {
+                    trigger.init();
+                }
+            }
+
+            public override void Shutdown()
+            {
+                foreach (var trigger in Triggers)
+                {
+                    trigger.deinit();
+                }
+
+                base.Shutdown();
+            }
+
+            public override void Run()
+            {
+                foreach (var trigger in Triggers)
+                {
+                    trigger.run();
+                }
+
+                base.Run();
+            }
         }
     }
 }

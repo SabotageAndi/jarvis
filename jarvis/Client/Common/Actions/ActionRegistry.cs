@@ -1,4 +1,19 @@
-﻿using System;
+﻿// J.A.R.V.I.S. - Just A Rather Very Intelligent System
+// Copyright (C) 2012 Andreas Willich <sabotageandi@gmail.com>
+// 
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+// 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+// 
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,20 +23,20 @@ namespace jarvis.client.common.Actions
 {
     public interface IActionRegistry
     {
-        void RegisterActionHandler(ActionHandler actionHandler);
-        ActionHandler GetActionHandler(ActionGroup actionGroup);
+        void RegisterActionHandler(IActionHandler actionHandler);
+        IActionHandler GetActionHandler(ActionGroup actionGroup);
     }
 
     public class ActionRegistry : IActionRegistry
     {
         public ActionRegistry()
         {
-            ActionHandlers = new Dictionary<ActionGroup, ActionHandler>();
+            ActionHandlers = new Dictionary<ActionGroup, IActionHandler>();
         }
 
-        private Dictionary<ActionGroup, ActionHandler> ActionHandlers { get; set; }
+        private Dictionary<ActionGroup, IActionHandler> ActionHandlers { get; set; }
 
-        public void RegisterActionHandler(ActionHandler actionHandler)
+        public void RegisterActionHandler(IActionHandler actionHandler)
         {
             if (ActionHandlers.ContainsKey(actionHandler.ActionGroup))
                 throw new ActionHandlerAlreadyRegisteredException();
@@ -29,7 +44,7 @@ namespace jarvis.client.common.Actions
             ActionHandlers.Add(actionHandler.ActionGroup, actionHandler);
         }
 
-        public ActionHandler GetActionHandler(ActionGroup actionGroup)
+        public IActionHandler GetActionHandler(ActionGroup actionGroup)
         {
             if (!ActionHandlers.ContainsKey(actionGroup))
                 throw new ActionHandlerNotFoundException();

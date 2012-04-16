@@ -34,7 +34,7 @@ namespace jarvis.client.common.ServiceClients
 
         protected override string ServiceName
         {
-            get { return _configuration.ClientService; }
+            get { return "ClientService"; }
         }
 
         public ClientDto Register(ClientDto clientDto)

@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using Autofac;
 using jarvis.server.repositories;
 
@@ -30,6 +29,7 @@ namespace jarvis.server.model
             builder.RegisterType<EventHandlingLogic>().As<IEventHandlingLogic>().InstancePerDependency();
             builder.RegisterType<WorkflowLogic>().As<IWorkflowLogic>().InstancePerDependency();
             builder.RegisterType<ClientLogic>().As<IClientLogic>().InstancePerDependency();
+            builder.RegisterType<ActionLogic>().As<IActionLogic>().InstancePerDependency();
 
             base.Load(builder);
         }

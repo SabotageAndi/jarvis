@@ -60,6 +60,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionLogic.cs" />
     <Compile Include="ClientLogic.cs" />
     <Compile Include="EventHandlingLogic.cs" />
     <Compile Include="ModelModule.cs" />
@@ -76,6 +77,10 @@
     <ProjectReference Include="..\..\Common\dtos\dtos.csproj">
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\logic\logic.csproj">
+      <Project>{65e668fe-b2d3-4a78-b8ca-187279f46365}</Project>
+      <Name>logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\common\common.csproj">
       <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>

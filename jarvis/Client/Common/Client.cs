@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -38,24 +37,20 @@ namespace jarvis.client.common
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
         private readonly IServerStatusService _serverStatusService;
-        private readonly IActionServiceHost _actionServiceHost;
         private readonly ILog _log = LogManager.GetLogger("client");
 
         private ClientDto _clientDto;
 
-        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService, IActionServiceHost actionServiceHost)
+        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService)
         {
             State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
             _serverStatusService = serverStatusService;
-            _actionServiceHost = actionServiceHost;
 
-            Triggers = new List<Trigger>();
         }
 
         public State State { get; set; }
-        private List<Trigger> Triggers { get; set; }
 
         public static Client Current
         {
@@ -70,9 +65,9 @@ namespace jarvis.client.common
                 {
                     _clientDto = new ClientDto()
                                      {
-                                         Hostname = "localhost",
+                                         Hostname = String.Format("http://localhost:{0}/", _configuration.LocalPort),
                                          Type = ClientTypeEnum.Windows,
-                                         Name = "dev"
+                                         Name = _configuration.Name
                                      };
                 }
                 return _clientDto;
@@ -91,7 +86,7 @@ namespace jarvis.client.common
             }
         }
 
-        public void Init(IContainer container)
+        public virtual void Init(IContainer container)
         {
             if (State >= State.Initialized)
             {
@@ -115,15 +110,7 @@ namespace jarvis.client.common
 
             Logon();
 
-            Triggers.Add(_container.Resolve<FileSystemTrigger>());
-
-            foreach (var trigger in Triggers)
-            {
-                trigger.init();
-            }
-
-            _actionServiceHost.Start();
-
+           
             State = State.Initialized;
         }
 
@@ -143,13 +130,8 @@ namespace jarvis.client.common
             return _serverStatusService.isOnline();
         }
 
-        public void Shutdown()
+        public virtual void Shutdown()
         {
-            foreach (var trigger in Triggers)
-            {
-                trigger.deinit();
-            }
-
             State = State.Shutdown;
             SaveSettings();
             Logoff();
@@ -182,13 +164,8 @@ namespace jarvis.client.common
             _log.Info("Client logged in");
         }
 
-        public void Run()
+        public virtual void Run()
         {
-            foreach (var trigger in Triggers)
-            {
-                trigger.run();
-            }
-
             State = State.Running;
         }
 

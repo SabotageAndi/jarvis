@@ -13,11 +13,11 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using FluentNHibernate.Mapping;
 using jarvis.common.domain;
 using jarvis.server.entities.Helper;
+using jarvis.server.entities.Management;
 
 namespace jarvis.server.entities.Eventhandling
 {
@@ -26,7 +26,9 @@ namespace jarvis.server.entities.Eventhandling
         public virtual EventGroupTypes EventGroupType { get; set; }
         public virtual EventType EventType { get; set; }
         public virtual DateTime TriggeredDate { get; set; }
+        public virtual Client Client { get; set; }
         public virtual string Data { get; set; }
+
     }
 
     public class EventMap : ClassMap<Event>
@@ -34,6 +36,7 @@ namespace jarvis.server.entities.Eventhandling
         public EventMap()
         {
             MappingHelper.MapId(this);
+            References(x => x.Client);
             Map(x => x.EventGroupType);
             Map(x => x.EventType);
             Map(x => x.TriggeredDate);

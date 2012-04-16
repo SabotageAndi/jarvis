@@ -13,9 +13,9 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
+using jarvis.common.domain;
 using jarvis.server.configuration;
 using jarvis.server.entities.Eventhandling;
 using jarvis.server.entities.Management;
@@ -40,6 +40,7 @@ namespace jarvis.tools.initDatabase
                     CreateUsers(session);
 
                     CreateEventHandler(session);
+                    CreateFileCreateEventHandler(session);
 
                     transaction.Commit();
                 }
@@ -81,6 +82,60 @@ namespace jarvis.tools.initDatabase
 
             var defaultEventHandler = new EventHandler();
             defaultEventHandler.DefinedWorkflow = workflow;
+
+            session.SaveOrUpdate(defaultEventHandler);
+        }
+
+        private static void CreateFileCreateEventHandler(ISession session)
+        {
+            var workflow = new DefinedWorkflow();
+            workflow.Name = "DeleteFileOnCreate";
+            session.SaveOrUpdate(workflow);
+
+            var definedTask = new DefinedTask();
+            definedTask.Name = "Test";
+            definedTask.RunCode = @"foreach(var parameter in parameters)
+                                    {
+                                        System.Console.WriteLine(""{0}:{1}:{2}"", parameter.Category, parameter.Name, parameter.Value);
+                                    }
+
+                                    string hostname = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Client"").Single().Value;
+                                    string path = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Path"").Single().Value;
+                                    string file = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Filename"").Single().Value;
+
+                                    string filePath = System.IO.Path.Combine(path, file);
+                                    
+                                    System.Console.WriteLine(hostname);
+                                    System.Console.WriteLine(filePath);
+
+                                    File.Delete(hostname, filePath);
+
+                                    return 0;";
+            session.SaveOrUpdate(definedTask);
+            
+            
+
+            var definedWorkflowStep = new DefinedWorkflowStep();
+            definedWorkflowStep.DefinedTask = definedTask;
+            definedWorkflowStep.DefinedWorkflow = workflow;
+            session.SaveOrUpdate(definedWorkflowStep);
+
+            var nextWorkflowStep = new DefinedNextWorkflowStep();
+            nextWorkflowStep.DefinedWorkflow = workflow;
+            nextWorkflowStep.NextStep = definedWorkflowStep;
+            nextWorkflowStep.PreviousStep = null;
+            session.SaveOrUpdate(nextWorkflowStep);
+
+            var lastWorkflowStep = new DefinedNextWorkflowStep();
+            lastWorkflowStep.DefinedWorkflow = workflow;
+            lastWorkflowStep.PreviousStep = definedWorkflowStep;
+            lastWorkflowStep.NextStep = null;
+            session.SaveOrUpdate(lastWorkflowStep);
+
+            var defaultEventHandler = new EventHandler();
+            defaultEventHandler.DefinedWorkflow = workflow;
+            defaultEventHandler.EventGroupTypes = EventGroupTypes.Filesystem;
+            defaultEventHandler.EventType = EventType.Add;
 
             session.SaveOrUpdate(defaultEventHandler);
         }

@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using RestSharp;
 using jarvis.common.dtos.Eventhandling;
 
@@ -32,11 +31,13 @@ namespace jarvis.client.common.ServiceClients
 
         protected override string ServiceName
         {
-            get { return _configuration.TriggerService; }
+            get { return "TriggerService"; }
         }
 
         public void EventHappend(EventDto eventDto)
         {
+            eventDto.ClientId = _configuration.ClientId.Value;
+
             var eventHappendRequest = JarvisRestClient.CreateRequest("trigger", Method.POST);
             eventHappendRequest.AddBody(eventDto);
 

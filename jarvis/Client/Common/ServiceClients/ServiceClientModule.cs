@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using Autofac;
 
 namespace jarvis.client.common.ServiceClients
@@ -27,6 +26,8 @@ namespace jarvis.client.common.ServiceClients
             builder.RegisterType<ClientService>().As<IClientService>().SingleInstance();
             builder.RegisterType<TriggerService>().As<ITriggerService>().SingleInstance();
             builder.RegisterType<ServerStatusService>().As<IServerStatusService>().SingleInstance();
+            builder.RegisterType<ActionService>().As<IActionService>().SingleInstance();
+            builder.RegisterType<WorkflowService>().As<IWorkflowService>().SingleInstance();
         }
     }
 }

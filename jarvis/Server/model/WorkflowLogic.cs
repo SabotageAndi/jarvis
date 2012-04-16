@@ -13,7 +13,6 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -151,6 +150,7 @@ namespace jarvis.server.model
         {
             var reader =(Newtonsoft.Json.Linq.JObject)JsonParser.NewtonsoftSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
 
+            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "Client",eventInformation.Client.Name));
             _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType", eventInformation.EventGroupType.ToString()));
             _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventType", eventInformation.EventType.ToString()));
 
