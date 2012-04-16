@@ -60,5 +60,12 @@ namespace jarvis.client.common.Configuration
             get { return (JarvisConfigElement)this["ServerStatusService"]; }
             set { this["ServerStatusService"] = value; }
         }
+
+        [ConfigurationProperty("LocalPort", IsRequired = true)]
+        public JarvisConfigElement LocalPort
+        {
+            get { return (JarvisConfigElement) this["LocalPort"]; }
+            set { this["LocalPort"] = value; }
+        }
     }
 }

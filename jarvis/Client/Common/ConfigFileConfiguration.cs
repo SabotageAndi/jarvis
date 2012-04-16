@@ -23,6 +23,7 @@ namespace jarvis.client.common
 {
     public interface IConfiguration
     {
+        int LocalPort { get; }
         string ServerUrl { get; }
         string ClientService { get; }
         int? ClientId { get; set; }
@@ -66,6 +67,11 @@ namespace jarvis.client.common
         internal FileSystemTriggerConfigurationSection FileSystemTriggerConfigurationSection
         {
             get { return Configuration.GetSection(FileSystemTriggerConfigurationSection.SectionName) as FileSystemTriggerConfigurationSection; }
+        }
+
+        public int LocalPort
+        {
+            get { return Convert.ToInt32(JarvisClientConfigurationSection.LocalPort.Value); }
         }
 
         public string ServerUrl

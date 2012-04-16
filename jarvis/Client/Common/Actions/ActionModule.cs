@@ -12,7 +12,7 @@ namespace jarvis.client.common.Actions
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ActionRegistry>().As<IActionRegistry>().SingleInstance();
-            builder.RegisterType<ActionService>().As<ActionService>().SingleInstance();
+            builder.RegisterType<ActionService>().As<IActionService>().SingleInstance();
             builder.RegisterType<ActionServiceHost>().As<IActionServiceHost>().SingleInstance();
         }
     }

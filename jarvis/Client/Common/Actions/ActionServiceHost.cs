@@ -15,33 +15,39 @@ namespace jarvis.client.common.Actions
 
     public class ActionServiceHost : IActionServiceHost
     {
-        private readonly ActionService _actionService;
+        private readonly IActionService _actionService;
+        private readonly IConfiguration _configuration;
         private ServiceHost _serviceHost;
-        private string _addressRoot = "http://localhost:8888/";
 
-        public ActionServiceHost(ActionService actionService )
+        public ActionServiceHost(IActionService actionService, IConfiguration configuration)
         {
             _actionService = actionService;
+            _configuration = configuration;
         }
 
         public void Start()
         {
-            _serviceHost =  new ServiceHost(_actionService, new Uri(_addressRoot));
+            var baseAddress = GetBaseAddress();
+           
+            var contractDescription = ContractDescription.GetContract(typeof (ActionService));
+            var restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
+            var endpointAddress = new EndpointAddress(baseAddress + "action");
+
+            var restEndPoint = new ServiceEndpoint(contractDescription, restBinding, endpointAddress);
+
+            restEndPoint.Behaviors.Add(new WebHttpBehavior());
+
+            _serviceHost =  new ServiceHost(_actionService, new Uri(baseAddress));
             _serviceHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
-            
-
-            WebHttpBinding restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
-            
-            
-            var restEndPoint = new ServiceEndpoint(ContractDescription.GetContract(typeof (ActionService)), 
-                restBinding, 
-                new EndpointAddress(_addressRoot + "action"));
-
-
             _serviceHost.AddServiceEndpoint(restEndPoint);
             _serviceHost.Faulted += _serviceHost_Faulted;
             _serviceHost.UnknownMessageReceived += _serviceHost_UnknownMessageReceived;
             _serviceHost.Open();
+        }
+
+        private String GetBaseAddress()
+        {
+            return String.Format("http://{0}:{1}/", "localhost", _configuration.LocalPort);
         }
 
         void _serviceHost_UnknownMessageReceived(object sender, UnknownMessageReceivedEventArgs e)
