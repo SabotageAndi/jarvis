@@ -54,6 +54,7 @@
     </Compile>
     <Compile Include="ActionTriggerClient.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="ClientModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

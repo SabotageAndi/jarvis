@@ -35,6 +35,11 @@ namespace jarvis.client.common
 
         protected static IContainer _container;
 
+        public static IContainer Container
+        {
+            get { return _container; }
+        }
+
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
         private readonly IServerStatusService _serverStatusService;

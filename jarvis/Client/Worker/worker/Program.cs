@@ -25,6 +25,7 @@ using Microsoft.CSharp;
 using RestSharp;
 using jarvis.client.common;
 using jarvis.client.common.Actions;
+using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
@@ -41,7 +42,8 @@ namespace jarvis.client.worker
             var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule<CommonModule>();
             containerBuilder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
-            containerBuilder.RegisterType<WorkerClient>().SingleInstance();
+            containerBuilder.RegisterType<WorkerClient>().As<Client>().SingleInstance();
+            containerBuilder.RegisterType<FileAction>().As<IFileAction>().SingleInstance();
             containerBuilder.RegisterType<WorkflowEngine>().As<IWorkflowEngine>().SingleInstance();
 
             _container = containerBuilder.Build();
@@ -52,7 +54,7 @@ namespace jarvis.client.worker
         private static void Main(string[] args)
         {
             Bootstrap();
-            var client = _container.Resolve<WorkerClient>();
+            var client = _container.Resolve<Client>();
 
 
             client.Init(_container);

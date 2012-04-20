@@ -34,8 +34,7 @@ namespace jarvis.client.windows
         private static void Bootstrap()
         {
             var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<CommonModule>();
-            containerBuilder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
+            containerBuilder.RegisterModule<ClientModule>();
             containerBuilder.RegisterType<ActionTriggerClient>().As<Client>().SingleInstance();
 
             _container = containerBuilder.Build();

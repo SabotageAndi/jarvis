@@ -19,7 +19,6 @@ namespace jarvis.client.common.Configuration
 {
     public class JarvisClientConfigurationSection : ConfigurationSection
     {
-        private JarvisConfigElement _name;
         public const string SectionName = "client";
 
         [ConfigurationProperty("ServerUrl", IsRequired = true)]

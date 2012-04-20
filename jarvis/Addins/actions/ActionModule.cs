@@ -13,15 +13,10 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
-using jarvis.client.common.Actions.ActionCaller;
 
-namespace jarvis.client.common.Actions
+using Autofac;
+
+namespace jarvis.addins.actions
 {
     public class ActionModule : Module
     {
@@ -30,7 +25,6 @@ namespace jarvis.client.common.Actions
             builder.RegisterType<ActionRegistry>().As<IActionRegistry>().SingleInstance();
             builder.RegisterType<ActionService>().As<IActionService>().SingleInstance();
             builder.RegisterType<ActionServiceHost>().As<IActionServiceHost>().SingleInstance();
-            builder.RegisterType<FileAction>().As<IFileAction>().SingleInstance();
         }
     }
 }

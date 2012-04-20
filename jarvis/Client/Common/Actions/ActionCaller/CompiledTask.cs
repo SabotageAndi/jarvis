@@ -29,12 +29,8 @@ namespace jarvis.client.common.Actions.ActionCaller
 
     public abstract class CompiledTask : ICompiledTask
     {
-        public void Init(IFileAction fileAction)
-        {
-            File = fileAction;
-        }
-
-        protected IFileAction File { get; private set; }
+      
+        public IFileAction File { get; set; }
         public abstract int run(List<ParameterDto> parameters);
     }
 

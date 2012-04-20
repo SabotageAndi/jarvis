@@ -23,9 +23,9 @@ namespace jarvis.client.common
         protected override void Load(ContainerBuilder builder)
         {
             base.Load(builder);
-            builder.RegisterModule<ServiceClients.ServiceClientModule>();
-            builder.RegisterModule<Actions.ActionModule>();
+            builder.RegisterModule<ServiceClientModule>();
 
+            builder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
             builder.RegisterType<JarvisRestClient>().As<IJarvisRestClient>().InstancePerDependency();
         }
     }

@@ -23,10 +23,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CSharp;
 using RestSharp;
+using jarvis.client.common;
 using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
+using Autofac;
 
 namespace jarvis.client.worker
 {
@@ -38,12 +40,10 @@ namespace jarvis.client.worker
     class WorkflowEngine : IWorkflowEngine
     {
         private readonly IWorkflowService _workflowService;
-        private readonly IFileAction _fileAction;
 
-        public WorkflowEngine(IWorkflowService workflowService, IFileAction fileAction)
+        public WorkflowEngine(IWorkflowService workflowService)
         {
             _workflowService = workflowService;
-            _fileAction = fileAction;
         }
 
         public bool Do()
@@ -121,7 +121,7 @@ namespace jarvis.client.worker
         {
             var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + runnedTask.Name) as CompiledTask;
 
-            instance.Init(_fileAction);
+            Client.Container.InjectProperties(instance);
 
             return instance.run(parameters);
         }
