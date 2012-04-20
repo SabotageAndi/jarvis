@@ -16,6 +16,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using jarvis.addins.actions;
 using jarvis.common.domain;
 using jarvis.common.dtos.Actionhandling;
 using Action = jarvis.common.domain.Action;
@@ -45,7 +46,6 @@ namespace jarvis.client.common.Actions.ActionHandlers
             {
                 case Action.File_Delete:
                     return DeleteFile(actionDto);
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }

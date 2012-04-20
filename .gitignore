@@ -42,7 +42,8 @@
 /jarvis/Client/.metadata
 /jarvis/Common/logic/obj
 /jarvis/Common/logic/bin
-/jarvis/Addins/compiled/*
+/jarvis/Addins/compiledClient/*
+/jarvis/Addins/compiledServer/*
 
 /jarvis/Addins/triggers/obj
 /jarvis/Addins/triggers/bin
@@ -50,3 +51,7 @@
 /jarvis/Addins/Implementations/General/GeneralTriggers/bin
 /jarvis/Client/client/obj
 /jarvis/Client/client/bin
+/jarvis/Addins/Implementations/General/GeneralActions/obj
+/jarvis/Addins/Implementations/General/GeneralActions/bin
+/jarvis/Addins/actions/obj
+/jarvis/Addins/actions/bin

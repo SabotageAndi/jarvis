@@ -43,7 +43,7 @@ namespace jarvis.client.common.Actions
         public void Start()
         {
             var baseAddress = GetBaseAddress();
-           
+
             var contractDescription = ContractDescription.GetContract(typeof (ActionService));
             var restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
             var endpointAddress = new EndpointAddress(baseAddress + "action");
@@ -52,26 +52,15 @@ namespace jarvis.client.common.Actions
 
             restEndPoint.Behaviors.Add(new WebHttpBehavior());
 
-            _serviceHost =  new ServiceHost(_actionService, new Uri(baseAddress));
+            _serviceHost = new ServiceHost(_actionService, new Uri(baseAddress));
             _serviceHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
             _serviceHost.AddServiceEndpoint(restEndPoint);
-            _serviceHost.Faulted += _serviceHost_Faulted;
-            _serviceHost.UnknownMessageReceived += _serviceHost_UnknownMessageReceived;
             _serviceHost.Open();
         }
 
         private String GetBaseAddress()
         {
             return String.Format("http://{0}:{1}/", "localhost", _configuration.LocalPort);
-        }
-
-        void _serviceHost_UnknownMessageReceived(object sender, UnknownMessageReceivedEventArgs e)
-        {
-        }
-
-        void _serviceHost_Faulted(object sender, EventArgs e)
-        {
-
         }
     }
 }

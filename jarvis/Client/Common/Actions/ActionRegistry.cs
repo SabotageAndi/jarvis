@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using jarvis.addins.actions;
 using jarvis.common.domain;
 
 namespace jarvis.client.common.Actions
@@ -61,8 +62,4 @@ namespace jarvis.client.common.Actions
     {
     }
 
-    internal class ParameterNotFoundException : Exception
-    {
-        
-    }
 }

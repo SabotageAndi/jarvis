@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Autofac;
+using jarvis.addins.actions;
 using jarvis.addins.trigger;
 using jarvis.client.common;
 using jarvis.client.common.Actions;
-using jarvis.client.common.Actions.ActionHandlers;
 using jarvis.client.common.ServiceClients;
 
 namespace jarvis.client
@@ -30,29 +31,49 @@ namespace jarvis.client
         {
             base.Init(container);
 
-            _actionRegistry.RegisterActionHandler(new FileActionHandler());
+            LoadTriggers();
+            LoadActionHandlers();
+       
 
             _actionServiceHost.Start();
+        }
 
-            LoadTriggers();
+        private static IEnumerable<Type> GetAddinTypes(Assembly addin, Type addinType)
+        {
+            return addin.GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(addinType));
+        }
 
-            foreach (var trigger in Triggers)
+        private void LoadActionHandlers()
+        {
+            foreach (var addin in Addins)
             {
-                trigger.init();
-            }
+                var actionHandlerTypes = GetAddinTypes(addin, typeof(ActionHandler));
+                foreach (var triggerType in actionHandlerTypes)
+                {
+                    var actionHandler = (ActionHandler)Activator.CreateInstance(triggerType);
+                    _container.InjectProperties(actionHandler);
+
+                    _actionRegistry.RegisterActionHandler(actionHandler);
+                }
+            }    
         }
 
         private void LoadTriggers()
         {
             foreach (var addin in Addins)
             {
-                var triggerTypes = addin.GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(typeof (Trigger)));
+                var triggerTypes = GetAddinTypes(addin, typeof (Trigger)); 
                 foreach (var triggerType in triggerTypes)
                 {
                     var trigger = (Trigger)Activator.CreateInstance(triggerType);
                     _container.InjectProperties(trigger);
                     Triggers.Add(trigger);
                 }
+            }
+
+            foreach (var trigger in Triggers)
+            {
+                trigger.init();
             }
         }
 
