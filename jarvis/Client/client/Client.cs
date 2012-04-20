@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,12 +21,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using Autofac;
-using jarvis.client.common.Actions;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos.Management;
 using log4net;
-
 
 namespace jarvis.client.common
 {
@@ -34,26 +33,13 @@ namespace jarvis.client.common
         public delegate void OnShutdownDelegate();
 
         protected static IContainer _container;
-
-        public static IContainer Container
-        {
-            get { return _container; }
-        }
+        protected readonly List<Assembly> _addins = new List<Assembly>();
 
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
-        private readonly IServerStatusService _serverStatusService;
         private readonly ILog _log = LogManager.GetLogger("client");
-        public State State { get; set; }
+        private readonly IServerStatusService _serverStatusService;
 
-        protected readonly List<Assembly> _addins = new List<Assembly>();
-
-        public List<Assembly> Addins
-        {
-            get { return _addins; }
-        }
-
-      
 
         private ClientDto _clientDto;
 
@@ -63,7 +49,18 @@ namespace jarvis.client.common
             _clientService = clientService;
             _configuration = configuration;
             _serverStatusService = serverStatusService;
+        }
 
+        public static IContainer Container
+        {
+            get { return _container; }
+        }
+
+        public State State { get; set; }
+
+        public List<Assembly> Addins
+        {
+            get { return _addins; }
         }
 
         public static Client Current
@@ -125,7 +122,7 @@ namespace jarvis.client.common
 
             Logon();
 
-           
+
             State = State.Initialized;
         }
 
@@ -136,7 +133,8 @@ namespace jarvis.client.common
                                                                var requestedName = new AssemblyName(e.Name);
 
                                                                var addinAssembly =
-                                                                   Addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault();
+                                                                   Addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault
+                                                                       ();
                                                                return addinAssembly;
                                                            };
         }
@@ -155,10 +153,12 @@ namespace jarvis.client.common
 
         private void CheckIfServerIsOnlineAndWait()
         {
-            while(true)
+            while (true)
             {
-                if (CheckIfServerIsOnline()) 
+                if (CheckIfServerIsOnline())
+                {
                     break;
+                }
 
                 Thread.Sleep(10000);
             }

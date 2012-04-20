@@ -13,22 +13,20 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using Autofac;
 using Microsoft.CSharp;
-using RestSharp;
 using jarvis.client.common;
 using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
-using Autofac;
 
 namespace jarvis.client.worker
 {
@@ -37,7 +35,7 @@ namespace jarvis.client.worker
         bool Do();
     }
 
-    class WorkflowEngine : IWorkflowEngine
+    internal class WorkflowEngine : IWorkflowEngine
     {
         private readonly IWorkflowService _workflowService;
 
@@ -143,7 +141,7 @@ namespace jarvis.client.worker
             cp.GenerateExecutable = false;
             cp.GenerateInMemory = true;
 
-            return cSharpCodeProvider.CompileAssemblyFromSource(cp, new string[] { source });
+            return cSharpCodeProvider.CompileAssemblyFromSource(cp, new string[] {source});
         }
 
         private string GenerateSource(RunnedTaskDto runnedTask)

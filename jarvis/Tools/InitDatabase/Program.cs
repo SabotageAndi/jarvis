@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using jarvis.common.domain;
@@ -55,7 +56,8 @@ namespace jarvis.tools.initDatabase
 
             var definedTask = new DefinedTask();
             definedTask.Name = "Test";
-            definedTask.RunCode = @"foreach(var parameter in parameters)
+            definedTask.RunCode =
+                @"foreach(var parameter in parameters)
                                     {
                                         System.Console.WriteLine(""{0}:{1}:{2}"", parameter.Category, parameter.Name, parameter.Value);
                                     }
@@ -94,7 +96,8 @@ namespace jarvis.tools.initDatabase
 
             var definedTask = new DefinedTask();
             definedTask.Name = "Test";
-            definedTask.RunCode = @"foreach(var parameter in parameters)
+            definedTask.RunCode =
+                @"foreach(var parameter in parameters)
                                     {
                                         System.Console.WriteLine(""{0}:{1}:{2}"", parameter.Category, parameter.Name, parameter.Value);
                                     }
@@ -112,8 +115,7 @@ namespace jarvis.tools.initDatabase
 
                                     return 0;";
             session.SaveOrUpdate(definedTask);
-            
-            
+
 
             var definedWorkflowStep = new DefinedWorkflowStep();
             definedWorkflowStep.DefinedTask = definedTask;

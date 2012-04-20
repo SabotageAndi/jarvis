@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
@@ -44,7 +45,6 @@ namespace jarvis.server.configuration
 
         public FluentConfiguration GetConfiguration()
         {
-
             return Fluently.Configure()
                 .Database(PostgreSQLConfiguration.Standard.ConnectionString(
                     builder =>
@@ -54,8 +54,6 @@ namespace jarvis.server.configuration
                                   m.FluentMappings.AddFromAssemblyOf<Entity>();
                                   m.FluentMappings.Conventions.AddFromAssemblyOf<Entity>();
                               });
-
-
         }
     }
 }

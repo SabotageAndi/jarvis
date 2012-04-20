@@ -13,19 +13,14 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
-using System.Collections.Generic;
-using System.IO;
+
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using RestSharp;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 using jarvis.server.repositories;
-using Action = jarvis.common.domain.Action;
 
 namespace jarvis.server.model
 {
@@ -58,7 +53,12 @@ namespace jarvis.server.model
             var actionDtoForClient = new ActionDto();
             actionDtoForClient.ActionGroup = ActionGroup.File;
             actionDtoForClient.Action = Action.File_Delete;
-            actionDtoForClient.Parameters.Add(new ParameterDto(){Category = "File", Name = "Path", Value = filePath});
+            actionDtoForClient.Parameters.Add(new ParameterDto()
+                                                  {
+                                                      Category = "File",
+                                                      Name = "Path",
+                                                      Value = filePath
+                                                  });
 
 
             var restClient = new JarvisRestClient();

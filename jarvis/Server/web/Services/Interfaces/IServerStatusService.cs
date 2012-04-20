@@ -13,13 +13,10 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
 using jarvis.common.dtos;
 
 namespace jarvis.server.web.services
@@ -31,5 +28,5 @@ namespace jarvis.server.web.services
         [OperationContract]
         [WebGet(UriTemplate = "server/status", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         ResultDto<Boolean> IsOnline();
-   }
+    }
 }

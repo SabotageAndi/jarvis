@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.IO;
 using System.Linq;
@@ -32,10 +33,14 @@ namespace jarvis.client.common.Actions.ActionHandlers
         public override bool CanHandleAction(ActionDto actionDto)
         {
             if (actionDto.ActionGroup != ActionGroup.File)
+            {
                 return false;
+            }
 
             if (actionDto.Action == Action.File_Delete)
+            {
                 return true;
+            }
 
             return false;
         }
@@ -51,20 +56,22 @@ namespace jarvis.client.common.Actions.ActionHandlers
             }
         }
 
+        public override ActionGroup ActionGroup
+        {
+            get { return ActionGroup.File; }
+        }
+
         private ActionResultDto DeleteFile(ActionDto actionDto)
         {
             var fileParameter = actionDto.Parameters.Where(p => p.Category == "File" && p.Name == "Path").SingleOrDefault();
             if (fileParameter == null)
+            {
                 throw new ParameterNotFoundException();
+            }
 
             File.Delete(fileParameter.Value);
 
             return new ActionResultDto();
-        }
-
-        public override ActionGroup ActionGroup
-        {
-            get { return ActionGroup.File;}
         }
     }
 }

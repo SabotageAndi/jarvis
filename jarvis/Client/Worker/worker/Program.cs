@@ -13,29 +13,20 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using Autofac;
-using Microsoft.CSharp;
-using RestSharp;
 using jarvis.client.common;
-using jarvis.client.common.Actions;
 using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
-using jarvis.common.dtos;
-using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.worker
 {
     internal class Program
     {
         private static IContainer _container;
-        
+
 
         private static void Bootstrap()
         {
@@ -49,7 +40,6 @@ namespace jarvis.client.worker
             _container = containerBuilder.Build();
         }
 
-     
 
         private static void Main(string[] args)
         {
@@ -68,7 +58,8 @@ namespace jarvis.client.worker
     {
         private readonly IWorkflowEngine _workflowEngine;
 
-        public WorkerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService, IWorkflowEngine workflowEngine) 
+        public WorkerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService,
+                            IWorkflowEngine workflowEngine)
             : base(clientService, configuration, serverStatusService)
         {
             _workflowEngine = workflowEngine;
@@ -86,6 +77,4 @@ namespace jarvis.client.worker
             }
         }
     }
-
-   
 }

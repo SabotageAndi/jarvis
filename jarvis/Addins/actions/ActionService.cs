@@ -35,7 +35,7 @@ namespace jarvis.addins.actions
     }
 
 
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode=AddressFilterMode.Any)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     public class ActionService : IActionService
     {
         private readonly IActionRegistry _actionRegistry;

@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Web.Mvc;
 using System.Web.Routing;
@@ -29,6 +30,11 @@ namespace jarvis.server.web
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected ServerStatus Status
+        {
+            get { return Bootstrapper.Container.Resolve<ServerStatus>(); }
+        }
+
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
@@ -64,17 +70,12 @@ namespace jarvis.server.web
 
             Status.State = State.Running;
         }
-        
-        protected ServerStatus Status
-        {
-            get { return Bootstrapper.Container.Resolve<ServerStatus>(); }
-        }
 
         public override void Init()
         {
             BeginRequest += OnBeginRequest;
             EndRequest += OnEndRequest;
-         
+
             base.Init();
         }
 

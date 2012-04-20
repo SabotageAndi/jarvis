@@ -13,11 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using RestSharp;
 using jarvis.common.dtos;
 
@@ -28,7 +24,7 @@ namespace jarvis.client.common.ServiceClients
         bool isOnline();
     }
 
-    public class ServerStatusService :  ServiceBase, IServerStatusService
+    public class ServerStatusService : ServiceBase, IServerStatusService
     {
         public ServerStatusService(IJarvisRestClient jarvisRestClient, IConfiguration configuration) : base(jarvisRestClient, configuration)
         {

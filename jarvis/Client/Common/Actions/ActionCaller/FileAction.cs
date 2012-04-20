@@ -13,15 +13,10 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
-using Action = jarvis.common.domain.Action;
 
 namespace jarvis.client.common.Actions.ActionCaller
 {
@@ -44,8 +39,18 @@ namespace jarvis.client.common.Actions.ActionCaller
             var actionDto = new ActionDto();
             actionDto.ActionGroup = ActionGroup.File;
             actionDto.Action = Action.File_Delete;
-            actionDto.Parameters.Add(new ParameterDto(){Category = "File", Name = "Path", Value = filePath});
-            actionDto.Parameters.Add(new ParameterDto(){Category = "File", Name = "Client", Value = clientName});
+            actionDto.Parameters.Add(new ParameterDto()
+                                         {
+                                             Category = "File",
+                                             Name = "Path",
+                                             Value = filePath
+                                         });
+            actionDto.Parameters.Add(new ParameterDto()
+                                         {
+                                             Category = "File",
+                                             Name = "Client",
+                                             Value = clientName
+                                         });
 
             _actionService.Execute(actionDto);
         }

@@ -13,11 +13,8 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
@@ -30,9 +27,9 @@ namespace jarvis.server.entities
         public void Accept(IAcceptanceCriteria<IPropertyInspector> criteria)
         {
             criteria.Expect(x => x.Property.PropertyType.IsEnum ||
-                (x.Property.PropertyType.IsGenericType &&
-                 x.Property.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
-                 x.Property.PropertyType.GetGenericArguments()[0].IsEnum)
+                                 (x.Property.PropertyType.IsGenericType &&
+                                  x.Property.PropertyType.GetGenericTypeDefinition() == typeof (Nullable<>) &&
+                                  x.Property.PropertyType.GetGenericArguments()[0].IsEnum)
                 );
         }
 

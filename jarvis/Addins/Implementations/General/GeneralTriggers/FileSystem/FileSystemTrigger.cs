@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using jarvis.addins.trigger;
@@ -25,19 +24,18 @@ using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Eventhandling.Parameter;
-using jarvis.common.logic;
 
 namespace jarvis.addins.generaltriggers.FileSystem
 {
     public class FileSystemTrigger : Trigger
     {
-        public IConfiguration Configuration { get; set; }
-        public ITriggerService TriggerService { get; set; }
-
         public FileSystemTrigger()
         {
             FileSystemWatchers = new List<FileSystemWatcher>();
         }
+
+        public IConfiguration Configuration { get; set; }
+        public ITriggerService TriggerService { get; set; }
 
         public List<FileSystemWatcher> FileSystemWatchers { get; set; }
 
@@ -47,10 +45,13 @@ namespace jarvis.addins.generaltriggers.FileSystem
             set { ConfigurationSection.IsEnabled.Value = Convert.ToString(value); }
         }
 
+        private FileSystemTriggerConfigurationSection ConfigurationSection
+        {
+            get { return Configuration.Configuration.GetSection("FileSystemTrigger") as FileSystemTriggerConfigurationSection; }
+        }
+
         public override void init()
         {
-            
-
             foreach (var fileSystemTriggerConfigElement in GetPathsToWatch())
             {
                 var fileSystemWatcher = new FileSystemWatcher();
@@ -116,16 +117,16 @@ namespace jarvis.addins.generaltriggers.FileSystem
 
 
             TriggerService.EventHappend(new EventDto()
-                                             {
-                                                 EventGroupTypes = EventGroupTypes.Filesystem,
-                                                 EventType = eventType,
-                                                 TriggeredDate = DateTime.UtcNow,
-                                                 Data = JsonParser.Serializer.Serialize(new FileEventParameterDto
-                                                                                            {
-                                                                                                Filename = e.Name,
-                                                                                                Path = Path.GetDirectoryName(e.FullPath)
-                                                                                            })
-                                             });
+                                            {
+                                                EventGroupTypes = EventGroupTypes.Filesystem,
+                                                EventType = eventType,
+                                                TriggeredDate = DateTime.UtcNow,
+                                                Data = JsonParser.Serializer.Serialize(new FileEventParameterDto
+                                                                                           {
+                                                                                               Filename = e.Name,
+                                                                                               Path = Path.GetDirectoryName(e.FullPath)
+                                                                                           })
+                                            });
         }
 
         public override void run()
@@ -144,11 +145,6 @@ namespace jarvis.addins.generaltriggers.FileSystem
             var fileSystemTriggerConfigElementCollection = ConfigurationSection.ConfigElementCollection;
 
             return fileSystemTriggerConfigElementCollection.Cast<FileSystemTriggerConfigElement>().ToList();
-        }
-
-        private FileSystemTriggerConfigurationSection ConfigurationSection
-        {
-            get { return Configuration.Configuration.GetSection("FileSystemTrigger") as FileSystemTriggerConfigurationSection; }
         }
     }
 }

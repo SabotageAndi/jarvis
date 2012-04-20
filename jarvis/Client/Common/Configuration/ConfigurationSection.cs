@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System.Configuration;
 
 namespace jarvis.client.common.Configuration
@@ -52,7 +53,7 @@ namespace jarvis.client.common.Configuration
         [ConfigurationProperty("AddinPath", IsRequired = true)]
         public JarvisConfigElement AddinPath
         {
-            get { return (JarvisConfigElement)this["AddinPath"]; }
+            get { return (JarvisConfigElement) this["AddinPath"]; }
         }
     }
 }

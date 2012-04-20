@@ -13,11 +13,8 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using jarvis.common.dtos;
 
 namespace jarvis.client.common.Actions.ActionCaller
@@ -29,10 +26,7 @@ namespace jarvis.client.common.Actions.ActionCaller
 
     public abstract class CompiledTask : ICompiledTask
     {
-      
         public IFileAction File { get; set; }
         public abstract int run(List<ParameterDto> parameters);
     }
-
-
 }

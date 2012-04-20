@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using jarvis.common.dtos.Management;
 using jarvis.server.common.Database;
@@ -41,10 +42,11 @@ namespace jarvis.server.model
 
         public ClientDto RegisterClient(ClientDto clientDto)
         {
-            Client client = _clientRepository.GetByName(clientDto.Name); ;
+            Client client = _clientRepository.GetByName(clientDto.Name);
+            ;
             if (client == null)
             {
-                client = _clientRepository.Create();    
+                client = _clientRepository.Create();
             }
 
             client.Name = clientDto.Name;

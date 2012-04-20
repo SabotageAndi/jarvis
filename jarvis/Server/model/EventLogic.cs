@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,8 +34,8 @@ namespace jarvis.server.model
 
     public class EventLogic : IEventLogic
     {
-        private readonly IEventRepository _eventRepository;
         private readonly IClientRepository _clientRepository;
+        private readonly IEventRepository _eventRepository;
 
         public EventLogic(IEventRepository eventRepository, IClientRepository clientRepository)
         {

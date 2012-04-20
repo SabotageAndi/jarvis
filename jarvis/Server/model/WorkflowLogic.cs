@@ -13,15 +13,13 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using System;
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Newtonsoft.Json;
 using jarvis.common.domain;
 using jarvis.common.dtos;
-using jarvis.common.dtos.Eventhandling.Parameter;
 using jarvis.common.dtos.Workflow;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Eventhandling;
@@ -37,8 +35,8 @@ namespace jarvis.server.model
 
     public class WorkflowLogic : IWorkflowLogic
     {
-        private readonly IRunnedNextWorkflowStepRepository _runnedNextWorkflowStepRepository;
         private readonly IParameterRepository _parameterRepository;
+        private readonly IRunnedNextWorkflowStepRepository _runnedNextWorkflowStepRepository;
         private readonly IRunnedTaskRepository _runnedTaskRepository;
         private readonly IRunnedWorkflowRepository _runnedWorkflowRepository;
         private readonly IRunnedWorkflowStepRepository _runnedWorkflowStepRepository;
@@ -47,7 +45,8 @@ namespace jarvis.server.model
 
         public WorkflowLogic(IWorkflowQueueRepository workflowQueueRepository, IRunnedWorkflowRepository runnedWorkflowRepository,
                              IRunnedWorkflowStepRepository runnedWorkflowStepRepository, IRunnedTaskRepository runnedTaskRepository,
-                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, IParameterRepository parameterRepository, ITransactionProvider transactionProvider)
+                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, IParameterRepository parameterRepository,
+                             ITransactionProvider transactionProvider)
         {
             _workflowQueueRepository = workflowQueueRepository;
             _runnedWorkflowRepository = runnedWorkflowRepository;
@@ -96,7 +95,7 @@ namespace jarvis.server.model
             return new ParameterDto()
                        {
                            Id = parameter.Id,
-                           Category =  parameter.Category,
+                           Category = parameter.Category,
                            Name = parameter.Name,
                            Value = parameter.Value,
                        };
@@ -107,9 +106,9 @@ namespace jarvis.server.model
             return new RunnedNextWorkflowStepDto()
                        {
                            Id = runnedNextWorkflowStep.Id,
-                           NextStepId = runnedNextWorkflowStep.NextStep == null ? (int?)null : runnedNextWorkflowStep.NextStep.Id,
+                           NextStepId = runnedNextWorkflowStep.NextStep == null ? (int?) null : runnedNextWorkflowStep.NextStep.Id,
                            PreviousStepId =
-                               runnedNextWorkflowStep.PreviousStep == null ? (int?)null : runnedNextWorkflowStep.PreviousStep.Id
+                               runnedNextWorkflowStep.PreviousStep == null ? (int?) null : runnedNextWorkflowStep.PreviousStep.Id
                        };
         }
 
@@ -148,16 +147,20 @@ namespace jarvis.server.model
 
         private void CreateParameters(RunnedWorkflow runnedWorkflow, Event eventInformation)
         {
-            var reader =(Newtonsoft.Json.Linq.JObject)JsonParser.NewtonsoftSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
+            var reader =
+                (Newtonsoft.Json.Linq.JObject)
+                JsonParser.NewtonsoftSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
 
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "Client",eventInformation.Client.Name));
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType", eventInformation.EventGroupType.ToString()));
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventType", eventInformation.EventType.ToString()));
+            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "Client", eventInformation.Client.Name));
+            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType",
+                                                                  eventInformation.EventGroupType.ToString()));
+            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventType",
+                                                                  eventInformation.EventType.ToString()));
 
             foreach (var row in reader)
             {
                 var parameter = _parameterRepository.Create(runnedWorkflow, "EventParameter", row.Key, row.Value.ToString());
-                
+
                 _parameterRepository.Save(parameter);
             }
         }

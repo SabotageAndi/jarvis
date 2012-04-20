@@ -38,7 +38,9 @@ namespace jarvis.addins.actions
         public void RegisterActionHandler(IActionHandler actionHandler)
         {
             if (ActionHandlers.ContainsKey(actionHandler.ActionGroup))
+            {
                 throw new ActionHandlerAlreadyRegisteredException();
+            }
 
             ActionHandlers.Add(actionHandler.ActionGroup, actionHandler);
         }
@@ -46,7 +48,9 @@ namespace jarvis.addins.actions
         public IActionHandler GetActionHandler(ActionGroup actionGroup)
         {
             if (!ActionHandlers.ContainsKey(actionGroup))
+            {
                 throw new ActionHandlerNotFoundException();
+            }
 
             return ActionHandlers[actionGroup];
         }
@@ -59,5 +63,4 @@ namespace jarvis.addins.actions
     public class ActionHandlerAlreadyRegisteredException : Exception
     {
     }
-
 }

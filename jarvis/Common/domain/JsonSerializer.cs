@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using Newtonsoft.Json;
 using RestSharp.Deserializers;
 using JsonSerializer = RestSharp.Serializers.JsonSerializer;
@@ -22,6 +23,8 @@ namespace jarvis.common.domain
     public class JsonParser
     {
         public static JsonSerializer Serializer = new JsonSerializer(NewtonsoftSerializer());
+
+        public static JsonDeserializer Deserializer = new JsonDeserializer();
 
         public static Newtonsoft.Json.JsonSerializer NewtonsoftSerializer()
         {
@@ -33,7 +36,5 @@ namespace jarvis.common.domain
                                                                  DateFormatHandling = DateFormatHandling.MicrosoftDateFormat,
                                                              });
         }
-
-        public static JsonDeserializer Deserializer = new JsonDeserializer();
     }
 }

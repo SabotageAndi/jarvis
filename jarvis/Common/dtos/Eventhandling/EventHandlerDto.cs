@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System.Runtime.Serialization;
 using jarvis.common.domain;
 
@@ -35,14 +36,14 @@ namespace jarvis.common.dtos.Eventhandling
 
         public EventGroupTypes? EventGroupTypes
         {
-            get { return (EventGroupTypes?)EventGroupTypesValue; }
-            set { EventGroupTypesValue = (int?)value; }
+            get { return (EventGroupTypes?) EventGroupTypesValue; }
+            set { EventGroupTypesValue = (int?) value; }
         }
 
         public EventType? EventType
         {
-            get { return (EventType?)EventTypeValue; }
-            set { EventTypeValue = (int?)value; }
+            get { return (EventType?) EventTypeValue; }
+            set { EventTypeValue = (int?) value; }
         }
     }
 }

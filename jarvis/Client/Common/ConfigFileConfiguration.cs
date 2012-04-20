@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Configuration;
 using jarvis.client.common.Configuration;
@@ -35,6 +36,11 @@ namespace jarvis.client.common
     {
         private System.Configuration.Configuration _configuration;
 
+        internal JarvisClientConfigurationSection JarvisClientConfigurationSection
+        {
+            get { return Configuration.GetSection(JarvisClientConfigurationSection.SectionName) as JarvisClientConfigurationSection; }
+        }
+
         public System.Configuration.Configuration Configuration
         {
             get
@@ -54,11 +60,6 @@ namespace jarvis.client.common
 
                 return _configuration;
             }
-        }
-
-        internal JarvisClientConfigurationSection JarvisClientConfigurationSection
-        {
-            get { return Configuration.GetSection(JarvisClientConfigurationSection.SectionName) as JarvisClientConfigurationSection; }
         }
 
         public int LocalPort

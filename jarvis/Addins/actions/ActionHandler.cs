@@ -30,6 +30,7 @@ namespace jarvis.addins.actions
     public abstract class ActionHandler : IActionHandler
     {
         public abstract ActionGroup ActionGroup { get; }
+
         public virtual bool CanHandleAction(ActionDto actionDto)
         {
             return true;
@@ -41,6 +42,5 @@ namespace jarvis.addins.actions
 
     public class ParameterNotFoundException : Exception
     {
-        
     }
 }
