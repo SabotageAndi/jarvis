@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkerClient.cs" />
     <Compile Include="WorkflowEngine.cs" />
     <EmbeddedResource Include="Template.generated.cs" />
   </ItemGroup>
@@ -75,6 +76,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Addins\actions\actions.csproj">
+      <Project>{30845b5a-6050-4952-a524-7b913c2c0aee}</Project>
+      <Name>actions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Common\dtos\dtos.csproj">
       <Project>{062b8a18-91a0-458e-9bf3-31b0a0ad4148}</Project>
       <Name>dtos</Name>

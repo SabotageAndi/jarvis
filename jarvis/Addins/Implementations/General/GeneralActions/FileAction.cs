@@ -14,26 +14,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
-namespace jarvis.client.common.Actions.ActionCaller
+namespace jarvis.addins.generalactions
 {
     public interface IFileAction
     {
         void Delete(string clientName, string filePath);
     }
 
-    public class FileAction : IFileAction
+    public class FileAction : actions.Action, IFileAction 
     {
-        private readonly ServiceClients.IActionService _actionService;
-
-        public FileAction(ServiceClients.IActionService actionService)
-        {
-            _actionService = actionService;
-        }
-
         public void Delete(string clientName, string filePath)
         {
             var actionDto = new ActionDto();
@@ -52,7 +46,12 @@ namespace jarvis.client.common.Actions.ActionCaller
                                              Value = clientName
                                          });
 
-            _actionService.Execute(actionDto);
+            ActionService.Execute(actionDto);
+        }
+
+        public override string PropertyName
+        {
+            get { return "File"; }
         }
     }
 }

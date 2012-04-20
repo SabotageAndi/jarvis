@@ -64,7 +64,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Actions\ActionCaller\CompiledTask.cs" />
-    <Compile Include="Actions\ActionCaller\FileAction.cs" />
     <Compile Include="CommonModule.cs" />
     <Compile Include="ConfigFileConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationSection.cs" />

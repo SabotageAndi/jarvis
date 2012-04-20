@@ -10,6 +10,8 @@ namespace jarvis.client.worker
 {
     public class %TASKNAME% : CompiledTask
     {
+        %INJECTEDPROPERTIES%
+
         public override int run(List<ParameterDto> parameters)
         {
             %RUNCODE%

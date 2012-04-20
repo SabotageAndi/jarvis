@@ -51,6 +51,7 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Action.cs" />
     <Compile Include="ActionHandler.cs" />
     <Compile Include="ActionModule.cs" />
     <Compile Include="ActionRegistry.cs" />

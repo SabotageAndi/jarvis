@@ -27,21 +27,33 @@ using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
+using Action = jarvis.addins.actions.Action;
 
 namespace jarvis.client.worker
 {
     public interface IWorkflowEngine
     {
         bool Do();
+        void AddAction(Action action);
     }
 
     internal class WorkflowEngine : IWorkflowEngine
     {
         private readonly IWorkflowService _workflowService;
+        private readonly IConfiguration _configuration;
 
-        public WorkflowEngine(IWorkflowService workflowService)
+        public WorkflowEngine(IWorkflowService workflowService, IConfiguration configuration)
         {
             _workflowService = workflowService;
+            _configuration = configuration;
+            Actions = new List<Action>();
+        }
+
+        protected List<Action> Actions { get; set; }
+
+        public void AddAction(Action action)
+        {
+            Actions.Add(action);   
         }
 
         public bool Do()
@@ -117,9 +129,16 @@ namespace jarvis.client.worker
 
         private int Run(CompilerResults compile, RunnedTaskDto runnedTask, List<ParameterDto> parameters)
         {
-            var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + runnedTask.Name) as CompiledTask;
+            var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + GetClassName(runnedTask)) as CompiledTask;
 
             Client.Container.InjectProperties(instance);
+
+            var properties = instance.GetType().GetProperties().Where(pi => pi.CanRead && pi.CanWrite);
+            foreach (var propertyInfo in properties)
+            {
+                var value = propertyInfo.GetValue(instance, null);
+                Client.Container.InjectProperties(value);
+            }
 
             return instance.run(parameters);
         }
@@ -127,29 +146,94 @@ namespace jarvis.client.worker
         private CompilerResults Compile(string source)
         {
             var cSharpCodeProvider = new CSharpCodeProvider();
-            var cp = new CompilerParameters();
-            cp.ReferencedAssemblies.Add("System.dll");
-            cp.ReferencedAssemblies.Add("System.Core.dll");
-            cp.ReferencedAssemblies.Add("System.Data.dll");
-            cp.ReferencedAssemblies.Add("System.Xml.dll");
-            cp.ReferencedAssemblies.Add("mscorlib.dll");
-            cp.ReferencedAssemblies.Add("System.Windows.Forms.dll");
-            cp.ReferencedAssemblies.Add("jarvis.client.worker.exe");
-            cp.ReferencedAssemblies.Add("jarvis.common.dtos.dll");
-            cp.ReferencedAssemblies.Add("jarvis.client.common.dll");
-            cp.CompilerOptions = "/target:library";
-            cp.GenerateExecutable = false;
-            cp.GenerateInMemory = true;
+            var compilerParameters = new CompilerParameters();
+          
+            AddReferenceAssemblies(compilerParameters, Assembly.GetEntryAssembly());
 
-            return cSharpCodeProvider.CompileAssemblyFromSource(cp, new string[] {source});
+            foreach (var action in Actions)
+            {
+                var assembly = action.GetType().Assembly;
+                var assemblyFilename = Path.Combine(_configuration.AddinPath, assembly.GetName().Name + ".dll");
+                
+                if (!compilerParameters.ReferencedAssemblies.Contains(assemblyFilename))
+                    compilerParameters.ReferencedAssemblies.Add(assemblyFilename);
+
+                AddReferenceAssemblies(compilerParameters, assembly);
+            }
+
+            compilerParameters.ReferencedAssemblies.Add(Assembly.GetEntryAssembly().GetName().Name + ".exe");
+            compilerParameters.CompilerOptions = "/target:library";
+            compilerParameters.GenerateExecutable = false;
+            compilerParameters.GenerateInMemory = true;
+
+            return cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, new string[] {source});
+        }
+
+        private static void AddReferenceAssemblies(CompilerParameters compilerParameters, Assembly assembly)
+        {
+            foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
+            {
+                var assemblyFilename = referencedAssembly.Name + ".dll";
+
+                if (!compilerParameters.ReferencedAssemblies.Contains(assemblyFilename))
+                {
+                    compilerParameters.ReferencedAssemblies.Add(assemblyFilename);
+                }
+            }
         }
 
         private string GenerateSource(RunnedTaskDto runnedTask)
         {
+            var source = AddClassName(SourceTemplate, runnedTask);
+            source = AddInjectedPropertyCode(source, runnedTask);
+            source = AddRunCode(source, runnedTask);
+
+            return source;
+        }
+
+        private string _sourceTemplate;
+        private string SourceTemplate
+        {
+            get
+            {
+                if (_sourceTemplate == null)
+                {
+                    _sourceTemplate = GetSourceTemplate();
+                }
+                return _sourceTemplate;
+            }
+        }
+
+        private static string GetSourceTemplate()
+        {
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("jarvis.client.worker.Template.generated.cs");
             var template = new StreamReader(stream).ReadToEnd();
+            return template;
+        }
 
-            return template.Replace("%RUNCODE%", runnedTask.RunCode).Replace("%TASKNAME%", runnedTask.Name);
+        private string AddRunCode(string source, RunnedTaskDto runnedTask)
+        {
+            return source.Replace("%RUNCODE%", runnedTask.RunCode);
+        }
+
+        private string AddInjectedPropertyCode(string source, RunnedTaskDto runnedTask)
+        {
+            var properties = String.Join(Environment.NewLine, (from a in Actions
+                             select "public " + a.GetType().FullName + " " + a.PropertyName + " { get; set; }"));
+
+            source = source.Replace("%INJECTEDPROPERTIES%", properties);
+
+            return source;
+        }
+
+        private string AddClassName(string source, RunnedTaskDto runnedTask)
+        {
+            return source.Replace("%TASKNAME%", GetClassName(runnedTask));
+        }
+
+        private static string GetClassName(RunnedTaskDto runnedTask)
+        {
+            return runnedTask.Name;
         }
 
         private IEnumerable<RunnedNextWorkflowStepDto> GetStepsAfterStep(RunnedWorkflowDto runnedWorkflowDto, int? currentStepId)

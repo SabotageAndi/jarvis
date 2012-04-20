@@ -26,7 +26,6 @@ namespace jarvis.client.common.Actions.ActionCaller
 
     public abstract class CompiledTask : ICompiledTask
     {
-        public IFileAction File { get; set; }
         public abstract int run(List<ParameterDto> parameters);
     }
 }

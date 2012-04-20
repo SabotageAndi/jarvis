@@ -42,10 +42,15 @@
     <Compile Include="..\..\..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FileAction.cs" />
     <Compile Include="FileActionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Client\Common\common.csproj">
+      <Project>{477fc303-4cde-403a-9d9b-a62935daed98}</Project>
+      <Name>common %28Client\common%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Common\domain\domain.csproj">
       <Project>{e8d20399-5a2c-45ac-ad29-69425d9e3507}</Project>
       <Name>domain</Name>

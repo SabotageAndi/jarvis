@@ -53,11 +53,6 @@ namespace jarvis.client
             _actionServiceHost.Start();
         }
 
-        private static IEnumerable<Type> GetAddinTypes(Assembly addin, Type addinType)
-        {
-            return addin.GetTypes().Where(type => !type.IsAbstract && type.IsSubclassOf(addinType));
-        }
-
         private void LoadActionHandlers()
         {
             foreach (var addin in Addins)

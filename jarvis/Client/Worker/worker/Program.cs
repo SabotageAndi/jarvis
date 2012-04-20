@@ -15,11 +15,9 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Threading;
 using Autofac;
 using jarvis.client.common;
 using jarvis.client.common.Actions.ActionCaller;
-using jarvis.client.common.ServiceClients;
 
 namespace jarvis.client.worker
 {
@@ -34,7 +32,6 @@ namespace jarvis.client.worker
             containerBuilder.RegisterModule<CommonModule>();
             containerBuilder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
             containerBuilder.RegisterType<WorkerClient>().As<Client>().SingleInstance();
-            containerBuilder.RegisterType<FileAction>().As<IFileAction>().SingleInstance();
             containerBuilder.RegisterType<WorkflowEngine>().As<IWorkflowEngine>().SingleInstance();
 
             _container = containerBuilder.Build();
@@ -51,30 +48,6 @@ namespace jarvis.client.worker
             client.Run();
 
             Console.ReadLine();
-        }
-    }
-
-    public class WorkerClient : Client
-    {
-        private readonly IWorkflowEngine _workflowEngine;
-
-        public WorkerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService,
-                            IWorkflowEngine workflowEngine)
-            : base(clientService, configuration, serverStatusService)
-        {
-            _workflowEngine = workflowEngine;
-        }
-
-        public override void Run()
-        {
-            base.Run();
-            while (true)
-            {
-                if (!_workflowEngine.Do())
-                {
-                    Thread.Sleep(10000);
-                }
-            }
         }
     }
 }
