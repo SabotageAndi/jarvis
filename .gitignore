@@ -30,7 +30,6 @@
 /jarvis/Client/EventHandler/EventHandler/obj
 /jarvis/Server/common/obj
 /jarvis/Server/common/bin
-
 /jarvis/Server/web/log-file.txt
 /jarvis/Client/Common/obj
 /jarvis/Client/Common/bin
@@ -43,3 +42,11 @@
 /jarvis/Client/.metadata
 /jarvis/Common/logic/obj
 /jarvis/Common/logic/bin
+/jarvis/Addins/compiled/*
+
+/jarvis/Addins/triggers/obj
+/jarvis/Addins/triggers/bin
+/jarvis/Addins/Implementations/General/GeneralTriggers/obj
+/jarvis/Addins/Implementations/General/GeneralTriggers/bin
+/jarvis/Client/client/obj
+/jarvis/Client/client/bin

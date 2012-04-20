@@ -24,10 +24,8 @@ namespace jarvis.client.common
         {
             base.Load(builder);
             builder.RegisterModule<ServiceClients.ServiceClientModule>();
-            builder.RegisterModule<Triggers.TriggerModule>();
             builder.RegisterModule<Actions.ActionModule>();
 
-            builder.RegisterType<Client>().SingleInstance();
             builder.RegisterType<JarvisRestClient>().As<IJarvisRestClient>().InstancePerDependency();
         }
     }

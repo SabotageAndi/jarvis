@@ -15,12 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Autofac;
 using jarvis.client.common.Actions;
 using jarvis.client.common.ServiceClients;
-using jarvis.client.common.Triggers;
-using jarvis.client.common.Triggers.FileSystemTrigger;
 using jarvis.common.domain;
 using jarvis.common.dtos.Management;
 using log4net;
@@ -32,12 +33,22 @@ namespace jarvis.client.common
     {
         public delegate void OnShutdownDelegate();
 
-        private static IContainer _container;
+        protected static IContainer _container;
 
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
         private readonly IServerStatusService _serverStatusService;
         private readonly ILog _log = LogManager.GetLogger("client");
+        public State State { get; set; }
+
+        protected readonly List<Assembly> _addins = new List<Assembly>();
+
+        public List<Assembly> Addins
+        {
+            get { return _addins; }
+        }
+
+      
 
         private ClientDto _clientDto;
 
@@ -49,8 +60,6 @@ namespace jarvis.client.common
             _serverStatusService = serverStatusService;
 
         }
-
-        public State State { get; set; }
 
         public static Client Current
         {
@@ -95,10 +104,11 @@ namespace jarvis.client.common
 
             _container = container;
 
+            AddAddInConfigHandling();
             LoadLocalClientInformation();
+            LoadAddins();
 
             CheckIfServerIsOnlineAndWait();
-
 
             if (!isAlreadyRegistered())
             {
@@ -112,6 +122,30 @@ namespace jarvis.client.common
 
            
             State = State.Initialized;
+        }
+
+        private void AddAddInConfigHandling()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
+                                                           {
+                                                               var requestedName = new AssemblyName(e.Name);
+
+                                                               var addinAssembly =
+                                                                   Addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault();
+                                                               return addinAssembly;
+                                                           };
+        }
+
+        private void LoadAddins()
+        {
+            var addinFiles = Directory.GetFiles(_configuration.AddinPath).Where(f => f.EndsWith(".dll"));
+
+            var basePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            foreach (var addinFile in addinFiles)
+            {
+                var path = Path.Combine(basePath, addinFile);
+                _addins.Add(Assembly.LoadFile(path));
+            }
         }
 
         private void CheckIfServerIsOnlineAndWait()

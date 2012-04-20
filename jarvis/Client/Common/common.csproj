@@ -71,7 +71,6 @@
     <Compile Include="Actions\ActionRegistry.cs" />
     <Compile Include="Actions\ActionService.cs" />
     <Compile Include="Actions\ActionServiceHost.cs" />
-    <Compile Include="Client.cs" />
     <Compile Include="CommonModule.cs" />
     <Compile Include="ConfigFileConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationSection.cs" />
@@ -84,17 +83,15 @@
     <Compile Include="ServiceClients\ServiceClientModule.cs" />
     <Compile Include="ServiceClients\TriggerService.cs" />
     <Compile Include="ServiceClients\WorkflowService.cs" />
-    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigElement.cs" />
-    <Compile Include="Triggers\FileSystemTrigger\FileSystemTrigger.cs" />
-    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigElementCollection.cs" />
-    <Compile Include="Triggers\FileSystemTrigger\FileSystemTriggerConfigurationSection.cs" />
-    <Compile Include="Triggers\Trigger.cs" />
-    <Compile Include="Triggers\TriggerModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Addins\triggers\triggers.csproj">
+      <Project>{bf64100f-2bda-4e53-9096-ecb8225099fe}</Project>
+      <Name>triggers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\domain\domain.csproj">
       <Project>{E8D20399-5A2C-45AC-AD29-69425D9E3507}</Project>
       <Name>domain</Name>

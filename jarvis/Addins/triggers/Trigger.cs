@@ -13,17 +13,19 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
-using Autofac;
-
-namespace jarvis.client.common.Triggers
+namespace jarvis.addins.trigger
 {
-    public class TriggerModule : Module
+    public abstract class Trigger
     {
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterType<FileSystemTrigger.FileSystemTrigger>();
+        public virtual bool IsEnabled { get; set; }
+        public abstract void run();
+        public abstract void deinit();
+        public abstract void init();
 
-            base.Load(builder);
+        public void configChanged()
+        {
+            deinit();
+            init();
         }
     }
 }

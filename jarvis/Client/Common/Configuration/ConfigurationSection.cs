@@ -22,10 +22,6 @@ namespace jarvis.client.common.Configuration
         private JarvisConfigElement _name;
         public const string SectionName = "client";
 
-        public JarvisClientConfigurationSection()
-        {
-        }
-
         [ConfigurationProperty("ServerUrl", IsRequired = true)]
         public JarvisConfigElement ServerUrl
         {
@@ -33,32 +29,11 @@ namespace jarvis.client.common.Configuration
             set { this["ServerUrl"] = value; }
         }
 
-        [ConfigurationProperty("TriggerService", IsRequired = true)]
-        public JarvisConfigElement TriggerService
-        {
-            get { return (JarvisConfigElement) this["TriggerService"]; }
-            set { this["TriggerService"] = value; }
-        }
-
-        [ConfigurationProperty("ClientService", IsRequired = true)]
-        public JarvisConfigElement ClientService
-        {
-            get { return (JarvisConfigElement) this["ClientService"]; }
-            set { this["ClientService"] = value; }
-        }
-
         [ConfigurationProperty("ClientId", IsRequired = false)]
         public JarvisConfigElement ClientId
         {
             get { return (JarvisConfigElement) this["ClientId"]; }
             set { this["ClientId"] = value; }
-        }
-
-        [ConfigurationProperty("ServerStatusService", IsRequired = true)]
-        public JarvisConfigElement ServerStatusService
-        {
-            get { return (JarvisConfigElement)this["ServerStatusService"]; }
-            set { this["ServerStatusService"] = value; }
         }
 
         [ConfigurationProperty("LocalPort", IsRequired = true)]
@@ -73,6 +48,12 @@ namespace jarvis.client.common.Configuration
         {
             get { return (JarvisConfigElement) this["Name"]; }
             set { this["Name"] = value; }
+        }
+
+        [ConfigurationProperty("AddinPath", IsRequired = true)]
+        public JarvisConfigElement AddinPath
+        {
+            get { return (JarvisConfigElement)this["AddinPath"]; }
         }
     }
 }

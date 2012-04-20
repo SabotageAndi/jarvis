@@ -16,7 +16,6 @@
 using System;
 using System.Configuration;
 using jarvis.client.common.Configuration;
-using jarvis.client.common.Triggers.FileSystemTrigger;
 
 namespace jarvis.client.common
 {
@@ -26,8 +25,9 @@ namespace jarvis.client.common
         string ServerUrl { get; }
         int? ClientId { get; set; }
         string Name { get; }
+        string AddinPath { get; }
+        System.Configuration.Configuration Configuration { get; }
 
-        bool FileSystemTriggerEnabled { get; set; }
         void Save();
     }
 
@@ -35,7 +35,7 @@ namespace jarvis.client.common
     {
         private System.Configuration.Configuration _configuration;
 
-        private System.Configuration.Configuration Configuration
+        public System.Configuration.Configuration Configuration
         {
             get
             {
@@ -61,11 +61,6 @@ namespace jarvis.client.common
             get { return Configuration.GetSection(JarvisClientConfigurationSection.SectionName) as JarvisClientConfigurationSection; }
         }
 
-        internal FileSystemTriggerConfigurationSection FileSystemTriggerConfigurationSection
-        {
-            get { return Configuration.GetSection(FileSystemTriggerConfigurationSection.SectionName) as FileSystemTriggerConfigurationSection; }
-        }
-
         public int LocalPort
         {
             get { return Convert.ToInt32(JarvisClientConfigurationSection.LocalPort.Value); }
@@ -74,6 +69,11 @@ namespace jarvis.client.common
         public string ServerUrl
         {
             get { return JarvisClientConfigurationSection.ServerUrl.Value; }
+        }
+
+        public string AddinPath
+        {
+            get { return JarvisClientConfigurationSection.AddinPath.Value; }
         }
 
         public void Save()
@@ -86,16 +86,6 @@ namespace jarvis.client.common
         public string Name
         {
             get { return JarvisClientConfigurationSection.Name.Value; }
-        }
-
-        public bool FileSystemTriggerEnabled
-        {
-            get
-            {
-                return FileSystemTriggerConfigurationSection != null &&
-                       Convert.ToBoolean(FileSystemTriggerConfigurationSection.IsEnabled.Value);
-            }
-            set { FileSystemTriggerConfigurationSection.IsEnabled.Value = value.ToString(); }
         }
 
         public int? ClientId

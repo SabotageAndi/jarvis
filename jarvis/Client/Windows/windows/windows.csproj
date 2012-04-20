@@ -109,6 +109,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Addins\triggers\triggers.csproj">
+      <Project>{bf64100f-2bda-4e53-9096-ecb8225099fe}</Project>
+      <Name>triggers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\client\client.csproj">
+      <Project>{8e6da788-5ee6-4140-a1af-f794051e54c0}</Project>
+      <Name>client %28Client\client%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\common.csproj">
       <Project>{477FC303-4CDE-403A-9D9B-A62935DAED98}</Project>
       <Name>common %28Client\common%29</Name>

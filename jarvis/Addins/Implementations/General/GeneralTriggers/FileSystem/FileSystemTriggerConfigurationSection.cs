@@ -13,10 +13,11 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System.Configuration;
 using jarvis.client.common.Configuration;
 
-namespace jarvis.client.common.Triggers.FileSystemTrigger
+namespace jarvis.addins.generaltriggers.FileSystem
 {
     public class FileSystemTriggerConfigurationSection : ConfigurationSection
     {

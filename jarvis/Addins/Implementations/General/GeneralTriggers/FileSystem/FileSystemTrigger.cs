@@ -13,26 +13,29 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
+using jarvis.addins.trigger;
+using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Eventhandling.Parameter;
+using jarvis.common.logic;
 
-namespace jarvis.client.common.Triggers.FileSystemTrigger
+namespace jarvis.addins.generaltriggers.FileSystem
 {
     public class FileSystemTrigger : Trigger
     {
-        private readonly IConfiguration _configuration;
-        private readonly ITriggerService _triggerService;
+        public IConfiguration Configuration { get; set; }
+        public ITriggerService TriggerService { get; set; }
 
-        public FileSystemTrigger(IConfiguration configuration, ITriggerService triggerService)
+        public FileSystemTrigger()
         {
-            _configuration = configuration;
-            _triggerService = triggerService;
             FileSystemWatchers = new List<FileSystemWatcher>();
         }
 
@@ -40,12 +43,14 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
 
         public override bool IsEnabled
         {
-            get { return _configuration.FileSystemTriggerEnabled; }
-            set { _configuration.FileSystemTriggerEnabled = value; }
+            get { return Convert.ToBoolean(ConfigurationSection.IsEnabled.Value); }
+            set { ConfigurationSection.IsEnabled.Value = Convert.ToString(value); }
         }
 
         public override void init()
         {
+            
+
             foreach (var fileSystemTriggerConfigElement in GetPathsToWatch())
             {
                 var fileSystemWatcher = new FileSystemWatcher();
@@ -110,7 +115,7 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
             }
 
 
-            _triggerService.EventHappend(new EventDto()
+            TriggerService.EventHappend(new EventDto()
                                              {
                                                  EventGroupTypes = EventGroupTypes.Filesystem,
                                                  EventType = eventType,
@@ -136,16 +141,14 @@ namespace jarvis.client.common.Triggers.FileSystemTrigger
 
         private List<FileSystemTriggerConfigElement> GetPathsToWatch()
         {
-            var configFileConfig = _configuration as ConfigFileConfiguration;
-            if (configFileConfig != null)
-            {
-                var fileSystemTriggerConfigElementCollection =
-                    configFileConfig.FileSystemTriggerConfigurationSection.ConfigElementCollection;
+            var fileSystemTriggerConfigElementCollection = ConfigurationSection.ConfigElementCollection;
 
-                return fileSystemTriggerConfigElementCollection.Cast<FileSystemTriggerConfigElement>().ToList();
-            }
+            return fileSystemTriggerConfigElementCollection.Cast<FileSystemTriggerConfigElement>().ToList();
+        }
 
-            return new List<FileSystemTriggerConfigElement>();
+        private FileSystemTriggerConfigurationSection ConfigurationSection
+        {
+            get { return Configuration.Configuration.GetSection("FileSystemTrigger") as FileSystemTriggerConfigurationSection; }
         }
     }
 }
