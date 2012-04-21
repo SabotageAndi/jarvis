@@ -22,6 +22,7 @@ using Autofac.Integration.Mvc;
 using jarvis.common.domain;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
+using jarvis.server.model.ActionHandling;
 
 namespace jarvis.server.web
 {
@@ -68,7 +69,15 @@ namespace jarvis.server.web
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+            LoadAddins();
+
             Status.State = State.Running;
+        }
+
+        private void LoadAddins()
+        {
+            var actionLogic = Bootstrapper.Container.Resolve<IActionLogic>();
+            actionLogic.LoadServerActions();
         }
 
         public override void Init()

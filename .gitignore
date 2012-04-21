@@ -55,3 +55,7 @@
 /jarvis/Addins/Implementations/General/GeneralActions/bin
 /jarvis/Addins/actions/obj
 /jarvis/Addins/actions/bin
+/jarvis/Addins/Implementations/General/GeneralServerActions/bin
+/jarvis/Addins/Implementations/General/GeneralServerActions/obj
+/jarvis/Addins/serverActions/obj
+/jarvis/Addins/serverActions/bin

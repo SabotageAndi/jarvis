@@ -49,7 +49,6 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActionEnums.cs" />
     <Compile Include="ClientTypeEnum.cs" />
     <Compile Include="EventEnums.cs" />
     <Compile Include="JsonSerializer.cs" />

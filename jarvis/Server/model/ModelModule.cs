@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Autofac;
+using jarvis.server.model.ActionHandling;
 using jarvis.server.repositories;
 
 namespace jarvis.server.model
@@ -31,6 +32,7 @@ namespace jarvis.server.model
             builder.RegisterType<WorkflowLogic>().As<IWorkflowLogic>().InstancePerDependency();
             builder.RegisterType<ClientLogic>().As<IClientLogic>().InstancePerDependency();
             builder.RegisterType<ActionLogic>().As<IActionLogic>().InstancePerDependency();
+            builder.RegisterType<ActionRegistry>().As<IActionRegistry>().SingleInstance();
 
             base.Load(builder);
         }

@@ -49,6 +49,7 @@
       <HintPath>..\..\packages\RestSharp.102.7\lib\net35\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -60,7 +61,8 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActionLogic.cs" />
+    <Compile Include="ActionHandling\ActionLogic.cs" />
+    <Compile Include="ActionHandling\ActionRegistry.cs" />
     <Compile Include="ClientLogic.cs" />
     <Compile Include="EventHandlingLogic.cs" />
     <Compile Include="ModelModule.cs" />
@@ -70,6 +72,10 @@
     <Compile Include="WorkflowLogic.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Addins\serverActions\serverActions.csproj">
+      <Project>{1DB5C402-31DF-4AB3-95AA-6565C63A018E}</Project>
+      <Name>serverActions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\domain\domain.csproj">
       <Project>{E8D20399-5A2C-45AC-AD29-69425D9E3507}</Project>
       <Name>domain</Name>
