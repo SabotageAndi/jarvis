@@ -23,17 +23,17 @@ namespace jarvis.addins.actions
     public interface IActionRegistry
     {
         void RegisterActionHandler(IActionHandler actionHandler);
-        IActionHandler GetActionHandler(ActionGroup actionGroup);
+        IActionHandler GetActionHandler(string actionGroup);
     }
 
     public class ActionRegistry : IActionRegistry
     {
         public ActionRegistry()
         {
-            ActionHandlers = new Dictionary<ActionGroup, IActionHandler>();
+            ActionHandlers = new Dictionary<string, IActionHandler>();
         }
 
-        private Dictionary<ActionGroup, IActionHandler> ActionHandlers { get; set; }
+        private Dictionary<string, IActionHandler> ActionHandlers { get; set; }
 
         public void RegisterActionHandler(IActionHandler actionHandler)
         {
@@ -45,7 +45,7 @@ namespace jarvis.addins.actions
             ActionHandlers.Add(actionHandler.ActionGroup, actionHandler);
         }
 
-        public IActionHandler GetActionHandler(ActionGroup actionGroup)
+        public IActionHandler GetActionHandler(string actionGroup)
         {
             if (!ActionHandlers.ContainsKey(actionGroup))
             {

@@ -16,13 +16,13 @@
 
 namespace jarvis.common.domain
 {
-    public enum ActionGroup
-    {
-        File = 1,
-    }
+    //public enum ActionGroup
+    //{
+    //    File = 1,
+    //}
 
-    public enum Action
-    {
-        File_Delete = 1,
-    }
+    //public enum Action
+    //{
+    //    File_Delete = 1,
+    //}
 }

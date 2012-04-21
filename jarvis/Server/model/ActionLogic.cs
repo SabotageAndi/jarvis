@@ -41,7 +41,7 @@ namespace jarvis.server.model
         public ActionResultDto Execute(ActionDto actionDto)
         {
             //TODO: Factory/Registry/kA
-            if (!(actionDto.ActionGroup == ActionGroup.File && actionDto.Action == Action.File_Delete))
+            if (!(actionDto.ActionGroup == "File" && actionDto.Action == "Delete"))
             {
                 return null;
             }
@@ -51,8 +51,8 @@ namespace jarvis.server.model
             var client = _clientRepository.GetByName(clientName);
 
             var actionDtoForClient = new ActionDto();
-            actionDtoForClient.ActionGroup = ActionGroup.File;
-            actionDtoForClient.Action = Action.File_Delete;
+            actionDtoForClient.ActionGroup = "File";
+            actionDtoForClient.Action = "Delete";
             actionDtoForClient.Parameters.Add(new ParameterDto()
                                                   {
                                                       Category = "File",

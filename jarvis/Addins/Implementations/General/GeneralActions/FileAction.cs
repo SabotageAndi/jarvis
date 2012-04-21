@@ -31,8 +31,8 @@ namespace jarvis.addins.generalactions
         public void Delete(string clientName, string filePath)
         {
             var actionDto = new ActionDto();
-            actionDto.ActionGroup = ActionGroup.File;
-            actionDto.Action = Action.File_Delete;
+            actionDto.ActionGroup = FileActionConstants.ActionGroup;
+            actionDto.Action = FileActionConstants.Action_Delete;
             actionDto.Parameters.Add(new ParameterDto()
                                          {
                                              Category = "File",

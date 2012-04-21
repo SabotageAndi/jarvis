@@ -27,8 +27,8 @@ namespace jarvis.common.dtos.Actionhandling
             Parameters = new List<ParameterDto>();
         }
 
-        public ActionGroup ActionGroup { get; set; }
-        public Action Action { get; set; }
+        public string ActionGroup { get; set; }
+        public string Action { get; set; }
         public List<ParameterDto> Parameters { get; set; }
         public ClientDto Client { get; set; }
     }

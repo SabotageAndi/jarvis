@@ -22,14 +22,14 @@ namespace jarvis.addins.actions
 {
     public interface IActionHandler
     {
-        ActionGroup ActionGroup { get; }
+        string ActionGroup { get; }
         bool CanHandleAction(ActionDto actionDto);
         ActionResultDto DoAction(ActionDto actionDto);
     }
 
     public abstract class ActionHandler : IActionHandler
     {
-        public abstract ActionGroup ActionGroup { get; }
+        public abstract string ActionGroup { get; }
 
         public virtual bool CanHandleAction(ActionDto actionDto)
         {

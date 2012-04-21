@@ -18,11 +18,9 @@ using System;
 using System.IO;
 using System.Linq;
 using jarvis.addins.actions;
-using jarvis.common.domain;
 using jarvis.common.dtos.Actionhandling;
-using Action = jarvis.common.domain.Action;
 
-namespace jarvis.client.common.Actions.ActionHandlers
+namespace jarvis.addins.generalactions
 {
     public interface IFileActionHandler : IActionHandler
     {
@@ -32,12 +30,12 @@ namespace jarvis.client.common.Actions.ActionHandlers
     {
         public override bool CanHandleAction(ActionDto actionDto)
         {
-            if (actionDto.ActionGroup != ActionGroup.File)
+            if (actionDto.ActionGroup != FileActionConstants.ActionGroup)
             {
                 return false;
             }
 
-            if (actionDto.Action == Action.File_Delete)
+            if (actionDto.Action == FileActionConstants.Action_Delete)
             {
                 return true;
             }
@@ -49,16 +47,16 @@ namespace jarvis.client.common.Actions.ActionHandlers
         {
             switch (actionDto.Action)
             {
-                case Action.File_Delete:
+                case FileActionConstants.Action_Delete:
                     return DeleteFile(actionDto);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        public override ActionGroup ActionGroup
+        public override string ActionGroup
         {
-            get { return ActionGroup.File; }
+            get { return "File"; }
         }
 
         private ActionResultDto DeleteFile(ActionDto actionDto)
