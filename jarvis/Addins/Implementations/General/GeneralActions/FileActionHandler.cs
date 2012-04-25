@@ -17,7 +17,9 @@
 using System;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using jarvis.addins.actions;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
 namespace jarvis.addins.generalactions
@@ -30,17 +32,7 @@ namespace jarvis.addins.generalactions
     {
         public override bool CanHandleAction(ActionDto actionDto)
         {
-            if (actionDto.ActionGroup != FileActionConstants.ActionGroup)
-            {
-                return false;
-            }
-
-            if (actionDto.Action == FileActionConstants.Action_Delete)
-            {
-                return true;
-            }
-
-            return false;
+            return actionDto.ActionGroup == FileActionConstants.ActionGroup;
         }
 
         public override ActionResultDto DoAction(ActionDto actionDto)
@@ -49,9 +41,70 @@ namespace jarvis.addins.generalactions
             {
                 case FileActionConstants.Action_Delete:
                     return DeleteFile(actionDto);
+                case FileActionConstants.Action_Copy:
+                    return CopyFile(actionDto);
+                case FileActionConstants.Action_Create:
+                    return CreateFile(actionDto);
+                case FileActionConstants.Action_Move:
+                    return MoveFile(actionDto);
+                case FileActionConstants.Action_Read:
+                    return ReadFile(actionDto);
+                case FileActionConstants.Action_Write:
+                    return WriteFile(actionDto);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private ActionResultDto ReadFile(ActionDto actionDto)
+        {
+            var fileParameter = GetParameter(actionDto, "File", "Path");
+
+            var data = File.ReadAllBytes(fileParameter.Value);
+
+            return new ActionResultDto() { Data = JsonSerializer.Serialize(data) };
+        }
+
+        private ActionResultDto WriteFile(ActionDto actionDto)
+        {
+            var fileParameter = GetParameter(actionDto, "File", "Path");
+            var dataParameter = GetParameter(actionDto, "File", "Data");
+
+            var data = JsonDeserializer.Deserialize<byte[]>(new JsonTextReader(new StringReader(dataParameter.Value)));
+
+            File.WriteAllBytes(fileParameter.Value, data);
+
+            return new ActionResultDto();
+        }
+
+        private ActionResultDto CreateFile(ActionDto actionDto)
+        {
+            var fileParameter = GetParameter(actionDto, "File", "Path");
+
+            File.Create(fileParameter.Value);
+
+            return new ActionResultDto();
+        }
+
+        private ActionResultDto CopyFile(ActionDto actionDto)
+        {
+            var targetPathParameter = GetParameter(actionDto, "File", "TargetPath");
+            var sourePathParameter = GetParameter(actionDto, "File", "SourcePath");
+
+
+            File.Copy(sourePathParameter.Value, targetPathParameter.Value);
+
+            return new ActionResultDto();
+        }
+
+        private ActionResultDto MoveFile(ActionDto actionDto)
+        {
+            var targetPathParameter = GetParameter(actionDto, "File", "TargetPath");
+            var sourePathParameter = GetParameter(actionDto, "File", "SourcePath");
+
+            File.Move(sourePathParameter.Value, targetPathParameter.Value);
+
+            return new ActionResultDto();
         }
 
         public override string ActionGroup
@@ -61,11 +114,7 @@ namespace jarvis.addins.generalactions
 
         private ActionResultDto DeleteFile(ActionDto actionDto)
         {
-            var fileParameter = actionDto.Parameters.Where(p => p.Category == "File" && p.Name == "Path").SingleOrDefault();
-            if (fileParameter == null)
-            {
-                throw new ParameterNotFoundException();
-            }
+            var fileParameter = GetParameter(actionDto, "File", "Path");
 
             File.Delete(fileParameter.Value);
 

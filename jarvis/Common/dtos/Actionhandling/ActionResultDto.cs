@@ -18,5 +18,6 @@ namespace jarvis.common.dtos.Actionhandling
 {
     public class ActionResultDto
     {
+        public string Data { get; set; }
     }
 }

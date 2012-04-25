@@ -15,7 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
+using RestSharp.Serializers;
 using jarvis.common.domain;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
 namespace jarvis.addins.actions
@@ -37,6 +40,27 @@ namespace jarvis.addins.actions
         }
 
         public abstract ActionResultDto DoAction(ActionDto actionDto);
+
+        protected static ParameterDto GetParameter(ActionDto actionDto, string category, string name)
+        {
+            var result = actionDto.Parameters.Where(p => p.Category == category && p.Name == name).SingleOrDefault();
+            if (result== null)
+            {
+                throw new ParameterNotFoundException();
+            }
+
+            return result;
+        }
+
+        protected JsonSerializer JsonSerializer
+        {
+            get { return new JsonSerializer(JsonParser.JsonSerializer()); }
+        }
+
+        protected Newtonsoft.Json.JsonSerializer JsonDeserializer
+        {
+            get { return JsonParser.JsonSerializer(); }
+        }
     }
 
 

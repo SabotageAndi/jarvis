@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.IO;
+using Newtonsoft.Json;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos;
@@ -24,15 +26,110 @@ namespace jarvis.addins.generalactions
     public interface IFileAction
     {
         void Delete(string clientName, string filePath);
+        void Create(string clientName, string filePath);
+        void Move(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath);
+        void Copy(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath);
+        byte[] Read(string sourceClientName, string filePath);
+        void Write(string sourceClientName, string filePath, byte[] data);
     }
 
     public class FileAction : actions.Action, IFileAction 
     {
         public void Delete(string clientName, string filePath)
         {
+            ExecuteFileOperation(clientName, filePath, FileActionConstants.Action_Delete);
+        }
+
+        public void Create(string clientName, string filePath)
+        {
+            ExecuteFileOperation(clientName, filePath, FileActionConstants.Action_Create);
+        }
+
+        public void Move(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath)
+        {
+            ExecuteFileOperation(sourceClientName, sourceFilePath, targetClientName, targetFilePath, FileActionConstants.Action_Move);
+        }
+
+        public void Copy(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath)
+        {
+            ExecuteFileOperation(sourceClientName, sourceFilePath, targetClientName, targetFilePath, FileActionConstants.Action_Copy);
+        }
+
+        public byte[] Read(string sourceClientName, string filePath)
+        {
+            var result = ExecuteFileOperation(sourceClientName, filePath, FileActionConstants.Action_Read);
+
+            return JsonDeserializer.Deserialize<byte[]>(new JsonTextReader(new StringReader(result.Data)));
+        }
+
+        public void Write(string sourceClientName, string filePath, byte[] data)
+        {
+            var actionDto = CreateActionDto(sourceClientName, filePath, FileActionConstants.Action_Write);
+            actionDto.Parameters.Add(new ParameterDto()
+                                         {
+                                             Category = "File",
+                                             Name = "Data",
+                                             Value =  JsonSerializer.Serialize(data)
+                                         });
+
+            ActionService.Execute(actionDto);
+        }
+
+        private ActionResultDto ExecuteFileOperation(string sourceClientName, string sourceFilePath, string action)
+        {
+            var actionDto = CreateActionDto(sourceClientName, sourceFilePath, action);
+
+            return ActionService.Execute(actionDto);
+        }
+
+        private ActionResultDto ExecuteFileOperation(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath, string action)
+        {
+            var actionDto = CreateActionDto(sourceClientName, sourceFilePath, targetClientName, targetFilePath, action);
+
+            return ActionService.Execute(actionDto);
+        }
+
+        private ActionDto CreateActionDto(string sourceClientName, string sourceFilePath, string targetClientName, string targetFilePath, string action)
+        {
             var actionDto = new ActionDto();
             actionDto.ActionGroup = FileActionConstants.ActionGroup;
-            actionDto.Action = FileActionConstants.Action_Delete;
+            actionDto.Action = action;
+            actionDto.Parameters.Add(new ParameterDto()
+                                         {
+                                             Category = "File",
+                                             Name = "SourceClient",
+                                             Value = sourceClientName
+                                         });
+            actionDto.Parameters.Add(new ParameterDto()
+            {
+                Category = "File",
+                Name = "SourcePath",
+                Value = sourceFilePath
+            });
+
+            actionDto.Parameters.Add(new ParameterDto()
+            {
+                Category = "File",
+                Name = "TargetClient",
+                Value = targetClientName
+            });
+            actionDto.Parameters.Add(new ParameterDto()
+            {
+                Category = "File",
+                Name = "TargetPath",
+                Value = targetFilePath
+            });
+            return actionDto;
+
+
+
+        }
+
+        private static ActionDto CreateActionDto(string clientName, string filePath, string action)
+        {
+            var actionDto = new ActionDto();
+            actionDto.ActionGroup = FileActionConstants.ActionGroup;
+            actionDto.Action = action;
             actionDto.Parameters.Add(new ParameterDto()
                                          {
                                              Category = "File",
@@ -45,8 +142,7 @@ namespace jarvis.addins.generalactions
                                              Name = "Client",
                                              Value = clientName
                                          });
-
-            ActionService.Execute(actionDto);
+            return actionDto;
         }
 
         public override string PropertyName

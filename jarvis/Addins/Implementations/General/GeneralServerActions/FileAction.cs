@@ -5,21 +5,16 @@ using System.Text;
 using RestSharp;
 using jarvis.addins.serverActions;
 using jarvis.client.common.ServiceClients;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
 namespace jarvis.addins.generalserveractions
 {
-    public class FileAction : ServerAction 
+    public class FileAction : ServerAction
     {
         public override bool CanExecute(ActionDto actionDto)
         {
-            if (!(actionDto.ActionGroup == "File" && actionDto.Action == "Delete"))
-            {
-                return false;
-            }
-
-            return true;
-
+            return actionDto.ActionGroup == "File";
         }
 
         public override string ActionGroup
@@ -29,7 +24,54 @@ namespace jarvis.addins.generalserveractions
 
         public override ActionResultDto Execute(ActionDto actionDto)
         {
-            
+            if (actionDto.Action == "Move" || actionDto.Action == "Copy")
+            {
+                var sourceClientParameter = GetParameter(actionDto, "File", "SourceClient");
+                var targetClientParameter = GetParameter(actionDto, "File", "TargetClient");
+
+                if (sourceClientParameter.Value == targetClientParameter.Value)
+                {
+                    return ExecuteFileAction(actionDto);
+                }
+
+                var sourcePathParameter = GetParameter(actionDto, "File", "SourcePath");
+                var targetPathParameter = GetParameter(actionDto, "File", "TargetPath");
+
+                var readDataAction = new ActionDto()
+                                         {
+                                             ActionGroup = "File",
+                                             Action = "Read",
+                                             Parameters = new List<ParameterDto>()
+                                                              {
+                                                                  new ParameterDto() { Category = "File", Name = "Path", Value = sourcePathParameter.Value }
+                                                              }
+                                         };
+
+                var readDataResult = ExecuteFileAction(readDataAction);
+
+                var writeDataAction = new ActionDto()
+                                        {
+                                            ActionGroup = "File",
+                                            Action = "Write",
+                                            Parameters = new List<ParameterDto>()
+                                                                                      {
+                                                                                          new ParameterDto() { Category = "File", Name = "Path", Value = targetPathParameter.Value },
+                                                                                          new ParameterDto() {Category = "File", Name = "Data", Value = readDataResult.Data}
+                                                                                      }
+                                        };
+
+                ExecuteFileAction(writeDataAction);
+
+                return new ActionResultDto();
+            }
+            else
+            {
+                return ExecuteFileAction(actionDto);
+            }
+        }
+
+        private ActionResultDto ExecuteFileAction(ActionDto actionDto)
+        {
             var clientName = actionDto.Parameters.Where(p => p.Name == "Client").Single().Value;
             var client = ClientRepository.GetByName(clientName);
 
