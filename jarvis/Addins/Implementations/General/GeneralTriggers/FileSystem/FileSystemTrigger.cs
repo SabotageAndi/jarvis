@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RestSharp.Serializers;
 using jarvis.addins.trigger;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
@@ -115,13 +116,14 @@ namespace jarvis.addins.generaltriggers.FileSystem
                     return;
             }
 
+            var jsonSerializer = new JsonSerializer(JsonParser.JsonSerializer());
 
             TriggerService.EventHappend(new EventDto()
                                             {
                                                 EventGroupTypes = EventGroupTypes.Filesystem,
                                                 EventType = eventType,
                                                 TriggeredDate = DateTime.UtcNow,
-                                                Data = JsonParser.Serializer.Serialize(new FileEventParameterDto
+                                                Data =  jsonSerializer.Serialize(new FileEventParameterDto
                                                                                            {
                                                                                                Filename = e.Name,
                                                                                                Path = Path.GetDirectoryName(e.FullPath)

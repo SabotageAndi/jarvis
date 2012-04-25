@@ -15,18 +15,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Newtonsoft.Json;
-using RestSharp.Deserializers;
-using JsonSerializer = RestSharp.Serializers.JsonSerializer;
 
 namespace jarvis.common.domain
 {
     public class JsonParser
     {
-        public static JsonSerializer Serializer = new JsonSerializer(NewtonsoftSerializer());
-
-        public static JsonDeserializer Deserializer = new JsonDeserializer();
-
-        public static Newtonsoft.Json.JsonSerializer NewtonsoftSerializer()
+        public static JsonSerializer JsonSerializer()
         {
             return Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()
                                                              {

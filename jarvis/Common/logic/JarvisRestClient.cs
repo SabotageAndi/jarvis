@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using RestSharp;
+using RestSharp.Serializers;
 using jarvis.common.domain;
 
 namespace jarvis.client.common.ServiceClients
@@ -40,7 +41,7 @@ namespace jarvis.client.common.ServiceClients
         public RestRequest CreateRequest(string resource, Method method)
         {
             var restRequest = new RestRequest(resource, method);
-            restRequest.JsonSerializer = JsonParser.Serializer;
+            restRequest.JsonSerializer = new JsonSerializer(JsonParser.JsonSerializer());
             restRequest.RequestFormat = DataFormat.Json;
             return restRequest;
         }

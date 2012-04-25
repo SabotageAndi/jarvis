@@ -149,7 +149,7 @@ namespace jarvis.server.model
         {
             var reader =
                 (Newtonsoft.Json.Linq.JObject)
-                JsonParser.NewtonsoftSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
+                JsonParser.JsonSerializer().Deserialize(new JsonTextReader(new StringReader(eventInformation.Data)));
 
             _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "Client", eventInformation.Client.Name));
             _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType",
