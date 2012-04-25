@@ -20,9 +20,9 @@ namespace jarvis.common.domain
 {
     public class JsonParser
     {
-        public static JsonSerializer JsonSerializer()
+        public static JsonSerializer GetJsonSerializer()
         {
-            return Newtonsoft.Json.JsonSerializer.Create(new JsonSerializerSettings()
+            return JsonSerializer.Create(new JsonSerializerSettings()
                                                              {
                                                                  MissingMemberHandling = MissingMemberHandling.Ignore,
                                                                  NullValueHandling = NullValueHandling.Include,

@@ -16,12 +16,12 @@ namespace jarvis.addins.actions
 
         protected JsonSerializer JsonSerializer
         {
-            get { return new JsonSerializer(JsonParser.JsonSerializer()); }
+            get { return new JsonSerializer(JsonParser.GetJsonSerializer()); }
         }
 
         protected Newtonsoft.Json.JsonSerializer JsonDeserializer
         {
-            get { return JsonParser.JsonSerializer(); }
+            get { return JsonParser.GetJsonSerializer(); }
         }
     }
 }

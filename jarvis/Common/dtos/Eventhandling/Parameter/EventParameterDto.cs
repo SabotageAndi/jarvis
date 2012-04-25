@@ -16,8 +16,14 @@
 
 namespace jarvis.common.dtos.Eventhandling.Parameter
 {
+    //Refactor
     public class EventParameterDto
     {
+        public EventParameterDto()
+        {
+            ParameterType = GetType().Name;
+        }
+
         public string ParameterType { get; set; }
     }
 }

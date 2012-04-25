@@ -16,11 +16,14 @@
 
 namespace jarvis.common.domain
 {
+    //TODO Make to Strings
     public enum EventGroupTypes
     {
-        Filesystem = 1
+        Filesystem = 1,
+        Irc = 2,
     }
 
+    //TODO Make to Strings
     public enum EventType
     {
         Add = 1,

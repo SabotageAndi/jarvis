@@ -23,6 +23,8 @@ namespace jarvis.addins.trigger
         public abstract void deinit();
         public abstract void init();
 
+
+
         public void configChanged()
         {
             deinit();

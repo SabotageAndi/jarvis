@@ -113,12 +113,24 @@
       <Project>{bf64100f-2bda-4e53-9096-ecb8225099fe}</Project>
       <Name>triggers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\domain\domain.csproj">
+      <Project>{e8d20399-5a2c-45ac-ad29-69425d9e3507}</Project>
+      <Name>domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\dtos\dtos.csproj">
+      <Project>{062b8a18-91a0-458e-9bf3-31b0a0ad4148}</Project>
+      <Name>dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\logic\logic.csproj">
+      <Project>{65e668fe-b2d3-4a78-b8ca-187279f46365}</Project>
+      <Name>logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\client\client.csproj">
       <Project>{8e6da788-5ee6-4140-a1af-f794051e54c0}</Project>
       <Name>client %28Client\client%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\common.csproj">
-      <Project>{477FC303-4CDE-403A-9D9B-A62935DAED98}</Project>
+      <Project>{477fc303-4cde-403a-9d9b-a62935daed98}</Project>
       <Name>common %28Client\common%29</Name>
     </ProjectReference>
   </ItemGroup>
