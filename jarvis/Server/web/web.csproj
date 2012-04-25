@@ -237,7 +237,9 @@
     <Content Include="services\ServerStatusService.svc" />
     <Content Include="services\TriggerService.svc" />
     <Content Include="services\WorkflowService.svc" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
