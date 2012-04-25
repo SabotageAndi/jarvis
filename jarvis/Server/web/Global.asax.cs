@@ -23,6 +23,7 @@ using jarvis.common.domain;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 using jarvis.server.model.ActionHandling;
+using jarvis.server.repositories;
 
 namespace jarvis.server.web
 {
@@ -60,6 +61,9 @@ namespace jarvis.server.web
         protected void Application_Start()
         {
             Bootstrapper.init();
+
+            var databaseManager = Bootstrapper.Container.Resolve<IDatabaseManager>();
+            databaseManager.UpdateSchema();
 
             AreaRegistration.RegisterAllAreas();
 
