@@ -156,7 +156,6 @@
     <Compile Include="..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="Areas\Events\Controllers\TriggeredEventController.cs" />
     <Compile Include="Areas\Events\EventsAreaRegistration.cs" />
     <Compile Include="Areas\Events\Models\TriggeredEvent.cs" />
@@ -273,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="App_Start\" />
     <Folder Include="Areas\Events\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
