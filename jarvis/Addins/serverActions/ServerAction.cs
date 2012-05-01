@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 using jarvis.server.repositories;
@@ -10,6 +11,7 @@ namespace jarvis.addins.serverActions
 {
     public abstract class ServerAction
     {
+        [Inject]
         public IClientRepository ClientRepository { get; set; }
 
         public abstract string ActionGroup { get; }

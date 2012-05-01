@@ -15,34 +15,43 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.ServiceModel;
+using System.ServiceModel.Activation;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Autofac;
-using Autofac.Integration.Mvc;
+using Ninject;
+using Ninject.Extensions.Wcf;
+using Ninject.Web.Common;
+using Ninject.Web.Mvc;
 using jarvis.common.domain;
 using jarvis.server.common.Database;
+using jarvis.server.configuration;
 using jarvis.server.entities.Management;
+using jarvis.server.model;
 using jarvis.server.model.ActionHandling;
 using jarvis.server.repositories;
+using jarvis.server.web.Common.Database;
+using jarvis.server.web.services;
 
 namespace jarvis.server.web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
 
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : NinjectHttpApplication
     {
         protected ServerStatus Status
         {
-            get { return Bootstrapper.Container.Resolve<ServerStatus>(); }
+            get { return Bootstrapper.Container.Get<ServerStatus>(); }
         }
 
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
         }
 
-        public static void RegisterRoutes(RouteCollection routes)
+        public void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
@@ -56,19 +65,33 @@ namespace jarvis.server.web
                         id = UrlParameter.Optional
                     } // Parameter defaults
                 );
+            /*
+             *    Bind<TriggerService>().ToSelf().Named("jarvis.server.web.Services.TriggerService");
+            Bind<EventHandlingService>().ToSelf().Named("jarvis.server.web.services.EventHandlingService");
+            Bind<WorkflowService>().ToSelf().Named("jarvis.server.web.services.WorkflowService");
+            Bind<ClientService>().ToSelf().Named("jarvis.server.web.services.ClientService");
+            Bind<ServerStatusService>().ToSelf().Named("jarvis.server.web.services.ServerStatusService");
+            Bind<ActionService>().ToSelf().Named("jarvis.server.web.services.ActionService");
+             * */
+
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.ServerStatusService", new NinjectWebServiceHostFactory(), typeof(ServerStatusService)));
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.EventHandlingService", new NinjectWebServiceHostFactory(), typeof(EventHandlingService)));
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.WorkflowService", new NinjectWebServiceHostFactory(), typeof(WorkflowService)));
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.TriggerService", new NinjectWebServiceHostFactory(), typeof(TriggerService)));
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.ClientService", new NinjectWebServiceHostFactory(), typeof(ClientService)));
+            //routes.Add(new ServiceRoute("jarvis.server.web.services.ActionService", new NinjectWebServiceHostFactory(), typeof(ActionService)));
         }
 
-        protected void Application_Start()
+        protected override void OnApplicationStarted()
         {
+            base.OnApplicationStarted();
+
             Bootstrapper.init();
 
-            var databaseManager = Bootstrapper.Container.Resolve<IDatabaseManager>();
+            var databaseManager = Bootstrapper.Container.Get<IDatabaseManager>();
             databaseManager.UpdateSchema();
 
             AreaRegistration.RegisterAllAreas();
-
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(Bootstrapper.Container));
-
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
@@ -78,9 +101,33 @@ namespace jarvis.server.web
             Status.State = State.Running;
         }
 
+      
+        protected override IKernel CreateKernel()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => Bootstrapper.Container);
+            //kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+            kernel.Bind<ServiceHost>().To<NinjectServiceHost>();
+
+            var serverStatus = new ServerStatus();
+            serverStatus.State = State.Instanciated;
+
+
+            kernel.Bind<ServerStatus>().ToConstant(serverStatus).InSingletonScope();
+
+            kernel.Bind<ISessionFactory>().To<SessionFactory>().InSingletonScope();
+            kernel.Bind<ITransactionProvider>().To<TransactionProvider>().InSingletonScope();
+
+            kernel.Load(new ServiceModule(), new RepositoryModule(), new ModelModule(), new ConfigurationModule());
+
+            Bootstrapper.Container = kernel;
+        
+            return kernel;
+        }
+
         private void LoadAddins()
         {
-            var actionLogic = Bootstrapper.Container.Resolve<IActionLogic>();
+            var actionLogic = Bootstrapper.Container.Get<IActionLogic>();
             actionLogic.LoadServerActions();
         }
 
@@ -113,7 +160,7 @@ namespace jarvis.server.web
 
         private ITransactionProvider GetTransactionProvider()
         {
-            return Bootstrapper.Container.Resolve<ITransactionProvider>();
+            return Bootstrapper.Container.Get<ITransactionProvider>();
         }
     }
 }

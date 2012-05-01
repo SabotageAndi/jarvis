@@ -15,33 +15,34 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using Autofac;
+using Ninject;
+using jarvis.addins.actions;
 using jarvis.client.common;
-using jarvis.client.common.Actions.ActionCaller;
+using jarvis.client.common.ServiceClients;
 
 namespace jarvis.client.worker
 {
     internal class Program
     {
-        private static IContainer _container;
+        public static IKernel _container;
 
 
         private static void Bootstrap()
         {
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<CommonModule>();
-            containerBuilder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
-            containerBuilder.RegisterType<WorkerClient>().As<Client>().SingleInstance();
-            containerBuilder.RegisterType<WorkflowEngine>().As<IWorkflowEngine>().SingleInstance();
+            var containerBuilder = new StandardKernel();
+            containerBuilder.Bind<Func<IKernel>>().ToMethod(ctx => () => Client.Container);
+            containerBuilder.Load(new CommonModule(), new ClientModule(), new ServiceClientModule());
+            containerBuilder.Bind<Client>().To<WorkerClient>().InSingletonScope();
+            containerBuilder.Bind<IWorkflowEngine>().To<WorkflowEngine>().InSingletonScope();
 
-            _container = containerBuilder.Build();
+            _container = containerBuilder;
         }
 
 
         private static void Main(string[] args)
         {
             Bootstrap();
-            var client = _container.Resolve<Client>();
+            var client = _container.Get<Client>();
 
 
             client.Init(_container);

@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Autofac;
 using Microsoft.CSharp;
 using jarvis.client.common;
 using jarvis.client.common.Actions.ActionCaller;
@@ -131,13 +130,13 @@ namespace jarvis.client.worker
         {
             var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + GetClassName(runnedTask)) as CompiledTask;
 
-            Client.Container.InjectProperties(instance);
+            Client.Container.Inject(instance);
 
             var properties = instance.GetType().GetProperties().Where(pi => pi.CanRead && pi.CanWrite);
             foreach (var propertyInfo in properties)
             {
                 var value = propertyInfo.GetValue(instance, null);
-                Client.Container.InjectProperties(value);
+                Client.Container.Inject(value);
             }
 
             return instance.run(parameters);
@@ -219,7 +218,7 @@ namespace jarvis.client.worker
         private string AddInjectedPropertyCode(string source, RunnedTaskDto runnedTask)
         {
             var properties = String.Join(Environment.NewLine, (from a in Actions
-                             select "public " + a.GetType().FullName + " " + a.PropertyName + " { get; set; }"));
+                             select "[Inject] public " + a.GetType().FullName + " " + a.PropertyName + " { get; set; }"));
 
             source = source.Replace("%INJECTEDPROPERTIES%", properties);
 

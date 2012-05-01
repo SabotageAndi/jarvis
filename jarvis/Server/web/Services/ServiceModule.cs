@@ -14,29 +14,22 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
+using Ninject.Modules;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
 {
-    public class ServiceModule : Module
+    public class ServiceModule : NinjectModule
     {
-        public ServiceModule()
+        public override void Load()
         {
-        }
+            Bind<TriggerService>().ToSelf().Named("jarvis.server.web.Services.TriggerService");
+            Bind<EventHandlingService>().ToSelf().Named("jarvis.server.web.services.EventHandlingService");
+            Bind<WorkflowService>().ToSelf().Named("jarvis.server.web.services.WorkflowService");
+            Bind<ClientService>().ToSelf().Named("jarvis.server.web.services.ClientService");
+            Bind<ServerStatusService>().ToSelf().Named("jarvis.server.web.services.ServerStatusService");
+            Bind<ActionService>().ToSelf().Named("jarvis.server.web.services.ActionService");
 
-        protected override void Load(ContainerBuilder builder)
-        {
-            builder.RegisterModule(new ModelModule());
-
-            builder.RegisterType<TriggerService>().Named<object>("jarvis.server.web.Services.TriggerService");
-            builder.RegisterType<EventHandlingService>().Named<object>("jarvis.server.web.services.EventHandlingService");
-            builder.RegisterType<WorkflowService>().Named<object>("jarvis.server.web.services.WorkflowService");
-            builder.RegisterType<ClientService>().Named<object>("jarvis.server.web.services.ClientService");
-            builder.RegisterType<ServerStatusService>().Named<object>("jarvis.server.web.services.ServerStatusService");
-            builder.RegisterType<ActionService>().Named<object>("jarvis.server.web.services.ActionService");
-
-            base.Load(builder);
         }
     }
 }

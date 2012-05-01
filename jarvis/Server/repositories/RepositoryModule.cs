@@ -14,31 +14,28 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.server.configuration;
+using Ninject.Modules;
 
 namespace jarvis.server.repositories
 {
-    public class RepositoryModule : Module
+    public class RepositoryModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            builder.RegisterModule(new ConfigurationModule());
 
-            builder.RegisterType<EventRepository>().As<IEventRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<EventHandlerRepository>().As<IEventHandlerRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<WorkflowQueueRepository>().As<IWorkflowQueueRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<DefinedWorkflowRepository>().As<IDefinedWorkflowRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<RunnedWorkflowRepository>().As<IRunnedWorkflowRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<RunnedWorkflowStepRepository>().As<IRunnedWorkflowStepRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<RunnedTaskRespository>().As<IRunnedTaskRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<RunnedNextWorkflowStepRepository>().As<IRunnedNextWorkflowStepRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<ClientRepository>().As<IClientRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<ParameterRepository>().As<IParameterRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<DatabaseManager>().As<IDatabaseManager>().SingleInstance();
-
-            base.Load(builder);
+            Bind<IEventRepository>().To<EventRepository>();
+            Bind<IUserRepository>().To<UserRepository>();
+            Bind<IEventHandlerRepository>().To<EventHandlerRepository>();
+            Bind<IWorkflowQueueRepository>().To<WorkflowQueueRepository>();
+            Bind<IDefinedWorkflowRepository>().To<DefinedWorkflowRepository>();
+            Bind<IRunnedWorkflowRepository>().To<RunnedWorkflowRepository>();
+            Bind<IRunnedWorkflowStepRepository>().To<RunnedWorkflowStepRepository>();
+            Bind<IRunnedNextWorkflowStepRepository>().To<RunnedNextWorkflowStepRepository>();
+            Bind<IRunnedTaskRepository>().To<RunnedTaskRespository>();
+            Bind<IClientRepository>().To<ClientRepository>();
+            Bind<IParameterRepository>().To<ParameterRepository>();
+            Bind<IDatabaseManager>().To<DatabaseManager>();
+            
         }
     }
 }

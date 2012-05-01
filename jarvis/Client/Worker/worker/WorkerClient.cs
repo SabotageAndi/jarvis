@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Autofac;
+using Ninject;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
 using Action = jarvis.addins.actions.Action;
@@ -20,7 +20,7 @@ namespace jarvis.client.worker
         }
 
 
-        public override void Init(IContainer container)
+        public override void Init(IKernel container)
         {
             base.Init(container);
 
@@ -31,17 +31,15 @@ namespace jarvis.client.worker
         {
             foreach (var addin in Addins)
             {
-                var updateContainer = new ContainerBuilder();
                 var actionTypes = GetAddinTypes(addin, typeof (Action));
                 foreach (var actionType in actionTypes)
                 {
-                    updateContainer.RegisterType(actionType).SingleInstance();
+                    Container.Bind(actionType).ToSelf().InSingletonScope();
                 }
-                updateContainer.Update(_container);
 
                 foreach (var actionType in actionTypes)
                 {
-                    var action = (Action) _container.Resolve(actionType);
+                    var action = (Action)Container.Get(actionType);
                     _workflowEngine.AddAction(action);
                 }
             }

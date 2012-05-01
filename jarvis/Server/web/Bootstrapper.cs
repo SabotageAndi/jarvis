@@ -14,47 +14,20 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Reflection;
-using Autofac;
-using Autofac.Integration.Mvc;
-using Autofac.Integration.Wcf;
-using jarvis.common.domain;
-using jarvis.server.common.Database;
-using jarvis.server.entities.Management;
-using jarvis.server.web.Common.Database;
-using jarvis.server.web.services;
+using Ninject;
+
 using log4net.Config;
 
 namespace jarvis.server.web
 {
     public class Bootstrapper
     {
-        public static IContainer Container;
+        public static IKernel Container;
 
         public static void init()
         {
             XmlConfigurator.Configure();
 
-            var serverStatus = new ServerStatus();
-            serverStatus.State = State.Instanciated;
-
-
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterInstance(serverStatus).As<ServerStatus>().SingleInstance();
-
-            containerBuilder.RegisterType<SessionFactory>().As<ISessionFactory>().SingleInstance();
-            containerBuilder.RegisterType<TransactionProvider>().As<ITransactionProvider>().SingleInstance();
-
-
-            containerBuilder.RegisterModule(new ServiceModule());
-            containerBuilder.RegisterControllers(Assembly.GetExecutingAssembly());
-            containerBuilder.RegisterModelBinders(Assembly.GetExecutingAssembly());
-            containerBuilder.RegisterModelBinderProvider();
-
-
-            Container = containerBuilder.Build();
-
-            AutofacHostFactory.Container = Container;
         }
     }
 }

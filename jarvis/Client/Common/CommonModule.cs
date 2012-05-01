@@ -14,20 +14,17 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
+using Ninject.Modules;
 using jarvis.client.common.ServiceClients;
 
 namespace jarvis.client.common
 {
-    public class CommonModule : Module
+    public class CommonModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            base.Load(builder);
-            builder.RegisterModule<ServiceClientModule>();
-
-            builder.RegisterType<ConfigFileConfiguration>().As<IConfiguration>().SingleInstance();
-            builder.RegisterType<JarvisRestClient>().As<IJarvisRestClient>().InstancePerDependency();
+            Bind<IConfiguration>().To<ConfigFileConfiguration>().InSingletonScope();
+            Bind<IJarvisRestClient>().To<JarvisRestClient>().InTransientScope();
         }
     }
 }

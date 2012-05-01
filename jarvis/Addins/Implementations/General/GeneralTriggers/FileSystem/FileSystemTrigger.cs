@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Ninject;
 using RestSharp.Serializers;
 using jarvis.addins.trigger;
 using jarvis.client.common;
@@ -35,7 +36,10 @@ namespace jarvis.addins.generaltriggers.FileSystem
             FileSystemWatchers = new List<FileSystemWatcher>();
         }
 
+        [Inject]
         public IConfiguration Configuration { get; set; }
+
+        [Inject]
         public ITriggerService TriggerService { get; set; }
 
         public List<FileSystemWatcher> FileSystemWatchers { get; set; }

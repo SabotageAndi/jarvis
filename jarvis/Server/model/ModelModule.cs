@@ -14,27 +14,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
+using Ninject.Modules;
 using jarvis.server.model.ActionHandling;
 using jarvis.server.repositories;
 
 namespace jarvis.server.model
 {
-    public class ModelModule : Module
+    public class ModelModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            builder.RegisterModule(new RepositoryModule());
 
-            builder.RegisterType<EventLogic>().As<IEventLogic>().InstancePerDependency();
-            builder.RegisterType<UserLogic>().As<IUserLogic>().InstancePerDependency();
-            builder.RegisterType<EventHandlingLogic>().As<IEventHandlingLogic>().InstancePerDependency();
-            builder.RegisterType<WorkflowLogic>().As<IWorkflowLogic>().InstancePerDependency();
-            builder.RegisterType<ClientLogic>().As<IClientLogic>().InstancePerDependency();
-            builder.RegisterType<ActionLogic>().As<IActionLogic>().InstancePerDependency();
-            builder.RegisterType<ActionRegistry>().As<IActionRegistry>().SingleInstance();
-
-            base.Load(builder);
+            Bind<IEventLogic>().To<EventLogic>().InTransientScope();
+            Bind<IUserLogic>().To<UserLogic>().InTransientScope();
+            Bind<IEventHandlingLogic>().To<EventHandlingLogic>().InTransientScope();
+            Bind<IWorkflowLogic>().To<WorkflowLogic>().InTransientScope();
+            Bind<IClientLogic>().To<ClientLogic>().InTransientScope();
+            Bind<IActionLogic>().To<ActionLogic>().InTransientScope();
+            Bind<IActionRegistry>().To<ActionRegistry>().InSingletonScope();
         }
     }
 }

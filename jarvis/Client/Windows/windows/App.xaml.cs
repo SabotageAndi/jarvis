@@ -14,11 +14,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Forms;
-using Autofac;
+using Ninject;
+using jarvis.addins.actions;
 using jarvis.client.common;
+using jarvis.client.common.ServiceClients;
 using Application = System.Windows.Application;
 
 namespace jarvis.client.windows
@@ -28,23 +31,24 @@ namespace jarvis.client.windows
     /// </summary>
     public partial class App : Application
     {
-        private static IContainer _container;
+        private static IKernel _container;
         private NotifyIcon _systray;
 
         private static void Bootstrap()
         {
-            var containerBuilder = new ContainerBuilder();
-            containerBuilder.RegisterModule<ClientModule>();
-            containerBuilder.RegisterType<ActionTriggerClient>().As<Client>().SingleInstance();
+            var containerBuilder = new StandardKernel();
+            containerBuilder.Load(new CommonModule(), new ActionModule(), new ClientModule(), new ServiceClientModule());
+            containerBuilder.Bind<Client>().To<ActionTriggerClient>().InSingletonScope();
+            containerBuilder.Bind<Func<IKernel>>().ToMethod(ctx => () => Client.Container);
 
-            _container = containerBuilder.Build();
+            _container = containerBuilder;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             Bootstrap();
 
-            var client = _container.Resolve<Client>();
+            var client = _container.Get<Client>();
 
 
             client.Init(_container);

@@ -14,17 +14,16 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
+
+using Ninject.Modules;
 
 namespace jarvis.server.configuration
 {
-    public class ConfigurationModule : Module
+    public class ConfigurationModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            builder.RegisterType<PostgreSqlConfiguration>().As<INHibernateConfiguration>().SingleInstance();
-
-            base.Load(builder);
+            Bind<INHibernateConfiguration>().To<PostgreSqlConfiguration>().InSingletonScope();
         }
     }
 }

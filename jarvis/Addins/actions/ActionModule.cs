@@ -14,17 +14,19 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
+
+using Ninject.Modules;
 
 namespace jarvis.addins.actions
 {
-    public class ActionModule : Module
+    public class ActionModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            builder.RegisterType<ActionRegistry>().As<IActionRegistry>().SingleInstance();
-            builder.RegisterType<ActionService>().As<IActionService>().SingleInstance();
-            builder.RegisterType<ActionServiceHost>().As<IActionServiceHost>().SingleInstance();
-        }
+            Bind<IActionRegistry>().To<ActionRegistry>().InSingletonScope();
+            Bind<IActionService>().To<ActionService>().InSingletonScope();
+            Bind<IActionServiceHost>().To<ActionServiceHost>().InSingletonScope();
+
+       }
     }
 }

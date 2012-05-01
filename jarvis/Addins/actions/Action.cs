@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Ninject;
 using RestSharp.Deserializers;
 using RestSharp.Serializers;
 using jarvis.common.domain;
@@ -10,6 +11,7 @@ namespace jarvis.addins.actions
 {
     public abstract class Action
     {
+        [Inject]
         public client.common.ServiceClients.IActionService ActionService { get; set; }
 
         public abstract string PropertyName { get; }

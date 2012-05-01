@@ -20,7 +20,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Autofac;
+using Ninject;
 using jarvis.addins.serverActions;
 using jarvis.common.dtos.Actionhandling;
 
@@ -35,13 +35,13 @@ namespace jarvis.server.model.ActionHandling
     public class ActionLogic : IActionLogic
     {
         private readonly IActionRegistry _actionRegistry;
-        private readonly IComponentContext _componentContext;
+        private readonly Func<IKernel> _kernel;
         private List<Assembly> _addins = new List<Assembly>();
 
-        public ActionLogic(IActionRegistry actionRegistry, IComponentContext componentContext)
+        public ActionLogic(IActionRegistry actionRegistry, Func<IKernel> kernel)
         {
             _actionRegistry = actionRegistry;
-            _componentContext = componentContext;
+            _kernel = kernel;
         }
 
         public ActionResultDto Execute(ActionDto actionDto)
@@ -64,7 +64,7 @@ namespace jarvis.server.model.ActionHandling
                 foreach (var triggerType in actionHandlerTypes)
                 {
                     var actionHandler = (ServerAction)Activator.CreateInstance(triggerType);
-                    _componentContext.InjectProperties(actionHandler);
+                    _kernel().Inject(actionHandler);
 
                     _actionRegistry.RegisterActionHandler(actionHandler);
                 }

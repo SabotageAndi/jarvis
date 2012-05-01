@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using IrcDotNet;
+using Ninject;
 using RestSharp.Serializers;
 using jarvis.addins.trigger;
 using jarvis.client.common.ServiceClients;
@@ -17,6 +18,7 @@ namespace jarvis.addins.irctrigger
     public class IrcTrigger : Trigger
     {
         private IrcClient _ircClient;
+        [Inject]
         public ITriggerService TriggerService { get; set; }
 
         public override void run()

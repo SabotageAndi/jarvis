@@ -14,19 +14,15 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using Autofac;
-using jarvis.addins.actions;
-using jarvis.client.common;
+using Ninject.Modules;
+
 
 namespace jarvis.client
 {
-    public class ClientModule : Module
+    public class ClientModule : NinjectModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public override void Load()
         {
-            builder.RegisterModule<ActionModule>();
-
-            builder.RegisterModule<CommonModule>();
-        }
+       }
     }
 }

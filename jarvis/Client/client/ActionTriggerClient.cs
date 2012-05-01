@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Autofac;
+using Ninject;
 using jarvis.addins.actions;
 using jarvis.addins.trigger;
 using jarvis.client.common;
@@ -42,7 +42,7 @@ namespace jarvis.client
 
         private List<Trigger> Triggers { get; set; }
 
-        public override void Init(IContainer container)
+        public override void Init(IKernel container)
         {
             base.Init(container);
 
@@ -61,7 +61,7 @@ namespace jarvis.client
                 foreach (var triggerType in actionHandlerTypes)
                 {
                     var actionHandler = (ActionHandler) Activator.CreateInstance(triggerType);
-                    _container.InjectProperties(actionHandler);
+                    Container.Inject(actionHandler);
 
                     _actionRegistry.RegisterActionHandler(actionHandler);
                 }
@@ -76,7 +76,7 @@ namespace jarvis.client
                 foreach (var triggerType in triggerTypes)
                 {
                     var trigger = (Trigger) Activator.CreateInstance(triggerType);
-                    _container.InjectProperties(trigger);
+                    Container.Inject(trigger);
                     Triggers.Add(trigger);
                 }
             }

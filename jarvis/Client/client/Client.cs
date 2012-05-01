@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using Autofac;
+using Ninject;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos.Management;
@@ -32,7 +32,6 @@ namespace jarvis.client.common
     {
         public delegate void OnShutdownDelegate();
 
-        protected static IContainer _container;
         protected readonly List<Assembly> _addins = new List<Assembly>();
 
         private readonly IClientService _clientService;
@@ -42,6 +41,7 @@ namespace jarvis.client.common
 
 
         private ClientDto _clientDto;
+        private static IKernel _container;
 
         public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService)
         {
@@ -51,7 +51,7 @@ namespace jarvis.client.common
             _serverStatusService = serverStatusService;
         }
 
-        public static IContainer Container
+        public static IKernel Container
         {
             get { return _container; }
         }
@@ -65,7 +65,7 @@ namespace jarvis.client.common
 
         public static Client Current
         {
-            get { return _container.Resolve<Client>(); }
+            get { return _container.Get<Client>(); }
         }
 
         private ClientDto ClientDto
@@ -97,7 +97,7 @@ namespace jarvis.client.common
             }
         }
 
-        public virtual void Init(IContainer container)
+        public virtual void Init(IKernel container)
         {
             if (State >= State.Initialized)
             {
