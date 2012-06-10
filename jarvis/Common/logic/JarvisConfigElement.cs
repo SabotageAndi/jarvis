@@ -16,7 +16,7 @@
 
 using System.Configuration;
 
-namespace jarvis.client.common.Configuration
+namespace jarvis.common.logic
 {
     public class JarvisConfigElement : ConfigurationElement
     {

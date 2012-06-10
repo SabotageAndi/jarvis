@@ -29,7 +29,7 @@ namespace jarvis.server.entities.Management
     {
         public FolderMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.Name);
             References(x => x.Parent);
         }

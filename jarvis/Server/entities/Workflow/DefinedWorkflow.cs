@@ -34,7 +34,7 @@ namespace jarvis.server.entities.Workflow
     {
         public DefinedWorkflowMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.Name);
             References(x => x.ParentFolder);
 

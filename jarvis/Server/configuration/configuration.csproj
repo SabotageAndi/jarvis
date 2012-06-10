@@ -55,7 +55,9 @@
       <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net40\Npgsql.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,13 +69,19 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ConfigurationModule.cs" />
-    <Compile Include="PostgreSqlConfiguration.cs" />
+    <Compile Include="DatabaseConfiguration.cs" />
+    <Compile Include="DatabaseConfigurationSection.cs" />
+    <Compile Include="INHibernateConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\logic\logic.csproj">
+      <Project>{65E668FE-B2D3-4A78-B8CA-187279F46365}</Project>
+      <Name>logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\entities\entities.csproj">
       <Project>{21FD2661-DDF3-45B7-9240-13EA4BF9EFAB}</Project>
       <Name>entities</Name>

@@ -32,7 +32,7 @@ namespace jarvis.server.entities.Eventhandling
     {
         public EventHandlerMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.EventGroupTypes);
             Map(x => x.EventType);
             References(x => x.DefinedWorkflow);

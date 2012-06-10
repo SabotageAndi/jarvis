@@ -29,7 +29,7 @@ namespace jarvis.server.entities.Management
     {
         public UserMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.Username);
             Map(x => x.Password);
         }

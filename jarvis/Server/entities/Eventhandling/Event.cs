@@ -35,7 +35,7 @@ namespace jarvis.server.entities.Eventhandling
     {
         public EventMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             References(x => x.Client);
             Map(x => x.EventGroupType);
             Map(x => x.EventType);

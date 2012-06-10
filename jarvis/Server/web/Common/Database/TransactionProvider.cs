@@ -14,7 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.ServiceModel;
 using System.Web;
+using System.Web.Routing;
 using jarvis.server.common.Database;
 
 namespace jarvis.server.web.Common.Database
@@ -31,12 +33,12 @@ namespace jarvis.server.web.Common.Database
 
         public ITransactionScope CurrentScope
         {
-            get { return (ITransactionScope) HttpContext.Current.Items[_HttpContextCurrentScope]; }
+            get { return (ITransactionScope) WebContext.Current.Items[_HttpContextCurrentScope]; }
         }
 
         public void SetCurrentScope(ITransactionScope transactionScope)
         {
-            HttpContext.Current.Items[_HttpContextCurrentScope] = transactionScope;
+            WebContext.Current.Items[_HttpContextCurrentScope] = transactionScope;
         }
 
         //TODO: Make real read-only transaction

@@ -32,7 +32,7 @@ namespace jarvis.server.entities.Workflow
     {
         public ParameterMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
 
             References(x => x.RunnedWorkflow);
             Map(x => x.Category);

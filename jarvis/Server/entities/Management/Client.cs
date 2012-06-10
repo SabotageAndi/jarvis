@@ -32,7 +32,7 @@ namespace jarvis.server.entities.Management
     {
         public ClientMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.Name);
             Map(x => x.IsOnline);
             Map(x => x.Hostname);

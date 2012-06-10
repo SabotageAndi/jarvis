@@ -28,7 +28,7 @@ namespace jarvis.tools.initDatabase
     {
         private static void Main(string[] args)
         {
-            var configuration = new PostgreSqlConfiguration().GetConfiguration();
+            var configuration = new DatabaseConfiguration().GetConfiguration();
             var sessionFactory = configuration.BuildSessionFactory();
 
             using (ISession session = sessionFactory.OpenSession())

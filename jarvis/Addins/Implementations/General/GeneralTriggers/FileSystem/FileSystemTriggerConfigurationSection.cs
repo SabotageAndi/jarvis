@@ -16,6 +16,7 @@
 
 using System.Configuration;
 using jarvis.client.common.Configuration;
+using jarvis.common.logic;
 
 namespace jarvis.addins.generaltriggers.FileSystem
 {

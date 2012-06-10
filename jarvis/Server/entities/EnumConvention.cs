@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using FluentNHibernate.Cfg;
 using FluentNHibernate.Conventions;
 using FluentNHibernate.Conventions.AcceptanceCriteria;
 using FluentNHibernate.Conventions.Inspections;
@@ -36,6 +37,15 @@ namespace jarvis.server.entities
         public void Apply(IPropertyInstance target)
         {
             target.CustomType(target.Property.PropertyType);
+        }
+    }
+
+    public class PrimaryKeyConvention : IIdConvention
+    {
+        public void Apply(IIdentityInstance instance)
+        {
+
+            instance.GeneratedBy.Native();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace jarvis.server.entities.Workflow
     {
         public WorkflowQuereMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             Map(x => x.QueueDate);
             Map(x => x.StartDate);
             Map(x => x.EndDate);

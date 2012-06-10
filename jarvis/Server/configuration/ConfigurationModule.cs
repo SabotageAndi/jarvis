@@ -23,7 +23,7 @@ namespace jarvis.server.configuration
     {
         public override void Load()
         {
-            Bind<INHibernateConfiguration>().To<PostgreSqlConfiguration>().InSingletonScope();
+            Bind<INHibernateConfiguration>().To<DatabaseConfiguration>().InSingletonScope();
         }
     }
 }

@@ -160,6 +160,7 @@
     <Compile Include="Areas\Events\EventsAreaRegistration.cs" />
     <Compile Include="Areas\Events\Models\TriggeredEvent.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Common\WebContext.cs" />
     <Compile Include="Common\Database\TransactionProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="services\WorkflowService.svc.cs">
       <DependentUpon>WorkflowService.svc</DependentUpon>
     </Compile>
+    <Compile Include="WcfContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

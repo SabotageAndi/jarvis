@@ -63,7 +63,6 @@
     <Compile Include="CommonModule.cs" />
     <Compile Include="ConfigFileConfiguration.cs" />
     <Compile Include="Configuration\ConfigurationSection.cs" />
-    <Compile Include="Configuration\JarvisConfigElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceClients\ActionService.cs" />
     <Compile Include="ServiceClients\ClientService.cs" />

@@ -34,7 +34,7 @@ namespace jarvis.server.entities.Workflow
     {
         public RunnedWorkflowStepMap()
         {
-            MappingHelper.MapId(this);
+            Id(x => x.Id);
             References(x => x.DefinedWorkflowStep);
             References(x => x.RunnedWorkflow);
             References(x => x.RunnedTask);

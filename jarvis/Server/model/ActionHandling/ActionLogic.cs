@@ -20,6 +20,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web.Configuration;
 using Ninject;
 using jarvis.addins.serverActions;
 using jarvis.common.dtos.Actionhandling;
@@ -78,7 +79,7 @@ namespace jarvis.server.model.ActionHandling
 
         private void LoadAddins()
         {
-            var addinFiles = Directory.GetFiles(ConfigurationManager.AppSettings["AddinPath"]).Where(f => f.EndsWith(".dll"));
+            var addinFiles = Directory.GetFiles(WebConfigurationManager.AppSettings["AddinPath"]).Where(f => f.EndsWith(".dll"));
 
             foreach (var addinFile in addinFiles)
             {
