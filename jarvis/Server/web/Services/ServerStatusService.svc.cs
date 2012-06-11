@@ -17,24 +17,28 @@
 using System;
 using jarvis.common.domain;
 using jarvis.common.dtos;
+using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 
 namespace jarvis.server.web.services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ServerStatusService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select ServerStatusService.svc or ServerStatusService.svc.cs at the Solution Explorer and start debugging.
     public class ServerStatusService : IServerStatusService
     {
         private readonly ServerStatus _serverStatus;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public ServerStatusService(ServerStatus serverStatus)
+        public ServerStatusService(ServerStatus serverStatus, ITransactionProvider transactionProvider)
         {
             _serverStatus = serverStatus;
+            _transactionProvider = transactionProvider;
         }
 
         public ResultDto<Boolean> IsOnline()
         {
-            return new ResultDto<bool>(_serverStatus.State == State.Running);
+            using (_transactionProvider.StartReadTransaction())
+            {
+                return new ResultDto<bool>(_serverStatus.State == State.Running); 
+            }
         }
     }
 }

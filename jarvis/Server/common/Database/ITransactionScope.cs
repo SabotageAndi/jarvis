@@ -19,7 +19,7 @@ using NHibernate;
 
 namespace jarvis.server.common.Database
 {
-    public interface ITransactionScope
+    public interface ITransactionScope : IDisposable
     {
         ISession CurrentSession { get; }
         void BeginTransaction();
@@ -29,7 +29,7 @@ namespace jarvis.server.common.Database
         void Flush();
     }
 
-    public class TransactionScope : ITransactionScope, IDisposable
+    public class TransactionScope : ITransactionScope
     {
         private readonly ISession _session;
         private ITransaction _transaction;
@@ -45,6 +45,8 @@ namespace jarvis.server.common.Database
             {
                 _transaction.Dispose();
             }
+
+            _session.Close();
 
             if (_session != null)
             {

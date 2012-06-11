@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using jarvis.common.dtos.Workflow;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
@@ -22,15 +23,23 @@ namespace jarvis.server.web.services
     public class WorkflowService : IWorkflowService
     {
         private readonly IWorkflowLogic _workflowLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public WorkflowService(IWorkflowLogic workflowLogic)
+        public WorkflowService(IWorkflowLogic workflowLogic, ITransactionProvider transactionProvider)
         {
             _workflowLogic = workflowLogic;
+            _transactionProvider = transactionProvider;
         }
 
         public RunnedWorkflowDto GetWorkflowToExecute()
         {
-            return _workflowLogic.GetWorkflowToExecute();
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                var workflowToExecute = _workflowLogic.GetWorkflowToExecute();
+
+                _transactionProvider.CurrentScope.Commit();
+                return workflowToExecute;
+            }
         }
     }
 }

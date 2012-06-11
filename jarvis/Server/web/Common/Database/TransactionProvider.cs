@@ -51,5 +51,21 @@ namespace jarvis.server.web.Common.Database
         {
             return new TransactionScope(_sessionFactory.OpenSession());
         }
+
+        public ITransactionScope StartReadTransaction()
+        {
+            var transaction = GetReadTransaction();
+            transaction.BeginTransaction();
+            SetCurrentScope(transaction);
+            return transaction;
+        }
+
+        public ITransactionScope StartReadWriteTransaction()
+        {
+            var transaction = GetReadWriteTransaction();
+            transaction.BeginTransaction();
+            SetCurrentScope(transaction);
+            return transaction;
+        }
     }
 }

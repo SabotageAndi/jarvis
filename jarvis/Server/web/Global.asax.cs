@@ -96,7 +96,7 @@ namespace jarvis.server.web
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            LoadAddins();
+            //LoadAddins();
 
             Status.State = State.Running;
         }

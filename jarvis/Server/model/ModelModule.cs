@@ -30,7 +30,7 @@ namespace jarvis.server.model
             Bind<IEventHandlingLogic>().To<EventHandlingLogic>().InTransientScope();
             Bind<IWorkflowLogic>().To<WorkflowLogic>().InTransientScope();
             Bind<IClientLogic>().To<ClientLogic>().InTransientScope();
-            Bind<IActionLogic>().To<ActionLogic>().InTransientScope();
+            Bind<IActionLogic>().To<ActionLogic>().InSingletonScope();
             Bind<IActionRegistry>().To<ActionRegistry>().InSingletonScope();
         }
     }

@@ -43,6 +43,8 @@ namespace jarvis.server.model.ActionHandling
         {
             _actionRegistry = actionRegistry;
             _kernel = kernel;
+
+            LoadServerActions();
         }
 
         public ActionResultDto Execute(ActionDto actionDto)

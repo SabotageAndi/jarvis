@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
@@ -28,28 +29,43 @@ namespace jarvis.server.web.services
     {
         private readonly IEventHandlingLogic _eventHandlingLogic;
         private readonly IEventLogic _eventLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public EventHandlingService(IEventHandlingLogic eventHandlingLogic, IEventLogic eventLogic)
+        public EventHandlingService(IEventHandlingLogic eventHandlingLogic, IEventLogic eventLogic, ITransactionProvider transactionProvider)
         {
             _eventHandlingLogic = eventHandlingLogic;
             _eventLogic = eventLogic;
+            _transactionProvider = transactionProvider;
         }
 
         public List<EventHandlerDto> GetAllEventhandler()
         {
-            return _eventHandlingLogic.GetAllEventHandler();
+            using (_transactionProvider.StartReadTransaction())
+            {
+                return _eventHandlingLogic.GetAllEventHandler(); 
+            }
         }
 
         public List<EventDto> GetAllEventsSince(String ticks)
         {
-            var date = new DateTime(Convert.ToInt64(ticks));
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                var date = new DateTime(Convert.ToInt64(ticks));
 
-            return _eventLogic.GetAllEventsSince(date);
+                var allEventsSince = _eventLogic.GetAllEventsSince(date);
+
+                _transactionProvider.CurrentScope.Commit();
+                return allEventsSince; 
+            }
         }
 
         public void CreateNewItemInWorkflowQueue(WorkflowQueueDto workflowQueueDto)
         {
-            _eventHandlingLogic.AddEntryInWorkflowQueue(workflowQueueDto);
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                _eventHandlingLogic.AddEntryInWorkflowQueue(workflowQueueDto); 
+                _transactionProvider.CurrentScope.Commit();
+            }
         }
     }
 }

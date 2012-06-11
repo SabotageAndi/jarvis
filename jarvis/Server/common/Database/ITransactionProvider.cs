@@ -23,5 +23,8 @@ namespace jarvis.server.common.Database
 
         ITransactionScope GetReadTransaction();
         ITransactionScope GetReadWriteTransaction();
+
+        ITransactionScope StartReadTransaction();
+        ITransactionScope StartReadWriteTransaction();
     }
 }

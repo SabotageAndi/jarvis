@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using jarvis.common.dtos.Management;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
@@ -22,25 +23,42 @@ namespace jarvis.server.web.services
     public class ClientService : IClientService
     {
         private readonly IClientLogic _clientLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public ClientService(IClientLogic clientLogic)
+        public ClientService(IClientLogic clientLogic, ITransactionProvider transactionProvider)
         {
             _clientLogic = clientLogic;
+            _transactionProvider = transactionProvider;
         }
 
         public ClientDto RegisterClient(ClientDto clientDto)
         {
-            return _clientLogic.RegisterClient(clientDto);
+            using(_transactionProvider.StartReadWriteTransaction())
+            {
+                var registerClient = _clientLogic.RegisterClient(clientDto);
+
+                _transactionProvider.CurrentScope.Commit();
+                
+                return registerClient;
+            }
         }
 
         public void LogonClient(ClientDto clientDto)
         {
-            _clientLogic.Logon(clientDto);
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                _clientLogic.Logon(clientDto); 
+                _transactionProvider.CurrentScope.Commit();
+            }
         }
 
         public void LogoffClient(ClientDto clientDto)
         {
-            _clientLogic.Logoff(clientDto);
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                _clientLogic.Logoff(clientDto); 
+                _transactionProvider.CurrentScope.Commit();
+            }
         }
     }
 }

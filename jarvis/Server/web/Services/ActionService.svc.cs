@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using jarvis.common.dtos.Actionhandling;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 using jarvis.server.model.ActionHandling;
 
@@ -23,15 +24,23 @@ namespace jarvis.server.web.services
     public class ActionService : IActionService
     {
         private readonly IActionLogic _actionLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public ActionService(IActionLogic actionLogic)
+        public ActionService(IActionLogic actionLogic, ITransactionProvider transactionProvider)
         {
             _actionLogic = actionLogic;
+            _transactionProvider = transactionProvider;
         }
 
         public ActionResultDto Execute(ActionDto actionDto)
         {
-            return _actionLogic.Execute(actionDto);
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                var actionResultDto = _actionLogic.Execute(actionDto);
+
+                _transactionProvider.CurrentScope.Commit();
+                return actionResultDto;
+            }
         }
     }
 }

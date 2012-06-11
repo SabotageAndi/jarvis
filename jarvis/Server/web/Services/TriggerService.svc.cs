@@ -16,6 +16,7 @@
 
 using System.ServiceModel;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 
 namespace jarvis.server.web.services
@@ -24,16 +25,22 @@ namespace jarvis.server.web.services
     public class TriggerService : ITriggerService
     {
         private readonly IEventLogic _eventLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public TriggerService(IEventLogic eventLogic)
+        public TriggerService(IEventLogic eventLogic, ITransactionProvider transactionProvider)
         {
             _eventLogic = eventLogic;
+            _transactionProvider = transactionProvider;
         }
 
 
         public void EventHappend(EventDto eventDto)
         {
-            _eventLogic.eventRaised(eventDto);
+            using (_transactionProvider.StartReadWriteTransaction())
+            {
+                _eventLogic.eventRaised(eventDto); 
+                _transactionProvider.CurrentScope.Commit();
+            }
         }
     }
 }
