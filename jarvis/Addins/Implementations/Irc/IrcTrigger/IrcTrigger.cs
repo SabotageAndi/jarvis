@@ -17,15 +17,14 @@ namespace jarvis.addins.irctrigger
 {
     public class IrcTrigger : Trigger
     {
-        private IrcClient _ircClient;
         [Inject]
         public ITriggerService TriggerService { get; set; }
 
         public override void run()
         {
-            _ircClient.Registered += _ircClient_Registered;
+            Irc.Client.Registered += Irc_Client_Registered;
 
-            _ircClient.Connect("irc.freenode.net", false, new IrcUserRegistrationInfo()
+            Irc.Client.Connect("irc.freenode.net", false, new IrcUserRegistrationInfo()
                                                               {
                                                                   NickName = "jarvis_bot",
                                                                   RealName = "J.A.R.V.I.S.",
@@ -33,16 +32,16 @@ namespace jarvis.addins.irctrigger
                                                                   Password = "aMpYScuHg7AC"
                                                               });
 
-            _ircClient.Connected += _ircClient_Connected;
-            _ircClient.Error += client_Error;
+            Irc.Client.Connected += Irc_Client_Connected;
+            Irc.Client.Error += client_Error;
         }
 
-        void _ircClient_Connected(object sender, EventArgs e)
+        void Irc_Client_Connected(object sender, EventArgs e)
         {
         }
 
     
-        void _ircClient_Registered(object sender, EventArgs e)
+        void Irc_Client_Registered(object sender, EventArgs e)
         {
             var client = (IrcClient)sender;
 
@@ -56,7 +55,6 @@ namespace jarvis.addins.irctrigger
 
         void client_Error(object sender, IrcErrorEventArgs e)
         {
-            throw new NotImplementedException();
         }
 
         private void LocalUserOnLeftChannel(object sender, IrcChannelEventArgs ircChannelEventArgs)
@@ -90,15 +88,12 @@ namespace jarvis.addins.irctrigger
 
         public override void deinit()
         {
-            _ircClient.Quit();
-            _ircClient.Disconnect();
+            Irc.Client.Quit();
+            Irc.Client.Disconnect();
         }
 
         public override void init()
         {
-            _ircClient = new IrcClient();
-            _ircClient.FloodPreventer = new IrcStandardFloodPreventer(4, 2000);
-
         }
     }
 }

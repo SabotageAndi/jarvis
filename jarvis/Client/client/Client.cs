@@ -132,9 +132,7 @@ namespace jarvis.client.common
                                                            {
                                                                var requestedName = new AssemblyName(e.Name);
 
-                                                               var addinAssembly =
-                                                                   Addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault
-                                                                       ();
+                                                               var addinAssembly = Addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault ();
                                                                return addinAssembly;
                                                            };
         }

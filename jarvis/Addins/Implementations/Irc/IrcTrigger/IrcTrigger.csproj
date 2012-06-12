@@ -47,16 +47,14 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Irc.cs" />
+    <Compile Include="IrcAction.cs" />
+    <Compile Include="IrcActionHandler.cs" />
     <Compile Include="IrcTrigger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,6 +71,10 @@
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\actions\actions.csproj">
+      <Project>{30845B5A-6050-4952-A524-7B913C2C0AEE}</Project>
+      <Name>actions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\triggers\triggers.csproj">
       <Project>{bf64100f-2bda-4e53-9096-ecb8225099fe}</Project>
       <Name>triggers</Name>
@@ -83,7 +85,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir)$(TargetName).* $(SolutionDir)Addins\compiledClient\</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* $(SolutionDir)Addins\compiledClient\
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

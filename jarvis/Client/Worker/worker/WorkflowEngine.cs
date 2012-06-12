@@ -152,10 +152,9 @@ namespace jarvis.client.worker
             foreach (var action in Actions)
             {
                 var assembly = action.GetType().Assembly;
-                var assemblyFilename = Path.Combine(_configuration.AddinPath, assembly.GetName().Name + ".dll");
+                var assemblyFilename = GetAssemblyFilenameFromAddin(assembly.GetName().Name) + ".dll";
                 
-                if (!compilerParameters.ReferencedAssemblies.Contains(assemblyFilename))
-                    compilerParameters.ReferencedAssemblies.Add(assemblyFilename);
+                AddReferenceAssembly(compilerParameters, assemblyFilename);
 
                 AddReferenceAssemblies(compilerParameters, assembly);
             }
@@ -165,18 +164,43 @@ namespace jarvis.client.worker
             compilerParameters.GenerateExecutable = false;
             compilerParameters.GenerateInMemory = true;
 
+
+            foreach (var referencedAssembly in compilerParameters.ReferencedAssemblies)
+            {
+                Console.WriteLine(referencedAssembly);
+            }
+
             return cSharpCodeProvider.CompileAssemblyFromSource(compilerParameters, new string[] {source});
         }
 
-        private static void AddReferenceAssemblies(CompilerParameters compilerParameters, Assembly assembly)
+        private static void AddReferenceAssembly(CompilerParameters compilerParameters, string assemblyFilename)
+        {
+            if (!compilerParameters.ReferencedAssemblies.Contains(assemblyFilename))
+            {
+                compilerParameters.ReferencedAssemblies.Add(assemblyFilename);
+            }
+        }
+
+        private string GetAssemblyFilenameFromAddin(string assemblyName)
+        {
+            return Path.Combine(_configuration.AddinPath, assemblyName );
+        }
+
+        private void AddReferenceAssemblies(CompilerParameters compilerParameters, Assembly assembly)
         {
             foreach (var referencedAssembly in assembly.GetReferencedAssemblies())
             {
                 var assemblyFilename = referencedAssembly.Name + ".dll";
 
-                if (!compilerParameters.ReferencedAssemblies.Contains(assemblyFilename))
+                var assemblyFilenameFromAddin = GetAssemblyFilenameFromAddin(assemblyFilename);
+
+                if (File.Exists(assemblyFilenameFromAddin))
                 {
-                    compilerParameters.ReferencedAssemblies.Add(assemblyFilename);
+                    AddReferenceAssembly(compilerParameters, assemblyFilenameFromAddin);
+                }
+                else
+                {
+                    AddReferenceAssembly(compilerParameters, assemblyFilename);
                 }
             }
         }

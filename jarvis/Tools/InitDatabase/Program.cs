@@ -42,10 +42,57 @@ namespace jarvis.tools.initDatabase
 
                     CreateEventHandler(session);
                     CreateFileCreateEventHandler(session);
+                    CreateIrcResponder(session);
 
                     transaction.Commit();
                 }
             }
+        }
+
+        private static void CreateIrcResponder(ISession session)
+        {
+            var workflow = new DefinedWorkflow();
+            workflow.Name = "IrcResponder";
+            session.SaveOrUpdate(workflow);
+
+            var definedTask = new DefinedTask();
+            definedTask.Name = "IrcAnswer";
+            definedTask.RunCode = @"
+                                    var channels = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Channels"").Single().Value;
+                                    string message = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Message"").Single().Value;
+                                    string hostname = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Client"").Single().Value;
+
+                                    var channel = channels.Split(',')[0];
+
+                                    Irc.SendMessage(hostname, channel, message);
+
+                                    return 0;
+                                    ";
+            session.SaveOrUpdate(definedTask);
+
+
+            var definedWorkflowStep = new DefinedWorkflowStep();
+            definedWorkflowStep.DefinedTask = definedTask;
+            definedWorkflowStep.DefinedWorkflow = workflow;
+            session.SaveOrUpdate(definedWorkflowStep);
+
+            var nextWorkflowStep = new DefinedNextWorkflowStep();
+            nextWorkflowStep.DefinedWorkflow = workflow;
+            nextWorkflowStep.NextStep = definedWorkflowStep;
+            nextWorkflowStep.PreviousStep = null;
+            session.SaveOrUpdate(nextWorkflowStep);
+
+            var lastWorkflowStep = new DefinedNextWorkflowStep();
+            lastWorkflowStep.DefinedWorkflow = workflow;
+            lastWorkflowStep.PreviousStep = definedWorkflowStep;
+            lastWorkflowStep.NextStep = null;
+            session.SaveOrUpdate(lastWorkflowStep);
+
+            var defaultEventHandler = new EventHandler();
+            defaultEventHandler.DefinedWorkflow = workflow;
+            defaultEventHandler.EventGroupTypes = EventGroupTypes.Irc;
+
+            session.SaveOrUpdate(defaultEventHandler);
         }
 
         private static void CreateEventHandler(ISession session)

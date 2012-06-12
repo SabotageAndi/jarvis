@@ -63,3 +63,5 @@
 /jarvis/Addins/Implementations/Irc/IrcTrigger/bin
 /jarvis/Deployment
 /jarvis/Server/web/Addins
+/jarvis/Addins/Implementations/Irc/IrcServer/bin
+/jarvis/Addins/Implementations/Irc/IrcServer/obj
