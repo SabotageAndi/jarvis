@@ -12,7 +12,7 @@ namespace jarvis.addins.irctrigger
         void SendMessage(string hostname, string channel, string message);
     }
 
-    public class IrcAction : actions.Action, IIrcAction
+    public class IrcAction : actions.ClientAction, IIrcAction
     {
         public override string PropertyName
         {

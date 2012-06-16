@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Configuration;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Web.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
@@ -26,14 +27,15 @@ namespace jarvis.server.configuration
 {
     public class DatabaseConfiguration : INHibernateConfiguration
     {
-        private readonly FluentConfiguration _configuration;
-        private readonly ISessionFactory _sessionFactory;
-        private Configuration _configFileConfiguration;
+        private FluentConfiguration _configuration;
+        private ISessionFactory _sessionFactory;
+        private readonly List<Assembly> _assemblies;
 
         public DatabaseConfiguration()
         {
-            _configuration = GetFluentConfiguration();
-            _sessionFactory = _configuration.BuildSessionFactory();
+            _assemblies = new List<Assembly>();
+
+            RecreateSessionFactory();
         }
 
         internal DatabaseConfigurationSection JarvisClientConfigurationSection
@@ -41,26 +43,6 @@ namespace jarvis.server.configuration
             get { return WebConfigurationManager.GetSection(DatabaseConfigurationSection.SectionName) as DatabaseConfigurationSection; }
         }
 
-//        private System.Configuration.Configuration Configuration
-//        {
-//            get
-//            {
-//                if (_configuration == null)
-//                {
-//#if DEBUG
-//                    string applicationName = Environment.GetCommandLineArgs()[0];
-//#else
-//                    string applicationName = Environment.GetCommandLineArgs()[0]+ ".exe";
-//#endif
-
-//                    string exePath = System.IO.Path.Combine(Environment.CurrentDirectory, applicationName);
-
-//                    _configFileConfiguration = WebConfigurationManager.
-//                }
-
-//                return _configFileConfiguration;
-//            }
-//        }
 
         public ISessionFactory GetSessionFactory()
         {
@@ -72,12 +54,29 @@ namespace jarvis.server.configuration
             return _configuration;
         }
 
+        public void AddAssembly(Assembly assembly)
+        {
+            _assemblies.Add(assembly);
+        }
+
+        public void RecreateSessionFactory()
+        {
+            _configuration = GetFluentConfiguration();
+            _sessionFactory = _configuration.BuildSessionFactory();
+        }
+
         private FluentConfiguration GetFluentConfiguration()
         {
             return Fluently.Configure()
                 .Database(GetDbConfiguration())
                 .Mappings(m =>
                               {
+                                  foreach (var assembly in _assemblies)
+                                  {
+                                      m.FluentMappings.AddFromAssembly(assembly);
+                                      m.FluentMappings.Conventions.AddAssembly(assembly);
+                                  }
+
                                   m.FluentMappings.AddFromAssemblyOf<Entity>();
                                   m.FluentMappings.Conventions.AddFromAssemblyOf<Entity>();
                               });

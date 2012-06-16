@@ -65,3 +65,7 @@
 /jarvis/Server/web/Addins
 /jarvis/Addins/Implementations/Irc/IrcServer/bin
 /jarvis/Addins/Implementations/Irc/IrcServer/obj
+/jarvis/Addins/Implementations/Karma/KarmaClient/bin
+/jarvis/Addins/Implementations/Karma/KarmaClient/obj
+/jarvis/Addins/Implementations/Karma/KarmaServer/obj
+/jarvis/Addins/Implementations/Karma/KarmaServer/bin

@@ -21,19 +21,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
+using jarvis.addins.actions;
 using jarvis.client.common;
 using jarvis.client.common.Actions.ActionCaller;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
-using Action = jarvis.addins.actions.Action;
 
 namespace jarvis.client.worker
 {
     public interface IWorkflowEngine
     {
         bool Do();
-        void AddAction(Action action);
+        void AddAction(ClientAction action);
     }
 
     internal class WorkflowEngine : IWorkflowEngine
@@ -45,12 +45,12 @@ namespace jarvis.client.worker
         {
             _workflowService = workflowService;
             _configuration = configuration;
-            Actions = new List<Action>();
+            Actions = new List<ClientAction>();
         }
 
-        protected List<Action> Actions { get; set; }
+        protected List<ClientAction> Actions { get; set; }
 
-        public void AddAction(Action action)
+        public void AddAction(ClientAction action)
         {
             Actions.Add(action);   
         }

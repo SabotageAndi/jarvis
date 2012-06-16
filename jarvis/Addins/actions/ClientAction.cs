@@ -9,7 +9,7 @@ using jarvis.common.domain;
 
 namespace jarvis.addins.actions
 {
-    public abstract class Action
+    public abstract class ClientAction
     {
         [Inject]
         public client.common.ServiceClients.IActionService ActionService { get; set; }

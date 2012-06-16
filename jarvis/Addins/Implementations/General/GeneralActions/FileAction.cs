@@ -33,7 +33,7 @@ namespace jarvis.addins.generalactions
         void Write(string sourceClientName, string filePath, byte[] data);
     }
 
-    public class FileAction : actions.Action, IFileAction 
+    public class FileAction : actions.ClientAction, IFileAction 
     {
         public void Delete(string clientName, string filePath)
         {

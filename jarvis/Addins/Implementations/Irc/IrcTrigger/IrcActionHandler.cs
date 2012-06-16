@@ -40,7 +40,7 @@ namespace jarvis.addins.irctrigger
 
             if (channel != null)
             {
-                Irc.Client.LocalUser.SendMessage(channel, message);
+                Irc.Client.LocalUser.SendMessage(channel, message ?? String.Empty);
             }
 
             return new ActionResultDto();

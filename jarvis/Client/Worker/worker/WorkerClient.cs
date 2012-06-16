@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Ninject;
+using jarvis.addins.actions;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
-using Action = jarvis.addins.actions.Action;
 
 namespace jarvis.client.worker
 {
@@ -31,7 +31,7 @@ namespace jarvis.client.worker
         {
             foreach (var addin in Addins)
             {
-                var actionTypes = GetAddinTypes(addin, typeof (Action));
+                var actionTypes = GetAddinTypes(addin, typeof (ClientAction));
                 foreach (var actionType in actionTypes)
                 {
                     Container.Bind(actionType).ToSelf().InSingletonScope();
@@ -39,7 +39,7 @@ namespace jarvis.client.worker
 
                 foreach (var actionType in actionTypes)
                 {
-                    var action = (Action)Container.Get(actionType);
+                    var action = (ClientAction)Container.Get(actionType);
                     _workflowEngine.AddAction(action);
                 }
             }

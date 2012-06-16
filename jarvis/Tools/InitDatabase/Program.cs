@@ -42,11 +42,143 @@ namespace jarvis.tools.initDatabase
 
                     CreateEventHandler(session);
                     CreateFileCreateEventHandler(session);
-                    CreateIrcResponder(session);
+                    //CreateIrcResponder(session);
+
+                    CreateKarma(session);
 
                     transaction.Commit();
                 }
             }
+        }
+
+        private static void CreateKarma(ISession session)
+        {
+            CreateKarmaIncreaseDecrease(session);
+            CreateKarmaStats(session);
+            CreateKarmaKarma(session);
+        }
+
+        private static void CreateKarmaStats(ISession session)
+        {
+            var runcode = @"
+                            var channels = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Channels"").Single().Value;
+                            string message = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Message"").Single().Value;
+                            string hostname = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Client"").Single().Value;
+
+                            var channel = channels.Split(',')[0];
+
+                            if (!message.Contains(""!stats""))
+                               return 0;
+
+                            string newMessage = Karma.GetStats();
+
+                            Irc.SendMessage(hostname, channel, newMessage);
+                            return 0;";
+
+            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, EventGroupTypes.Irc);
+        }
+
+        private static void CreateKarmaKarma(ISession session)
+        {
+            var runcode = @"
+                            var channels = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Channels"").Single().Value;
+                            string message = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Message"").Single().Value;
+                            string hostname = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Client"").Single().Value;
+
+                            var channel = channels.Split(',')[0];
+                            
+                            if (!message.Contains(""!karma""))
+                               return 0;
+
+                            string newMessage = ""Average karma: "" + Karma.GetKarma().ToString();
+
+                            Irc.SendMessage(hostname, channel, newMessage);
+                            return 0;";
+
+            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, EventGroupTypes.Irc);
+        }
+
+        private static void CreateKarmaIncreaseDecrease(ISession session)
+        {
+            var runCode = @"
+                                    var channels = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Channels"").Single().Value;
+                                    string message = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Message"").Single().Value;
+                                    string hostname = parameters.Where(p => p.Category == ""EventParameter"" && p.Name == ""Client"").Single().Value;
+
+                                    var channel = channels.Split(',')[0];
+
+                                    bool increase = false;
+                                    bool decrease = false;
+
+                                    if (message.Contains(""++""))
+                                        increase = true;
+                                    else
+                                    {
+                                        if (message.Contains(""--""))
+                                            decrease = true;
+                                    }
+
+                                    if (!increase && !decrease)
+                                        return 0;
+
+                                    string key = String.Empty;
+                                    int newValue = 0;
+
+                                    if (increase)            
+                                    {
+                                        key = message.Split(new string[]{""++""}, 2, StringSplitOptions.RemoveEmptyEntries)[0];
+                                        newValue = Karma.IncreaseKarma(key);
+                                    }
+
+                                    if (decrease)
+                                    {
+                                        key = message.Split(new string[]{""--""}, 2, StringSplitOptions.RemoveEmptyEntries)[0];
+                                        newValue = Karma.DecreaseKarma(key);
+                                    }
+
+                                    string newMessage = key + "": "" + newValue.ToString();
+
+                                    Irc.SendMessage(hostname, channel, newMessage);
+
+                                    return 0;
+                                    ";
+            CreateSimpleWorkflow(session, "ChangeKarma", "ChangeKarma", runCode, EventGroupTypes.Irc);
+        }
+
+        private static void CreateSimpleWorkflow(ISession session, string workflowName, string taskName, string runCode, EventGroupTypes eventGroupTypes)
+        {
+            var workflow = new DefinedWorkflow();
+            workflow.Name = workflowName;
+            session.SaveOrUpdate(workflow);
+
+            var definedTask = new DefinedTask();
+            definedTask.Name = taskName;
+            definedTask.RunCode = runCode;
+            session.SaveOrUpdate(definedTask);
+
+
+            var definedWorkflowStep = new DefinedWorkflowStep();
+            definedWorkflowStep.DefinedTask = definedTask;
+            definedWorkflowStep.DefinedWorkflow = workflow;
+            session.SaveOrUpdate(definedWorkflowStep);
+
+            var nextWorkflowStep = new DefinedNextWorkflowStep();
+            nextWorkflowStep.DefinedWorkflow = workflow;
+            nextWorkflowStep.NextStep = definedWorkflowStep;
+            nextWorkflowStep.PreviousStep = null;
+            session.SaveOrUpdate(nextWorkflowStep);
+
+            var lastWorkflowStep = new DefinedNextWorkflowStep();
+            lastWorkflowStep.DefinedWorkflow = workflow;
+            lastWorkflowStep.PreviousStep = definedWorkflowStep;
+            lastWorkflowStep.NextStep = null;
+            session.SaveOrUpdate(lastWorkflowStep);
+
+            var defaultEventHandler = new EventHandler();
+            defaultEventHandler.DefinedWorkflow = workflow;
+            defaultEventHandler.EventGroupTypes = eventGroupTypes;
+
+            session.SaveOrUpdate(defaultEventHandler);
         }
 
         private static void CreateIrcResponder(ISession session)

@@ -24,6 +24,8 @@ using System.Web.Configuration;
 using Ninject;
 using jarvis.addins.serverActions;
 using jarvis.common.dtos.Actionhandling;
+using jarvis.server.configuration;
+using jarvis.server.repositories;
 
 namespace jarvis.server.model.ActionHandling
 {
@@ -37,12 +39,16 @@ namespace jarvis.server.model.ActionHandling
     {
         private readonly IActionRegistry _actionRegistry;
         private readonly Func<IKernel> _kernel;
+        private readonly IDatabaseManager _databaseManager;
+        private readonly INHibernateConfiguration _nHibernateConfiguration;
         private List<Assembly> _addins = new List<Assembly>();
 
-        public ActionLogic(IActionRegistry actionRegistry, Func<IKernel> kernel)
+        public ActionLogic(IActionRegistry actionRegistry, Func<IKernel> kernel, IDatabaseManager databaseManager, INHibernateConfiguration  nHibernateConfiguration )
         {
             _actionRegistry = actionRegistry;
             _kernel = kernel;
+            _databaseManager = databaseManager;
+            _nHibernateConfiguration = nHibernateConfiguration;
 
             LoadServerActions();
         }
@@ -59,19 +65,44 @@ namespace jarvis.server.model.ActionHandling
 
         public void LoadServerActions()
         {
+            if (_addins.Any())
+                return;
+
+            AddAddInConfigHandling();
             LoadAddins();
 
             foreach (var addin in _addins)
             {
+
                 var actionHandlerTypes = GetAddinTypes(addin, typeof(ServerAction));
+
+                if (actionHandlerTypes.Any())
+                    _nHibernateConfiguration.AddAssembly(addin);
+
                 foreach (var triggerType in actionHandlerTypes)
                 {
                     var actionHandler = (ServerAction)Activator.CreateInstance(triggerType);
                     _kernel().Inject(actionHandler);
 
+                    actionHandler.Init(_kernel);
+
                     _actionRegistry.RegisterActionHandler(actionHandler);
                 }
             }
+
+            _nHibernateConfiguration.RecreateSessionFactory();
+            _databaseManager.UpdateSchema();
+        }
+
+        private void AddAddInConfigHandling()
+        {
+            AppDomain.CurrentDomain.AssemblyResolve += delegate(object sender, ResolveEventArgs e)
+            {
+                var requestedName = new AssemblyName(e.Name);
+
+                var addinAssembly = _addins.Where(a => a.GetName().Name == requestedName.Name).SingleOrDefault();
+                return addinAssembly;
+            };
         }
 
         protected static IEnumerable<Type> GetAddinTypes(Assembly addin, Type addinType)
@@ -85,7 +116,8 @@ namespace jarvis.server.model.ActionHandling
 
             foreach (var addinFile in addinFiles)
             {
-                _addins.Add(Assembly.LoadFile(addinFile));
+                var assembly = Assembly.LoadFile(addinFile);
+                _addins.Add(assembly);
             }
         }
 

@@ -11,6 +11,13 @@ namespace jarvis.addins.serverActions
 {
     public abstract class ServerAction
     {
+        private Func<IKernel> _kernel;
+
+        protected Func<IKernel> Kernel
+        {
+            get { return _kernel; }
+        }
+
         [Inject]
         public IClientRepository ClientRepository { get; set; }
 
@@ -29,6 +36,11 @@ namespace jarvis.addins.serverActions
             }
 
             return result;
+        }
+
+        public virtual void Init(Func<IKernel> kernel)
+        {
+            _kernel = kernel;
         }
     }
 

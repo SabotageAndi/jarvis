@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30845B5A-6050-4952-A524-7B913C2C0AEE}</ProjectGuid>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA76186E-00FD-413A-82C6-005F5545F8B4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>jarvis.addins.actions</RootNamespace>
-    <AssemblyName>jarvis.addins.actions</AssemblyName>
+    <RootNamespace>jarvis.addins.karma.client</RootNamespace>
+    <AssemblyName>jarvis.addins.karma.client</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,21 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.4.5.4\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject">
-      <HintPath>..\..\packages\Ninject.3.0.0.15\lib\net40\Ninject.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>..\..\packages\RestSharp.102.7\lib\net35\RestSharp.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,35 +40,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\SharedAssemblyInfo.cs">
+    <Compile Include="..\..\..\..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ClientAction.cs" />
-    <Compile Include="ActionHandler.cs" />
-    <Compile Include="ActionModule.cs" />
-    <Compile Include="ActionRegistry.cs" />
-    <Compile Include="ActionService.cs" />
-    <Compile Include="ActionServiceHost.cs" />
+    <Compile Include="KarmaClientAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Client\Common\common.csproj">
-      <Project>{477fc303-4cde-403a-9d9b-a62935daed98}</Project>
+    <ProjectReference Include="..\..\..\..\Client\Common\common.csproj">
+      <Project>{477FC303-4CDE-403A-9D9B-A62935DAED98}</Project>
       <Name>common %28Client\common%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\domain\domain.csproj">
-      <Project>{E8D20399-5A2C-45AC-AD29-69425D9E3507}</Project>
-      <Name>domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Common\dtos\dtos.csproj">
+    <ProjectReference Include="..\..\..\..\Common\dtos\dtos.csproj">
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\..\actions\actions.csproj">
+      <Project>{30845B5A-6050-4952-A524-7B913C2C0AEE}</Project>
+      <Name>actions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* $(SolutionDir)Addins\compiledClient\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

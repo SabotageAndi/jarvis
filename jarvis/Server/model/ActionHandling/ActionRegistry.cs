@@ -39,7 +39,7 @@ namespace jarvis.server.model.ActionHandling
         {
             if (ActionHandlers.ContainsKey(actionHandler.ActionGroup))
             {
-                throw new ActionHandlerAlreadyRegisteredException();
+                return;
             }
 
             ActionHandlers.Add(actionHandler.ActionGroup, actionHandler);

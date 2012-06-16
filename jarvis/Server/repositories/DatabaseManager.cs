@@ -28,6 +28,12 @@ namespace jarvis.server.repositories
             var schemaUpdater = new SchemaUpdate(_nHibernateConfiguration.GetConfiguration().BuildConfiguration());
 
             schemaUpdater.Execute(true, true);
+
+            if (schemaUpdater.Exceptions.Any())
+                foreach (var exception in schemaUpdater.Exceptions)
+                {
+                    throw exception;
+                }
         }
     }
 }

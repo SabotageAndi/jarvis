@@ -46,6 +46,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +57,9 @@
     <Compile Include="IrcAction.cs" />
     <Compile Include="IrcActionHandler.cs" />
     <Compile Include="IrcTrigger.cs" />
+    <Compile Include="IrcTriggerConfigElementCollection.cs" />
+    <Compile Include="IrcTriggerConfigurationElement.cs" />
+    <Compile Include="IrcTriggerConfigurationSection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +74,10 @@
     <ProjectReference Include="..\..\..\..\Common\dtos\dtos.csproj">
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Common\logic\logic.csproj">
+      <Project>{65E668FE-B2D3-4A78-B8CA-187279F46365}</Project>
+      <Name>logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\actions\actions.csproj">
       <Project>{30845B5A-6050-4952-A524-7B913C2C0AEE}</Project>

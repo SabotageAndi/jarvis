@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using System.Linq;
 using NHibernate;
 using NHibernate.Linq;
@@ -62,6 +63,16 @@ namespace jarvis.server.repositories
         public virtual T GetById(int id)
         {
             return CurrentSession.Query<T>().Where(e => e.Id == id).SingleOrDefault();
+        }
+
+        public virtual void Delete(T entity)
+        {
+            CurrentSession.Delete(entity);
+        }
+
+        public IEnumerable<T> GetAll()
+        {
+            return CurrentSession.Query<T>();
         }
     }
 }

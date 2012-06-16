@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Configuration;
-using jarvis.client.common.Configuration;
 using jarvis.common.logic;
 
 namespace jarvis.addins.generaltriggers.FileSystem

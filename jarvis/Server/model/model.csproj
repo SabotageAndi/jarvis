@@ -90,6 +90,10 @@
       <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>
       <Name>common %28Server\common%29</Name>
     </ProjectReference>
+    <ProjectReference Include="..\configuration\configuration.csproj">
+      <Project>{BF39BF67-0015-43B4-B7C5-07A3D9B38BF5}</Project>
+      <Name>configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\entities\entities.csproj">
       <Project>{21FD2661-DDF3-45B7-9240-13EA4BF9EFAB}</Project>
       <Name>entities</Name>
