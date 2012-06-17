@@ -101,20 +101,20 @@ namespace jarvis.addins.generaltriggers.FileSystem
 
         private void fileSystemWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            EventType eventType;
+            string eventType;
             switch (e.ChangeType)
             {
                 case WatcherChangeTypes.Created:
-                    eventType = EventType.Add;
+                    eventType = "Add";
                     break;
                 case WatcherChangeTypes.Deleted:
-                    eventType = EventType.Remove;
+                    eventType = "Remove";
                     break;
                 case WatcherChangeTypes.Changed:
-                    eventType = EventType.Changed;
+                    eventType = "Changed";
                     break;
                 case WatcherChangeTypes.Renamed:
-                    eventType = EventType.Renamed;
+                    eventType = "Renamed";
                     break;
                 default:
                     return;
@@ -124,7 +124,7 @@ namespace jarvis.addins.generaltriggers.FileSystem
 
             TriggerService.EventHappend(new EventDto()
                                             {
-                                                EventGroupTypes = EventGroupTypes.Filesystem,
+                                                EventGroupType = "Filesystem",
                                                 EventType = eventType,
                                                 TriggeredDate = DateTime.UtcNow,
                                                 Data =  jsonSerializer.Serialize(new FileEventParameterDto

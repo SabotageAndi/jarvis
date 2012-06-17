@@ -36,7 +36,7 @@ namespace jarvis.server.web.Areas.Events.Controllers
         {
             return View(_eventLogic.GetLastEvents().Select(e => new TriggeredEvent
                                                                     {
-                                                                        EventGroupTypes = e.EventGroupType,
+                                                                        EventGroupType = e.EventGroupType,
                                                                         EventType = e.EventType,
                                                                         TriggeredDate = e.TriggeredDate,
                                                                         Data = e.Data

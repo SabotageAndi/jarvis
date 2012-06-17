@@ -24,8 +24,8 @@ namespace jarvis.server.entities.Eventhandling
 {
     public class Event : Entity
     {
-        public virtual EventGroupTypes EventGroupType { get; set; }
-        public virtual EventType EventType { get; set; }
+        public virtual string EventGroupType { get; set; }
+        public virtual string EventType { get; set; }
         public virtual DateTime TriggeredDate { get; set; }
         public virtual Client Client { get; set; }
         public virtual string Data { get; set; }

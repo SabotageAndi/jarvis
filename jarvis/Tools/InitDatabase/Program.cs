@@ -75,7 +75,7 @@ namespace jarvis.tools.initDatabase
                             Irc.SendMessage(hostname, channel, newMessage);
                             return 0;";
 
-            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, EventGroupTypes.Irc);
+            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, "Irc");
         }
 
         private static void CreateKarmaKarma(ISession session)
@@ -95,7 +95,7 @@ namespace jarvis.tools.initDatabase
                             Irc.SendMessage(hostname, channel, newMessage);
                             return 0;";
 
-            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, EventGroupTypes.Irc);
+            CreateSimpleWorkflow(session, "KarmaStats", "KarmaStats", runcode, "Irc");
         }
 
         private static void CreateKarmaIncreaseDecrease(ISession session)
@@ -142,10 +142,10 @@ namespace jarvis.tools.initDatabase
 
                                     return 0;
                                     ";
-            CreateSimpleWorkflow(session, "ChangeKarma", "ChangeKarma", runCode, EventGroupTypes.Irc);
+            CreateSimpleWorkflow(session, "ChangeKarma", "ChangeKarma", runCode, "Irc");
         }
 
-        private static void CreateSimpleWorkflow(ISession session, string workflowName, string taskName, string runCode, EventGroupTypes eventGroupTypes)
+        private static void CreateSimpleWorkflow(ISession session, string workflowName, string taskName, string runCode, string eventGroupTypes)
         {
             var workflow = new DefinedWorkflow();
             workflow.Name = workflowName;
@@ -222,7 +222,7 @@ namespace jarvis.tools.initDatabase
 
             var defaultEventHandler = new EventHandler();
             defaultEventHandler.DefinedWorkflow = workflow;
-            defaultEventHandler.EventGroupTypes = EventGroupTypes.Irc;
+            defaultEventHandler.EventGroupTypes = "Irc";
 
             session.SaveOrUpdate(defaultEventHandler);
         }
@@ -315,8 +315,8 @@ namespace jarvis.tools.initDatabase
 
             var defaultEventHandler = new EventHandler();
             defaultEventHandler.DefinedWorkflow = workflow;
-            defaultEventHandler.EventGroupTypes = EventGroupTypes.Filesystem;
-            defaultEventHandler.EventType = EventType.Add;
+            defaultEventHandler.EventGroupTypes = "Filesystem";
+            defaultEventHandler.EventType = "Add";
 
             session.SaveOrUpdate(defaultEventHandler);
         }

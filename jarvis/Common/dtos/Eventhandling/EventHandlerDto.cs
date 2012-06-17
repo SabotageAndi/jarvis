@@ -26,24 +26,14 @@ namespace jarvis.common.dtos.Eventhandling
         public int Id { get; set; }
 
         [DataMember]
-        public int? EventGroupTypesValue { get; set; }
+        public string EventGroupType { get; set; }
 
         [DataMember]
-        public int? EventTypeValue { get; set; }
+        public string EventType{ get; set; }
 
         [DataMember]
         public int DefinedWorkflowId { get; set; }
 
-        public EventGroupTypes? EventGroupTypes
-        {
-            get { return (EventGroupTypes?) EventGroupTypesValue; }
-            set { EventGroupTypesValue = (int?) value; }
-        }
-
-        public EventType? EventType
-        {
-            get { return (EventType?) EventTypeValue; }
-            set { EventTypeValue = (int?) value; }
-        }
+       
     }
 }

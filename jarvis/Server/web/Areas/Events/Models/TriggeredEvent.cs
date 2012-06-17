@@ -23,9 +23,9 @@ namespace jarvis.server.web.Areas.Events.Models
     {
         public DateTime TriggeredDate { get; set; }
 
-        public EventGroupTypes EventGroupTypes { get; set; }
+        public string EventGroupType { get; set; }
 
-        public EventType EventType { get; set; }
+        public string EventType { get; set; }
 
         public String Data { get; set; }
     }

@@ -49,7 +49,7 @@ namespace jarvis.server.model
 
             var raisedEvent = new Event()
                                   {
-                                      EventGroupType = eventDto.EventGroupTypes,
+                                      EventGroupType = eventDto.EventGroupType,
                                       EventType = eventDto.EventType,
                                       TriggeredDate = eventDto.TriggeredDate,
                                       Data = eventDto.Data,
@@ -82,7 +82,7 @@ namespace jarvis.server.model
                                                                 {
                                                                     Id = e.Id,
                                                                     TriggeredDate = e.TriggeredDate,
-                                                                    EventGroupTypes = e.EventGroupType,
+                                                                    EventGroupType = e.EventGroupType,
                                                                     EventType = e.EventType,
                                                                     Data = e.Data
                                                                 }).ToList();

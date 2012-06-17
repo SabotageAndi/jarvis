@@ -29,23 +29,11 @@ namespace jarvis.common.dtos.Eventhandling
         [DataMember]
         public DateTime TriggeredDate { get; set; }
 
-        public EventGroupTypes EventGroupTypes
-        {
-            get { return (EventGroupTypes) EventGroupTypesValue; }
-            set { EventGroupTypesValue = (int) value; }
-        }
-
-        public EventType EventType
-        {
-            get { return (EventType) EventTypeValue; }
-            set { EventTypeValue = (int) value; }
-        }
+        [DataMember]
+        public string EventGroupType { get; set; }
 
         [DataMember]
-        public int EventGroupTypesValue { get; set; }
-
-        [DataMember]
-        public int EventTypeValue { get; set; }
+        public string EventType { get; set; }
 
         [DataMember]
         public String Data { get; set; }

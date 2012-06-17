@@ -50,7 +50,7 @@ namespace jarvis.server.model
             return _eventHandlerRepository.GetAllEventHandler().Select(e => new EventHandlerDto()
                                                                                 {
                                                                                     Id = e.Id,
-                                                                                    EventGroupTypes = e.EventGroupTypes,
+                                                                                    EventGroupType = e.EventGroupTypes,
                                                                                     EventType = e.EventType,
                                                                                     DefinedWorkflowId =
                                                                                         e.DefinedWorkflow == null

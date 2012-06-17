@@ -63,7 +63,7 @@ namespace EventHandler
             foreach (var eventDto in events)
             {
                 var hittedEventHandler = from eh in eventHandlers
-                                         where (eh.EventGroupTypes == null || eh.EventGroupTypes == eventDto.EventGroupTypes)
+                                         where (eh.EventGroupType == null || eh.EventGroupType  == eventDto.EventGroupType)
                                                && (eh.EventType == null || eh.EventType == eventDto.EventType)
                                          select eh;
 

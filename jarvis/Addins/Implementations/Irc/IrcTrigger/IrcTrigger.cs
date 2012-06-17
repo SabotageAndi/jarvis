@@ -108,8 +108,8 @@ namespace jarvis.addins.irctrigger
 
             TriggerService.EventHappend(new EventDto()
             {
-                EventGroupTypes = EventGroupTypes.Irc,
-                EventType = EventType.Changed,
+                EventGroupType = "Irc",
+                EventType = "Changed",
                 TriggeredDate = DateTime.UtcNow,
                 Data = jsonSerializer.Serialize(new IrcEventParameter()
                                                     {

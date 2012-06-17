@@ -24,8 +24,8 @@ namespace jarvis.server.entities.Eventhandling
     public class EventHandler : Entity
     {
         public virtual DefinedWorkflow DefinedWorkflow { get; set; }
-        public virtual EventGroupTypes? EventGroupTypes { get; set; }
-        public virtual EventType? EventType { get; set; }
+        public virtual string EventGroupTypes { get; set; }
+        public virtual string EventType { get; set; }
     }
 
     public class EventHandlerMap : ClassMap<EventHandler>
