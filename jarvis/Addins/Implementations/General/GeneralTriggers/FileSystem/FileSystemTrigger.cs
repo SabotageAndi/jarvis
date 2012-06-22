@@ -120,7 +120,7 @@ namespace jarvis.addins.generaltriggers.FileSystem
                     return;
             }
 
-            var jsonSerializer = new JsonSerializer(JsonParser.GetJsonSerializer());
+            var jsonSerializer = JsonParser.GetJsonSerializer();
 
             TriggerService.EventHappend(new EventDto()
                                             {

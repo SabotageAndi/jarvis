@@ -52,12 +52,12 @@ namespace jarvis.addins.actions
             return result;
         }
 
-        protected JsonSerializer JsonSerializer
+        protected JarvisJsonSerializer JsonSerializer
         {
-            get { return new JsonSerializer(JsonParser.GetJsonSerializer()); }
+            get { return JsonParser.GetJsonSerializer(); }
         }
 
-        protected Newtonsoft.Json.JsonSerializer JsonDeserializer
+        protected JarvisJsonSerializer JsonDeserializer
         {
             get { return JsonParser.GetJsonSerializer(); }
         }

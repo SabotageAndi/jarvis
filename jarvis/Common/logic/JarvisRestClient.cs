@@ -41,7 +41,7 @@ namespace jarvis.client.common.ServiceClients
         public RestRequest CreateRequest(string resource, Method method)
         {
             var restRequest = new RestRequest(resource, method);
-            restRequest.JsonSerializer = new JsonSerializer(JsonParser.GetJsonSerializer());
+            restRequest.JsonSerializer = JsonParser.GetJsonSerializer();
             restRequest.RequestFormat = DataFormat.Json;
             return restRequest;
         }

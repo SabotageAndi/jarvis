@@ -104,7 +104,7 @@ namespace jarvis.addins.irctrigger
 
         void OnMessageReceived(object sender, IrcMessageEventArgs e)
         {
-            var jsonSerializer = new JsonSerializer(JsonParser.GetJsonSerializer());
+            var jsonSerializer = JsonParser.GetJsonSerializer();
 
             TriggerService.EventHappend(new EventDto()
             {

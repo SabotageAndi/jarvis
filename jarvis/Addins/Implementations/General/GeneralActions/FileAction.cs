@@ -15,9 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.IO;
-using Newtonsoft.Json;
-using jarvis.client.common.ServiceClients;
-using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
@@ -59,7 +56,7 @@ namespace jarvis.addins.generalactions
         {
             var result = ExecuteFileOperation(sourceClientName, filePath, FileActionConstants.Action_Read);
 
-            return JsonDeserializer.Deserialize<byte[]>(new JsonTextReader(new StringReader(result.Data)));
+            return JsonDeserializer.Deserialize<byte[]>(result.Data);
         }
 
         public void Write(string sourceClientName, string filePath, byte[] data)

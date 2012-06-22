@@ -16,10 +16,7 @@
 
 using System;
 using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
 using jarvis.addins.actions;
-using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 
 namespace jarvis.addins.generalactions
@@ -70,7 +67,7 @@ namespace jarvis.addins.generalactions
             var fileParameter = GetParameter(actionDto, "File", "Path");
             var dataParameter = GetParameter(actionDto, "File", "Data");
 
-            var data = JsonDeserializer.Deserialize<byte[]>(new JsonTextReader(new StringReader(dataParameter.Value)));
+            var data = JsonDeserializer.Deserialize<byte[]>(dataParameter.Value);
 
             File.WriteAllBytes(fileParameter.Value, data);
 
