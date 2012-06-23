@@ -69,3 +69,7 @@
 /jarvis/Addins/Implementations/Karma/KarmaClient/obj
 /jarvis/Addins/Implementations/Karma/KarmaServer/obj
 /jarvis/Addins/Implementations/Karma/KarmaServer/bin
+/deploy
+/jarvis/Server/server/obj
+/jarvis/Server/server/bin
+/linux

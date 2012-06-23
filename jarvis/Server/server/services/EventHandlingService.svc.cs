@@ -22,9 +22,9 @@ using jarvis.common.dtos.Workflow;
 using jarvis.server.common.Database;
 using jarvis.server.model;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     public class EventHandlingService : IEventHandlingService
     {
         private readonly IEventHandlingLogic _eventHandlingLogic;

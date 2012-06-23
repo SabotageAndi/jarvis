@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Threading;
 using Ninject;
 using jarvis.addins.actions;
 using jarvis.client.common;
@@ -41,6 +42,8 @@ namespace jarvis.client.worker
 
         private static void Main(string[] args)
         {
+            Thread.Sleep(10000);
+
             Bootstrap();
             var client = _container.Get<Client>();
 

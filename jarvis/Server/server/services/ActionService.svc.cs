@@ -14,13 +14,14 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.ServiceModel;
 using jarvis.common.dtos.Actionhandling;
 using jarvis.server.common.Database;
-using jarvis.server.model;
 using jarvis.server.model.ActionHandling;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     public class ActionService : IActionService
     {
         private readonly IActionLogic _actionLogic;

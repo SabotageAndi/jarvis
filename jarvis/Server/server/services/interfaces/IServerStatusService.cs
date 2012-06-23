@@ -19,11 +19,10 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using jarvis.common.dtos;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IServerStatusService" in both code and config file together.
     [ServiceContract]
-    public interface IServerStatusService
+    public interface IServerStatusService : IService
     {
         [OperationContract]
         [WebGet(UriTemplate = "server/status", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]

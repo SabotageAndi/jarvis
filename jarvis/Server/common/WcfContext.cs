@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.ServiceModel;
-using System.Web;
-using System.Web.Mvc;
 
-namespace jarvis.server.web
+namespace jarvis.server.common
 {
     ///<summary>
     /// This class incapsulates context information for a service instance

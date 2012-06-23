@@ -43,6 +43,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,7 +59,10 @@
     <Compile Include="Database\ITransactionScope.cs" />
     <Compile Include="Database\SessionFactory.cs" />
     <Compile Include="Database\TransactionFactory.cs" />
+    <Compile Include="Database\TransactionProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WcfContext.cs" />
+    <Compile Include="WebContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\configuration\configuration.csproj">

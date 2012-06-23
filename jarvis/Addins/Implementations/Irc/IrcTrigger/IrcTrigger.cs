@@ -111,12 +111,12 @@ namespace jarvis.addins.irctrigger
                 EventGroupType = "Irc",
                 EventType = "Changed",
                 TriggeredDate = DateTime.UtcNow,
-                Data = jsonSerializer.Serialize(new IrcEventParameter()
-                                                    {
-                                                        User = e.Source.Name,
-                                                        Message = e.Text,
-                                                        Channels = String.Join(",", e.Targets.Select(t => t.Name))
-                                                    })
+                //Data = jsonSerializer.Serialize(new IrcEventParameter()
+                //                                    {
+                //                                        User = e.Source.Name,
+                //                                        Message = e.Text,
+                //                                        Channels = String.Join(",", e.Targets.Select(t => t.Name))
+                //                                    })
             });
         }
 

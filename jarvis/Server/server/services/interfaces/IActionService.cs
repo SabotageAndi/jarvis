@@ -16,16 +16,15 @@
 
 using System.ServiceModel;
 using System.ServiceModel.Web;
-using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Actionhandling;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
     [ServiceContract]
-    public interface ITriggerService
+    public interface IActionService : IService
     {
         [OperationContract]
-        [WebInvoke(UriTemplate = "/trigger/", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST"
-            )]
-        void EventHappend(EventDto eventDto);
+        [WebInvoke(Method = "POST", UriTemplate = "action", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        ActionResultDto Execute(ActionDto action);
     }
 }

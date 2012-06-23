@@ -21,10 +21,10 @@ using System.ServiceModel.Web;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
     [ServiceContract]
-    internal interface IEventHandlingService
+    internal interface IEventHandlingService : IService
     {
         [OperationContract]
         [WebInvoke(UriTemplate = "/eventhandler/", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json,

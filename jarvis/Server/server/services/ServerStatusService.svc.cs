@@ -14,31 +14,32 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using jarvis.common.dtos.Workflow;
+using System;
+using System.ServiceModel;
+using jarvis.common.domain;
+using jarvis.common.dtos;
 using jarvis.server.common.Database;
-using jarvis.server.model;
+using jarvis.server.entities.Management;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
-    public class WorkflowService : IWorkflowService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
+    public class ServerStatusService : IServerStatusService
     {
-        private readonly IWorkflowLogic _workflowLogic;
+        private readonly ServerStatus _serverStatus;
         private readonly ITransactionProvider _transactionProvider;
 
-        public WorkflowService(IWorkflowLogic workflowLogic, ITransactionProvider transactionProvider)
+        public ServerStatusService(ServerStatus serverStatus, ITransactionProvider transactionProvider)
         {
-            _workflowLogic = workflowLogic;
+            _serverStatus = serverStatus;
             _transactionProvider = transactionProvider;
         }
 
-        public RunnedWorkflowDto GetWorkflowToExecute()
+        public ResultDto<Boolean> IsOnline()
         {
-            using (_transactionProvider.StartReadWriteTransaction())
+            using (_transactionProvider.StartReadTransaction())
             {
-                var workflowToExecute = _workflowLogic.GetWorkflowToExecute();
-
-                _transactionProvider.CurrentScope.Commit();
-                return workflowToExecute;
+                return new ResultDto<bool>(_serverStatus.State == State.Running); 
             }
         }
     }

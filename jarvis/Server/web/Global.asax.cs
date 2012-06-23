@@ -16,14 +16,11 @@
 
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Activation;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Ninject;
 using Ninject.Extensions.Wcf;
 using Ninject.Web.Common;
-using Ninject.Web.Mvc;
 using jarvis.common.domain;
 using jarvis.server.common.Database;
 using jarvis.server.configuration;
@@ -31,15 +28,10 @@ using jarvis.server.entities.Management;
 using jarvis.server.model;
 using jarvis.server.model.ActionHandling;
 using jarvis.server.repositories;
-using jarvis.server.web.Common.Database;
-using jarvis.server.web.services;
 
 namespace jarvis.server.web
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : NinjectHttpApplication
+    public class MvcApplication :  NinjectHttpApplication
     {
         protected ServerStatus Status
         {
@@ -118,7 +110,7 @@ namespace jarvis.server.web
             kernel.Bind<ISessionFactory>().To<SessionFactory>().InSingletonScope();
             kernel.Bind<ITransactionProvider>().To<TransactionProvider>().InSingletonScope();
 
-            kernel.Load(new ServiceModule(), new RepositoryModule(), new ModelModule(), new ConfigurationModule());
+            kernel.Load(new RepositoryModule(), new ModelModule(), new ConfigurationModule());
 
             Bootstrapper.Container = kernel;
         

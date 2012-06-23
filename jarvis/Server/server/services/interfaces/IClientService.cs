@@ -18,10 +18,10 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using jarvis.common.dtos.Management;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
     [ServiceContract]
-    public interface IClientService
+    public interface IClientService : IService
     {
         [OperationContract]
         [WebInvoke(Method = "POST", UriTemplate = "client", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]

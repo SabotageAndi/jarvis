@@ -15,31 +15,32 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.ServiceModel;
-using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Workflow;
 using jarvis.server.common.Database;
 using jarvis.server.model;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
-    public class TriggerService : ITriggerService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
+    public class WorkflowService : IWorkflowService
     {
-        private readonly IEventLogic _eventLogic;
+        private readonly IWorkflowLogic _workflowLogic;
         private readonly ITransactionProvider _transactionProvider;
 
-        public TriggerService(IEventLogic eventLogic, ITransactionProvider transactionProvider)
+        public WorkflowService(IWorkflowLogic workflowLogic, ITransactionProvider transactionProvider)
         {
-            _eventLogic = eventLogic;
+            _workflowLogic = workflowLogic;
             _transactionProvider = transactionProvider;
         }
 
-
-        public void EventHappend(EventDto eventDto)
+        public RunnedWorkflowDto GetWorkflowToExecute()
         {
             using (_transactionProvider.StartReadWriteTransaction())
             {
-                _eventLogic.eventRaised(eventDto); 
+                var workflowToExecute = _workflowLogic.GetWorkflowToExecute();
+
                 _transactionProvider.CurrentScope.Commit();
+                return workflowToExecute;
             }
         }
     }

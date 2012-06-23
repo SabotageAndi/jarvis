@@ -99,6 +99,8 @@ namespace jarvis.client.common
 
         public virtual void Init(IKernel container)
         {
+            Thread.Sleep(10000);
+
             if (State >= State.Initialized)
             {
                 throw new Exception("Client already initialized");
@@ -157,6 +159,8 @@ namespace jarvis.client.common
                 {
                     break;
                 }
+
+                Console.WriteLine("Server not online, waiting to start ...");
 
                 Thread.Sleep(10000);
             }

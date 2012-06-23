@@ -36,7 +36,7 @@ namespace jarvis.client.common.ServiceClients
             {
                 if (!_clientInitialized)
                 {
-                    _jarvisRestClient.BaseUrl = String.Format("{0}/{1}.svc/", _configuration.ServerUrl, ServiceName);
+                    _jarvisRestClient.BaseUrl = String.Format("{0}/{1}", _configuration.ServerUrl, ServiceName);
 
                     _clientInitialized = true;
                 }

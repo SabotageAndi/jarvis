@@ -15,30 +15,37 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using jarvis.common.domain;
-using jarvis.common.dtos;
+using System.ServiceModel;
+using jarvis.common.dtos.Eventhandling;
 using jarvis.server.common.Database;
-using jarvis.server.entities.Management;
+using jarvis.server.model;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
-    public class ServerStatusService : IServerStatusService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
+    public class TriggerService : ITriggerService
     {
-        private readonly ServerStatus _serverStatus;
+        private readonly IEventLogic _eventLogic;
         private readonly ITransactionProvider _transactionProvider;
 
-        public ServerStatusService(ServerStatus serverStatus, ITransactionProvider transactionProvider)
+        public TriggerService(IEventLogic eventLogic, ITransactionProvider transactionProvider)
         {
-            _serverStatus = serverStatus;
+            _eventLogic = eventLogic;
             _transactionProvider = transactionProvider;
         }
 
-        public ResultDto<Boolean> IsOnline()
+
+        public void EventHappend(EventDto eventDto)
         {
-            using (_transactionProvider.StartReadTransaction())
+            Console.WriteLine("Event happend");
+
+            using (_transactionProvider.StartReadWriteTransaction())
             {
-                return new ResultDto<bool>(_serverStatus.State == State.Running); 
+                _eventLogic.eventRaised(eventDto); 
+                _transactionProvider.CurrentScope.Commit();
             }
+
+            Console.WriteLine("Event stored");
         }
     }
 }

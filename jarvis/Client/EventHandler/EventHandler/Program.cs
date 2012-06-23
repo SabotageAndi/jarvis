@@ -31,7 +31,7 @@ namespace EventHandler
 
         public static JarvisRestClient _client = new JarvisRestClient()
                                                      {
-                                                         BaseUrl = "http://localhost:5368/Services/EventHandlingService.svc/"
+                                                         BaseUrl = "http://10.140.0.2:7777/EventHandlingService"
                                                      };
 
         private static void Main(string[] args)

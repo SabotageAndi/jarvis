@@ -18,10 +18,10 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using jarvis.common.dtos.Workflow;
 
-namespace jarvis.server.web.services
+namespace jarvis.server.services
 {
     [ServiceContract]
-    public interface IWorkflowService
+    public interface IWorkflowService : IService
     {
         [OperationContract]
         [WebGet(UriTemplate = "workflow", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
