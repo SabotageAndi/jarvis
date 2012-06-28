@@ -22,6 +22,8 @@ using Ninject;
 using jarvis.addins.actions;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
+using log4net;
+using log4net.Config;
 using Application = System.Windows.Application;
 
 namespace jarvis.client.windows
@@ -36,26 +38,39 @@ namespace jarvis.client.windows
 
         private static void Bootstrap()
         {
+
+            XmlConfigurator.Configure();
+            var log = LogManager.GetLogger("windowsclient");
+
             var containerBuilder = new StandardKernel();
+
             containerBuilder.Load(new CommonModule(), new ActionModule(), new ClientModule(), new ServiceClientModule());
             containerBuilder.Bind<Client>().To<ActionTriggerClient>().InSingletonScope();
             containerBuilder.Bind<Func<IKernel>>().ToMethod(ctx => () => Client.Container);
+            containerBuilder.Bind<ILog>().ToConstant(log).InSingletonScope();
 
             _container = containerBuilder;
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Bootstrap();
+            try
+            {
+                Bootstrap();
 
-            var client = _container.Get<Client>();
+                var client = _container.Get<Client>();
 
 
-            client.Init(_container);
-            client.OnShutDown += client_OnShutDown;
+                client.Init(_container);
+                client.OnShutDown += client_OnShutDown;
 
-            InitSystray();
-            client.Run();
+                InitSystray();
+                client.Run();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
         }
 
         private void client_OnShutDown()

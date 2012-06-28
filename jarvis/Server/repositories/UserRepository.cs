@@ -23,24 +23,20 @@ namespace jarvis.server.repositories
 {
     public interface IUserRepository : IRepositoryBase<User>
     {
-        User Login(string username, string password);
-        User Add(string username, string password);
-        void ChangePassword(User user, string newPassword);
-        User GetUser(string name);
+        User Login(ITransactionScope transactionScope, string username, string password);
+        User Add(ITransactionScope transactionScope, string username, string password);
+        void ChangePassword(ITransactionScope transactionScope, User user, string newPassword);
+        User GetUser(ITransactionScope transactionScope, string name);
     }
 
     public class UserRepository : RepositoryBase<User>, IUserRepository
     {
-        public UserRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public User Login(ITransactionScope transactionScope, string username, string password)
         {
+            return transactionScope.CurrentSession.Query<User>().Where(u => u.Username == username && u.Password == password).SingleOrDefault();
         }
 
-        public User Login(string username, string password)
-        {
-            return CurrentSession.Query<User>().Where(u => u.Username == username && u.Password == password).SingleOrDefault();
-        }
-
-        public User Add(string username, string password)
+        public User Add(ITransactionScope transactionScope, string username, string password)
         {
             var user = new User()
                            {
@@ -48,20 +44,20 @@ namespace jarvis.server.repositories
                                Password = password
                            };
 
-            CurrentSession.SaveOrUpdate(user);
+            transactionScope.CurrentSession.SaveOrUpdate(user);
 
             return user;
         }
 
-        public void ChangePassword(User user, string newPassword)
+        public void ChangePassword(ITransactionScope transactionScope, User user, string newPassword)
         {
             user.Password = newPassword;
-            CurrentSession.SaveOrUpdate(user);
+            transactionScope.CurrentSession.SaveOrUpdate(user);
         }
 
-        public User GetUser(string name)
+        public User GetUser(ITransactionScope transactionScope, string name)
         {
-            return CurrentSession.Query<User>().Where(u => u.Username == name).SingleOrDefault();
+            return transactionScope.CurrentSession.Query<User>().Where(u => u.Username == name).SingleOrDefault();
         }
     }
 }

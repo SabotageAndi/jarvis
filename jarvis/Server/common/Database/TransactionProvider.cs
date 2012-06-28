@@ -14,17 +14,24 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using Ninject;
+using ServiceStack.ServiceHost;
+
 namespace jarvis.server.common.Database
 {
     public class TransactionProvider : ITransactionProvider
     {
         private static string _HttpContextCurrentScope = "NHibernate_Current_Scope";
         private readonly ISessionFactory _sessionFactory;
+        private readonly IKernel _kernel;
 
-        public TransactionProvider(ISessionFactory sessionFactory)
+        public TransactionProvider(ISessionFactory sessionFactory, IKernel kernel)
         {
             _sessionFactory = sessionFactory;
+            _kernel = kernel;
         }
+
+        public IRequestContext RequestContext { get { return _kernel.Get<IRequestContext>(); }  }
 
         public ITransactionScope CurrentScope
         {
@@ -51,7 +58,6 @@ namespace jarvis.server.common.Database
         {
             var transaction = GetReadTransaction();
             transaction.BeginTransaction();
-            SetCurrentScope(transaction);
             return transaction;
         }
 
@@ -59,7 +65,6 @@ namespace jarvis.server.common.Database
         {
             var transaction = GetReadWriteTransaction();
             transaction.BeginTransaction();
-            SetCurrentScope(transaction);
             return transaction;
         }
     }

@@ -23,18 +23,14 @@ namespace jarvis.server.repositories
 {
     public interface IEventHandlerRepository : IRepositoryBase<EventHandler>
     {
-        IQueryable<EventHandler> GetAllEventHandler();
+        IQueryable<EventHandler> GetAllEventHandler(ITransactionScope transactionScope);
     }
 
     public class EventHandlerRepository : RepositoryBase<EventHandler>, IEventHandlerRepository
     {
-        public EventHandlerRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public IQueryable<EventHandler> GetAllEventHandler(ITransactionScope transactionScope)
         {
-        }
-
-        public IQueryable<EventHandler> GetAllEventHandler()
-        {
-            return CurrentSession.Query<EventHandler>();
+            return transactionScope.CurrentSession.Query<EventHandler>();
         }
     }
 }

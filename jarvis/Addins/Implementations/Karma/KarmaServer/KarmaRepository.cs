@@ -10,13 +10,9 @@ namespace jarvis.addins.karma.server
 {
     public class KarmaRepository : RepositoryBase<Karma>
     {
-        public KarmaRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public Karma GetByKey(ITransactionScope transactionScope, string key)
         {
-        }
-
-        public Karma GetByKey(string key)
-        {
-            return this.CurrentSession.Query<Karma>().Where(k => k.KarmaKey == key).SingleOrDefault();
+            return transactionScope.CurrentSession.Query<Karma>().Where(k => k.KarmaKey == key).SingleOrDefault();
         }
     }
 }

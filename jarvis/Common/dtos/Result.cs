@@ -15,11 +15,19 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Runtime.Serialization;
+using ServiceStack.ServiceInterface.ServiceModel;
 
 namespace jarvis.common.dtos
 {
     [DataContract]
-    public class ResultDto<T>
+    public class ResultDto
+    {
+        [DataMember]
+        public ResponseStatus ResponseStatus { get; set; }
+    }
+
+    [DataContract]
+    public class ResultDto<T> : ResultDto
     {
         public ResultDto(T value)
         {
@@ -33,5 +41,6 @@ namespace jarvis.common.dtos
 
         [DataMember]
         public T Result { get; set; }
+
     }
 }

@@ -7,12 +7,14 @@ using jarvis.addins.serverActions;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
+using jarvis.common.dtos.Requests;
+using jarvis.server.common.Database;
 
 namespace jarvis.addins.generalserveractions
 {
     public class FileAction : ServerAction
     {
-        public override bool CanExecute(ActionDto actionDto)
+        protected override bool CanExecuteAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             return actionDto.ActionGroup == "File";
         }
@@ -22,7 +24,7 @@ namespace jarvis.addins.generalserveractions
             get { return "File"; }
         }
 
-        public override ActionResultDto Execute(ActionDto actionDto)
+        protected override ActionResultDto ExecuteAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             if (actionDto.Action == "Move" || actionDto.Action == "Copy")
             {
@@ -31,7 +33,7 @@ namespace jarvis.addins.generalserveractions
 
                 if (sourceClientParameter.Value == targetClientParameter.Value)
                 {
-                    return ExecuteFileAction(actionDto);
+                    return ExecuteFileAction(transactionScope, actionDto);
                 }
 
                 var sourcePathParameter = GetParameter(actionDto, "File", "SourcePath");
@@ -47,7 +49,7 @@ namespace jarvis.addins.generalserveractions
                                                               }
                                          };
 
-                var readDataResult = ExecuteFileAction(readDataAction);
+                var readDataResult = ExecuteFileAction(transactionScope, readDataAction);
 
                 var writeDataAction = new ActionDto()
                                         {
@@ -60,27 +62,23 @@ namespace jarvis.addins.generalserveractions
                                                                                       }
                                         };
 
-                ExecuteFileAction(writeDataAction);
+                ExecuteFileAction(transactionScope, writeDataAction);
 
                 return new ActionResultDto();
             }
-            else
-            {
-                return ExecuteFileAction(actionDto);
-            }
+            
+            return ExecuteFileAction(transactionScope, actionDto);
         }
 
-        private ActionResultDto ExecuteFileAction(ActionDto actionDto)
+        private ActionResultDto ExecuteFileAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             var clientName = actionDto.Parameters.Where(p => p.Name == "Client").Single().Value;
-            var client = ClientRepository.GetByName(clientName);
+            var client = ClientRepository.GetByName(transactionScope, clientName);
 
-            var restClient = new JarvisRestClient();
+            var restClient = new JarvisRestClient(this.Log);
             restClient.BaseUrl = client.Hostname;
-            var request = restClient.CreateRequest("action/execute", Method.POST);
-            request.AddBody(actionDto);
 
-            return restClient.Execute<ActionResultDto>(request);
+            return restClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest(){ActionDto = actionDto}).Result;
         }
     }
 }

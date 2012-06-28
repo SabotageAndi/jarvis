@@ -20,6 +20,8 @@ using Ninject;
 using jarvis.addins.actions;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
+using log4net;
+using log4net.Config;
 
 namespace jarvis.client.worker
 {
@@ -30,11 +32,16 @@ namespace jarvis.client.worker
 
         private static void Bootstrap()
         {
+            XmlConfigurator.Configure();
+            var log = LogManager.GetLogger("worker-client");
+
             var containerBuilder = new StandardKernel();
             containerBuilder.Bind<Func<IKernel>>().ToMethod(ctx => () => Client.Container);
             containerBuilder.Load(new CommonModule(), new ClientModule(), new ServiceClientModule());
             containerBuilder.Bind<Client>().To<WorkerClient>().InSingletonScope();
             containerBuilder.Bind<IWorkflowEngine>().To<WorkflowEngine>().InSingletonScope();
+
+            containerBuilder.Bind<ILog>().ToConstant(log).InSingletonScope();
 
             _container = containerBuilder;
         }

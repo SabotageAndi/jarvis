@@ -32,29 +32,26 @@ namespace jarvis.client.common
     {
         public delegate void OnShutdownDelegate();
 
-        protected readonly List<Assembly> _addins = new List<Assembly>();
+        private readonly List<Assembly> _addins = new List<Assembly>();
 
         private readonly IClientService _clientService;
         private readonly IConfiguration _configuration;
-        private readonly ILog _log = LogManager.GetLogger("client");
+        private readonly ILog _log;
         private readonly IServerStatusService _serverStatusService;
 
 
         private ClientDto _clientDto;
-        private static IKernel _container;
 
-        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService)
+        public Client(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService, ILog log)
         {
             State = State.Instanciated;
             _clientService = clientService;
             _configuration = configuration;
             _serverStatusService = serverStatusService;
+            _log = log;
         }
 
-        public static IKernel Container
-        {
-            get { return _container; }
-        }
+        public static IKernel Container { get; private set; }
 
         public State State { get; set; }
 
@@ -65,7 +62,7 @@ namespace jarvis.client.common
 
         public static Client Current
         {
-            get { return _container.Get<Client>(); }
+            get { return Container.Get<Client>(); }
         }
 
         private ClientDto ClientDto
@@ -76,7 +73,7 @@ namespace jarvis.client.common
                 {
                     _clientDto = new ClientDto()
                                      {
-                                         Hostname = String.Format("http://localhost:{0}/", _configuration.LocalPort),
+                                         Hostname = String.Format("http://10.140.0.36:{0}/", _configuration.LocalPort),
                                          Type = ClientTypeEnum.Windows,
                                          Name = _configuration.Name
                                      };
@@ -106,7 +103,7 @@ namespace jarvis.client.common
                 throw new Exception("Client already initialized");
             }
 
-            _container = container;
+            Container = container;
 
             AddAddInConfigHandling();
             LoadLocalClientInformation();

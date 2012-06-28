@@ -15,9 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Workflow;
@@ -30,7 +28,7 @@ namespace jarvis.server.model
 {
     public interface IWorkflowLogic
     {
-        RunnedWorkflowDto GetWorkflowToExecute();
+        RunnedWorkflowDto GetWorkflowToExecute(ITransactionScope transactionScope);
     }
 
     public class WorkflowLogic : IWorkflowLogic
@@ -40,13 +38,11 @@ namespace jarvis.server.model
         private readonly IRunnedTaskRepository _runnedTaskRepository;
         private readonly IRunnedWorkflowRepository _runnedWorkflowRepository;
         private readonly IRunnedWorkflowStepRepository _runnedWorkflowStepRepository;
-        private readonly ITransactionProvider _transactionProvider;
         private readonly IWorkflowQueueRepository _workflowQueueRepository;
 
         public WorkflowLogic(IWorkflowQueueRepository workflowQueueRepository, IRunnedWorkflowRepository runnedWorkflowRepository,
                              IRunnedWorkflowStepRepository runnedWorkflowStepRepository, IRunnedTaskRepository runnedTaskRepository,
-                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, IParameterRepository parameterRepository,
-                             ITransactionProvider transactionProvider)
+                             IRunnedNextWorkflowStepRepository runnedNextWorkflowStepRepository, IParameterRepository parameterRepository)
         {
             _workflowQueueRepository = workflowQueueRepository;
             _runnedWorkflowRepository = runnedWorkflowRepository;
@@ -54,26 +50,25 @@ namespace jarvis.server.model
             _runnedTaskRepository = runnedTaskRepository;
             _runnedNextWorkflowStepRepository = runnedNextWorkflowStepRepository;
             _parameterRepository = parameterRepository;
-            _transactionProvider = transactionProvider;
         }
 
-        public RunnedWorkflowDto GetWorkflowToExecute()
+        public RunnedWorkflowDto GetWorkflowToExecute(ITransactionScope transactionScope)
         {
-            var workflowToExecute = _workflowQueueRepository.GetNextQueuedWorkflowAndSetStarttime();
+            var workflowToExecute = _workflowQueueRepository.GetNextQueuedWorkflowAndSetStarttime(transactionScope);
 
             if (workflowToExecute == null)
             {
                 return null;
             }
 
-            var runnedWorkflow = CreateRunnedWorkflow(workflowToExecute.DefinedWorkflow, workflowToExecute.Event);
+            var runnedWorkflow = CreateRunnedWorkflow(transactionScope, workflowToExecute.DefinedWorkflow, workflowToExecute.Event);
             workflowToExecute.RunnedWorkflow = runnedWorkflow;
 
-            _workflowQueueRepository.Save(workflowToExecute);
+            _workflowQueueRepository.Save(transactionScope, workflowToExecute);
 
-            _transactionProvider.CurrentScope.Flush();
+            transactionScope.Flush();
 
-            _runnedWorkflowRepository.Refresh(runnedWorkflow);
+            _runnedWorkflowRepository.Refresh(transactionScope, runnedWorkflow);
 
             return TranslateToDto(runnedWorkflow);
         }
@@ -131,39 +126,39 @@ namespace jarvis.server.model
                        };
         }
 
-        private RunnedWorkflow CreateRunnedWorkflow(DefinedWorkflow definedWorkflow, Event eventInformation)
+        private RunnedWorkflow CreateRunnedWorkflow(ITransactionScope transactionScope, DefinedWorkflow definedWorkflow, Event eventInformation)
         {
             var runnedWorkflow = _runnedWorkflowRepository.Create();
             runnedWorkflow.DefinedWorkflow = definedWorkflow;
-            _runnedWorkflowRepository.Save(runnedWorkflow);
+            _runnedWorkflowRepository.Save(transactionScope, runnedWorkflow);
 
-            var runnedWorkflowSteps = CreateRunnedWorkflowSteps(definedWorkflow.WorkflowSteps, runnedWorkflow);
-            CreateRunnedNextWorkflowSteps(definedWorkflow.NextWorkflowSteps, runnedWorkflow, runnedWorkflowSteps);
+            var runnedWorkflowSteps = CreateRunnedWorkflowSteps(transactionScope, definedWorkflow.WorkflowSteps, runnedWorkflow);
+            CreateRunnedNextWorkflowSteps(transactionScope, definedWorkflow.NextWorkflowSteps, runnedWorkflow, runnedWorkflowSteps);
 
-            CreateParameters(runnedWorkflow, eventInformation);
+            CreateParameters(transactionScope, runnedWorkflow, eventInformation);
 
             return runnedWorkflow;
         }
 
-        private void CreateParameters(RunnedWorkflow runnedWorkflow, Event eventInformation)
+        private void CreateParameters(ITransactionScope transactionScope, RunnedWorkflow runnedWorkflow, Event eventInformation)
         {
-            var reader = JsonParser.GetJsonSerializer().Deserialize(eventInformation.Data);
+            var reader = JsonParser.GetJsonSerializer().Deserialize<Dictionary<string, string>>(eventInformation.Data);
 
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "Client", eventInformation.Client.Name));
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType",
-                                                                  eventInformation.EventGroupType.ToString()));
-            _parameterRepository.Save(_parameterRepository.Create(runnedWorkflow, "EventParameter", "EventType",
-                                                                  eventInformation.EventType.ToString()));
+            _parameterRepository.Save(transactionScope, _parameterRepository.Create(runnedWorkflow, "EventParameter", "Client", eventInformation.Client.Name));
+            _parameterRepository.Save(transactionScope, _parameterRepository.Create(runnedWorkflow, "EventParameter", "EventGroupType", eventInformation.EventGroupType));
+            _parameterRepository.Save(transactionScope, _parameterRepository.Create(runnedWorkflow, "EventParameter", "EventType", eventInformation.EventType));
 
             foreach (var row in reader)
             {
-                var parameter = _parameterRepository.Create(runnedWorkflow, "EventParameter", row.Key, row.Value.ToString());
+                var parameter = _parameterRepository.Create(runnedWorkflow, "EventParameter", row.Key, row.Value);
 
-                _parameterRepository.Save(parameter);
+                _parameterRepository.Save(transactionScope, parameter);
             }
         }
 
-        private void CreateRunnedNextWorkflowSteps(IList<DefinedNextWorkflowStep> nextWorkflowSteps, RunnedWorkflow runnedWorkflow,
+        private void CreateRunnedNextWorkflowSteps(ITransactionScope transactionScope,
+                                                   IList<DefinedNextWorkflowStep> nextWorkflowSteps, 
+                                                   RunnedWorkflow runnedWorkflow,
                                                    List<RunnedWorkflowStep> runnedWorkflowSteps)
         {
             foreach (var definedNextWorkflowStep in nextWorkflowSteps)
@@ -193,11 +188,11 @@ namespace jarvis.server.model
                 }
 
 
-                _runnedNextWorkflowStepRepository.Save(runnedNextWorkflowStep);
+                _runnedNextWorkflowStepRepository.Save(transactionScope, runnedNextWorkflowStep);
             }
         }
 
-        private List<RunnedWorkflowStep> CreateRunnedWorkflowSteps(IList<DefinedWorkflowStep> workflowSteps, RunnedWorkflow runnedWorkflow)
+        private List<RunnedWorkflowStep> CreateRunnedWorkflowSteps(ITransactionScope transactionScope, IList<DefinedWorkflowStep> workflowSteps, RunnedWorkflow runnedWorkflow)
         {
             var runnedWorkflowSteps = new List<RunnedWorkflowStep>();
 
@@ -206,10 +201,10 @@ namespace jarvis.server.model
                 var runnedWorkflowStep = _runnedWorkflowStepRepository.Create();
                 runnedWorkflowStep.RunnedWorkflow = runnedWorkflow;
                 runnedWorkflowStep.DefinedWorkflowStep = definedWorkflowStep;
-                runnedWorkflowStep.RunnedTask = CreateRunnedTask(definedWorkflowStep.DefinedTask);
+                runnedWorkflowStep.RunnedTask = CreateRunnedTask(transactionScope, definedWorkflowStep.DefinedTask);
 
 
-                _runnedWorkflowStepRepository.Save(runnedWorkflowStep);
+                _runnedWorkflowStepRepository.Save(transactionScope, runnedWorkflowStep);
 
                 runnedWorkflowSteps.Add(runnedWorkflowStep);
             }
@@ -217,13 +212,13 @@ namespace jarvis.server.model
             return runnedWorkflowSteps;
         }
 
-        private RunnedTask CreateRunnedTask(DefinedTask definedTask)
+        private RunnedTask CreateRunnedTask(ITransactionScope transactionScope, DefinedTask definedTask)
         {
             var runnedTask = _runnedTaskRepository.Create();
             runnedTask.DefinedTask = definedTask;
             runnedTask.RunCode = definedTask.RunCode;
 
-            _runnedTaskRepository.Save(runnedTask);
+            _runnedTaskRepository.Save(transactionScope, runnedTask);
 
             return runnedTask;
         }

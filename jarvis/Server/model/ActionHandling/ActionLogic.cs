@@ -24,14 +24,16 @@ using System.Web.Configuration;
 using Ninject;
 using jarvis.addins.serverActions;
 using jarvis.common.dtos.Actionhandling;
+using jarvis.server.common.Database;
 using jarvis.server.configuration;
 using jarvis.server.repositories;
+using log4net;
 
 namespace jarvis.server.model.ActionHandling
 {
     public interface IActionLogic
     {
-        ActionResultDto Execute(ActionDto actionDto);
+        ActionResultDto Execute(ITransactionScope transactionScope, ActionDto actionDto);
         void LoadServerActions();
     }
 
@@ -41,32 +43,39 @@ namespace jarvis.server.model.ActionHandling
         private readonly Func<IKernel> _kernel;
         private readonly IDatabaseManager _databaseManager;
         private readonly INHibernateConfiguration _nHibernateConfiguration;
+        private readonly ILog _log;
         private List<Assembly> _addins = new List<Assembly>();
 
-        public ActionLogic(IActionRegistry actionRegistry, Func<IKernel> kernel, IDatabaseManager databaseManager, INHibernateConfiguration  nHibernateConfiguration )
+        public ActionLogic(IActionRegistry actionRegistry, Func<IKernel> kernel, IDatabaseManager databaseManager, INHibernateConfiguration  nHibernateConfiguration, ILog log)
         {
             _actionRegistry = actionRegistry;
             _kernel = kernel;
             _databaseManager = databaseManager;
             _nHibernateConfiguration = nHibernateConfiguration;
-
-            LoadServerActions();
+            _log = log;
         }
 
-        public ActionResultDto Execute(ActionDto actionDto)
+        public ActionResultDto Execute(ITransactionScope transactionScope, ActionDto actionDto)
         {
             var serverAction = _actionRegistry.GetActionHandler(actionDto.ActionGroup);
 
-            if (serverAction.CanExecute(actionDto))
-                return serverAction.Execute(actionDto);
+            if (serverAction.CanExecute(transactionScope, actionDto))
+                return serverAction.Execute(transactionScope, actionDto);
+
+            _log.InfoFormat("ActionHandler {0} can not execute action {1}", serverAction.GetType().Name, actionDto.Action);
 
             return null;
         }
 
         public void LoadServerActions()
         {
+            _log.Info("Loading server actions");
+
             if (_addins.Any())
+            {
+                _log.Info("Server actions already loaded");
                 return;
+            }
 
             AddAddInConfigHandling();
             LoadAddins();
@@ -79,9 +88,10 @@ namespace jarvis.server.model.ActionHandling
                 if (actionHandlerTypes.Any())
                     _nHibernateConfiguration.AddAssembly(addin);
 
-                foreach (var triggerType in actionHandlerTypes)
+                foreach (var actionHandlerType in actionHandlerTypes)
                 {
-                    var actionHandler = (ServerAction)Activator.CreateInstance(triggerType);
+                    var actionHandler = (ServerAction)Activator.CreateInstance(actionHandlerType);
+                    _log.InfoFormat("ActionHandler {0} loaded", actionHandlerType.Name);
                     _kernel().Inject(actionHandler);
 
                     actionHandler.Init(_kernel);
@@ -92,6 +102,7 @@ namespace jarvis.server.model.ActionHandling
 
             _nHibernateConfiguration.RecreateSessionFactory();
             _databaseManager.UpdateSchema();
+            _log.Info("Loading server action finished");
         }
 
         private void AddAddInConfigHandling()
@@ -114,9 +125,11 @@ namespace jarvis.server.model.ActionHandling
         {
             var addinFiles = Directory.GetFiles(WebConfigurationManager.AppSettings["AddinPath"]).Where(f => f.EndsWith(".dll"));
 
+            
+
             foreach (var addinFile in addinFiles)
             {
-                var assembly = Assembly.LoadFile(addinFile);
+                var assembly = Assembly.LoadFile(Path.GetFullPath(addinFile));
                 _addins.Add(assembly);
             }
         }

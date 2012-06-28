@@ -17,6 +17,7 @@
 using System;
 using System.Web.Mvc;
 using System.Web.Security;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 using jarvis.server.web.Models;
 
@@ -25,11 +26,13 @@ namespace jarvis.server.web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserLogic _userLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
         //
-        public AccountController(IUserLogic userLogic)
+        public AccountController(IUserLogic userLogic, ITransactionProvider transactionProvider)
         {
             _userLogic = userLogic;
+            _transactionProvider = transactionProvider;
         }
 
         // GET: /Account/LogOn
@@ -47,7 +50,7 @@ namespace jarvis.server.web.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userLogic.Login(model.UserName, model.Password) != null)
+                if (_userLogic.Login(_transactionProvider.CurrentScope, model.UserName, model.Password) != null)
                 {
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
@@ -97,7 +100,7 @@ namespace jarvis.server.web.Controllers
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
-                var user = _userLogic.AddUser(model.UserName, model.Password);
+                var user = _userLogic.AddUser(_transactionProvider.CurrentScope, model.UserName, model.Password);
 
                 if (user != null && user.Id != 0)
                 {
@@ -138,10 +141,10 @@ namespace jarvis.server.web.Controllers
                 try
                 {
                     //MembershipUser currentUser = Membership.GetUser(User.Identity.Name, true /* userIsOnline */);
-                    var user = _userLogic.GetUser(User.Identity.Name);
+                    var user = _userLogic.GetUser(_transactionProvider.CurrentScope, User.Identity.Name);
                     if (user != null)
                     {
-                        changePasswordSucceeded = _userLogic.ChangePassword(user, model.OldPassword, model.NewPassword);
+                        changePasswordSucceeded = _userLogic.ChangePassword(_transactionProvider.CurrentScope, user, model.OldPassword, model.NewPassword);
                     }
 
                     //changePasswordSucceeded = currentUser.ChangePassword(model.OldPassword, model.NewPassword);

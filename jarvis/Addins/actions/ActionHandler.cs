@@ -16,7 +16,6 @@
 
 using System;
 using System.Linq;
-using RestSharp.Serializers;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;

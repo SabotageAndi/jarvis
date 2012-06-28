@@ -23,6 +23,7 @@ using jarvis.addins.actions;
 using jarvis.addins.trigger;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
+using log4net;
 
 namespace jarvis.client
 {
@@ -32,8 +33,8 @@ namespace jarvis.client
         private readonly IActionServiceHost _actionServiceHost;
 
         public ActionTriggerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService,
-                                   IActionServiceHost actionServiceHost, IActionRegistry actionRegistry)
-            : base(clientService, configuration, serverStatusService)
+                                   IActionServiceHost actionServiceHost, IActionRegistry actionRegistry, ILog log)
+            : base(clientService, configuration, serverStatusService, log)
         {
             _actionServiceHost = actionServiceHost;
             _actionRegistry = actionRegistry;
@@ -49,8 +50,7 @@ namespace jarvis.client
             LoadTriggers();
             LoadActionHandlers();
 
-
-            _actionServiceHost.Start();
+            _actionServiceHost.Init();
         }
 
         private void LoadActionHandlers()
@@ -103,6 +103,9 @@ namespace jarvis.client
             {
                 trigger.run();
             }
+
+
+            _actionServiceHost.Start();
 
             base.Run();
         }

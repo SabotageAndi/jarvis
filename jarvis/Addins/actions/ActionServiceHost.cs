@@ -15,50 +15,83 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using Funq;
+using Ninject;
+using ServiceStack.ServiceInterface;
+using ServiceStack.WebHost.Endpoints;
 using jarvis.client.common;
+using jarvis.common.dtos.Requests;
+using jarvis.common.logic;
 
 namespace jarvis.addins.actions
 {
     public interface IActionServiceHost
     {
         void Start();
+        void Init();
     }
 
-    public class ActionServiceHost : IActionServiceHost
+    public class ActionServiceHost : AppHostHttpListenerBase, IActionServiceHost
     {
-        private readonly IActionService _actionService;
+        private readonly IKernel _kernel;
         private readonly IConfiguration _configuration;
-        private ServiceHost _serviceHost;
 
-        public ActionServiceHost(IActionService actionService, IConfiguration configuration)
+        public ActionServiceHost(IKernel kernel, IConfiguration configuration)
+            :base("JarvisWorker", Assembly.GetExecutingAssembly())
         {
-            _actionService = actionService;
+            _kernel = kernel;
             _configuration = configuration;
+        }
+
+        //public void Start()
+        //{
+        //    var baseAddress = GetBaseAddress();
+
+        //    var contractDescription = ContractDescription.GetContract(typeof (ActionService));
+        //    var restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
+        //    var endpointAddress = new EndpointAddress(baseAddress + "action");
+
+        //    var restEndPoint = new ServiceEndpoint(contractDescription, restBinding, endpointAddress);
+
+        //    restEndPoint.Behaviors.Add(new WebHttpBehavior());
+
+        //    _serviceHost = new ServiceHost(_actionService, new Uri(baseAddress));
+        //    _serviceHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
+        //    _serviceHost.AddServiceEndpoint(restEndPoint);
+        //    _serviceHost.Open();
+        //}
+
+        private String GetBaseAddress()
+        {
+            return String.Format("http://{0}:{1}/", "*", _configuration.LocalPort);
+        }
+
+        public override void Configure(Container container)
+        {
+            container.Adapter = new NinjectIocAdapter(_kernel);
+
+            base.SetConfig(new EndpointHostConfig
+            {
+                GlobalResponseHeaders =
+                {
+                    { "Access-Control-Allow-Origin", "*" },
+                    { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
+                },
+                DebugMode = true,
+                WsdlServiceNamespace = "http://www.servicestack.net/types",
+            });
+
+
+            Routes.Add<ActionExecuteRequest>("/action/execute");
         }
 
         public void Start()
         {
-            var baseAddress = GetBaseAddress();
-
-            var contractDescription = ContractDescription.GetContract(typeof (ActionService));
-            var restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
-            var endpointAddress = new EndpointAddress(baseAddress + "action");
-
-            var restEndPoint = new ServiceEndpoint(contractDescription, restBinding, endpointAddress);
-
-            restEndPoint.Behaviors.Add(new WebHttpBehavior());
-
-            _serviceHost = new ServiceHost(_actionService, new Uri(baseAddress));
-            _serviceHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
-            _serviceHost.AddServiceEndpoint(restEndPoint);
-            _serviceHost.Open();
+            this.Start(GetBaseAddress());
         }
 
-        private String GetBaseAddress()
-        {
-            return String.Format("http://{0}:{1}/", "localhost", _configuration.LocalPort);
-        }
     }
 }

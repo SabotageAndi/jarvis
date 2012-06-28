@@ -28,20 +28,15 @@ namespace jarvis.server.repositories
 
     public interface IDefinedWorkflowRepository : IRepositoryBase<DefinedWorkflow>
     {
-        DefinedWorkflow GetWorkflow(DefinedWorkflowFilterCriteria definedWorkflowFilterCriteria);
+        DefinedWorkflow GetWorkflow(ITransactionScope transactionScope, DefinedWorkflowFilterCriteria definedWorkflowFilterCriteria);
     }
 
 
     public class DefinedWorkflowRepository : RepositoryBase<DefinedWorkflow>, IDefinedWorkflowRepository
     {
-        public DefinedWorkflowRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public DefinedWorkflow GetWorkflow(ITransactionScope transactionScope, DefinedWorkflowFilterCriteria definedWorkflowFilterCriteria)
         {
-        }
-
-
-        public DefinedWorkflow GetWorkflow(DefinedWorkflowFilterCriteria definedWorkflowFilterCriteria)
-        {
-            return CurrentSession.Query<DefinedWorkflow>().Where(df => df.Id == definedWorkflowFilterCriteria.Id).SingleOrDefault();
+            return transactionScope.CurrentSession.Query<DefinedWorkflow>().Where(df => df.Id == definedWorkflowFilterCriteria.Id).SingleOrDefault();
         }
     }
 }

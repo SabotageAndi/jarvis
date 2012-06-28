@@ -14,7 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using RestSharp;
+using jarvis.common.dtos;
+using jarvis.common.dtos.Requests;
 using jarvis.common.dtos.Workflow;
 
 namespace jarvis.client.common.ServiceClients
@@ -37,9 +38,7 @@ namespace jarvis.client.common.ServiceClients
 
         public RunnedWorkflowDto GetWorkflowToExecute()
         {
-            var request = JarvisRestClient.CreateRequest("workflow", Method.GET);
-
-            return JarvisRestClient.Execute<RunnedWorkflowDto>(request);
+            return JarvisRestClient.Execute<ResultDto<RunnedWorkflowDto>>(new GetWorkflowToExecuteRequest()).Result;
         }
     }
 }

@@ -14,8 +14,9 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using RestSharp;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Management;
+using jarvis.common.dtos.Requests;
 
 namespace jarvis.client.common.ServiceClients
 {
@@ -28,7 +29,8 @@ namespace jarvis.client.common.ServiceClients
 
     public class ClientService : ServiceBase, IClientService
     {
-        public ClientService(IJarvisRestClient jarvisRestClient, IConfiguration configuration) : base(jarvisRestClient, configuration)
+        public ClientService(IJarvisRestClient jarvisRestClient, IConfiguration configuration)
+            : base(jarvisRestClient, configuration)
         {
         }
 
@@ -39,26 +41,17 @@ namespace jarvis.client.common.ServiceClients
 
         public ClientDto Register(ClientDto clientDto)
         {
-            var registerRequest = JarvisRestClient.CreateRequest("client", Method.POST);
-            registerRequest.AddBody(clientDto);
-
-            return JarvisRestClient.Execute<ClientDto>(registerRequest);
+            return JarvisRestClient.Execute<ResultDto<ClientDto>>(new RegisterClientRequest() { ClientDto = clientDto }).Result;
         }
 
         public void Logon(ClientDto clientDto)
         {
-            var logonRequest = JarvisRestClient.CreateRequest("client/logon", Method.POST);
-            logonRequest.AddBody(clientDto);
-
-            JarvisRestClient.Execute(logonRequest);
+            JarvisRestClient.Execute<ResultDto>(new LoginClientRequest() { ClientDto = clientDto });
         }
 
         public void Logoff(ClientDto clientDto)
         {
-            var logonRequest = JarvisRestClient.CreateRequest("client/logoff", Method.POST);
-            logonRequest.AddBody(clientDto);
-
-            JarvisRestClient.Execute(logonRequest);
+            JarvisRestClient.Execute<ResultDto>(new LogoffClientRequest() { ClientDto = clientDto });
         }
     }
 }

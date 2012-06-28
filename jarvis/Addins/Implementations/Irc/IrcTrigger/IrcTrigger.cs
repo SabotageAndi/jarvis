@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Configuration;
 using System.Linq;
-using System.Text;
 using IrcDotNet;
 using Ninject;
-using RestSharp.Serializers;
 using jarvis.addins.trigger;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
@@ -111,12 +107,12 @@ namespace jarvis.addins.irctrigger
                 EventGroupType = "Irc",
                 EventType = "Changed",
                 TriggeredDate = DateTime.UtcNow,
-                //Data = jsonSerializer.Serialize(new IrcEventParameter()
-                //                                    {
-                //                                        User = e.Source.Name,
-                //                                        Message = e.Text,
-                //                                        Channels = String.Join(",", e.Targets.Select(t => t.Name))
-                //                                    })
+                Data = jsonSerializer.Serialize(new IrcEventParameter()
+                                                    {
+                                                        User = e.Source.Name,
+                                                        Message = e.Text,
+                                                        Channels = String.Join(",", e.Targets.Select(t => t.Name))
+                                                    })
             });
         }
 

@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using jarvis.server.common.Database;
 using jarvis.server.entities.Workflow;
 
 namespace jarvis.server.repositories
@@ -26,10 +25,6 @@ namespace jarvis.server.repositories
 
     public class ParameterRepository : RepositoryBase<Parameter>, IParameterRepository
     {
-        public ParameterRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
-        {
-        }
-
         public Parameter Create(RunnedWorkflow runnedWorkflow, string category, string name, string value)
         {
             var parameter = Create();

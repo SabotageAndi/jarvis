@@ -59,7 +59,7 @@ namespace jarvis.addins.generalactions
 
             var data = File.ReadAllBytes(fileParameter.Value);
 
-            return new ActionResultDto() { Data = JsonSerializer.Serialize(data) };
+            return new ActionResultDto() { Data = JsonSerializer.Serialize(data)};
         }
 
         private ActionResultDto WriteFile(ActionDto actionDto)

@@ -24,18 +24,14 @@ namespace jarvis.server.repositories
 {
     public interface IEventRepository : IRepositoryBase<Event>
     {
-        IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
+        IQueryable<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria);
     }
 
     public class EventRepository : RepositoryBase<Event>, IEventRepository
     {
-        public EventRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public IQueryable<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria)
         {
-        }
-
-        public IQueryable<Event> GetEvents(EventFilterCriteria eventFilterCriteria)
-        {
-            var events = CurrentSession.Query<Event>();
+            var events = transactionScope.CurrentSession.Query<Event>();
 
             if (eventFilterCriteria.MaxTriggeredDate.HasValue)
             {

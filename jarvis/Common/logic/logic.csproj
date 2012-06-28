@@ -30,9 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="RestSharp, Version=103.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RestSharp.103.1\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -50,12 +58,17 @@
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="JarvisConfigElement.cs" />
     <Compile Include="JarvisRestClient.cs" />
+    <Compile Include="NInjectIocAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\domain\domain.csproj">
       <Project>{E8D20399-5A2C-45AC-AD29-69425D9E3507}</Project>
       <Name>domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\dtos\dtos.csproj">
+      <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
+      <Name>dtos</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

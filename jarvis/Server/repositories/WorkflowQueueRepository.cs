@@ -24,24 +24,19 @@ namespace jarvis.server.repositories
 {
     public interface IWorkflowQueueRepository : IRepositoryBase<WorkflowQueue>
     {
-        WorkflowQueue GetNextQueuedWorkflowAndSetStarttime();
+        WorkflowQueue GetNextQueuedWorkflowAndSetStarttime(ITransactionScope transactionScope);
     }
 
     public class WorkflowQueueRepository : RepositoryBase<WorkflowQueue>, IWorkflowQueueRepository
     {
-        public WorkflowQueueRepository(ITransactionProvider transactionProvider)
-            : base(transactionProvider)
-        {
-        }
-
-        public WorkflowQueue GetNextQueuedWorkflowAndSetStarttime()
+        public WorkflowQueue GetNextQueuedWorkflowAndSetStarttime(ITransactionScope transactionScope)
         {
             var workflowQueue =
-                CurrentSession.Query<WorkflowQueue>().Where(wq => wq.StartDate == null).OrderBy(wq => wq.QueueDate).FirstOrDefault();
+                transactionScope.CurrentSession.Query<WorkflowQueue>().Where(wq => wq.StartDate == null).OrderBy(wq => wq.QueueDate).FirstOrDefault();
             if (workflowQueue != null)
             {
                 workflowQueue.StartDate = DateTime.UtcNow;
-                CurrentSession.SaveOrUpdate(workflowQueue);
+                transactionScope.CurrentSession.SaveOrUpdate(workflowQueue);
 
                 return workflowQueue;
             }

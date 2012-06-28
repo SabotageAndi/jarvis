@@ -24,7 +24,6 @@ namespace jarvis.addins.actions
         public override void Load()
         {
             Bind<IActionRegistry>().To<ActionRegistry>().InSingletonScope();
-            Bind<IActionService>().To<ActionService>().InSingletonScope();
             Bind<IActionServiceHost>().To<ActionServiceHost>().InSingletonScope();
 
        }

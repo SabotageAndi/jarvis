@@ -19,14 +19,15 @@ using System.Collections.Generic;
 using System.Linq;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Workflow;
+using jarvis.server.common.Database;
 using jarvis.server.repositories;
 
 namespace jarvis.server.model
 {
     public interface IEventHandlingLogic
     {
-        List<EventHandlerDto> GetAllEventHandler();
-        void AddEntryInWorkflowQueue(WorkflowQueueDto workflowQueueDto);
+        List<EventHandlerDto> GetAllEventHandler(ITransactionScope transactionScope);
+        void AddEntryInWorkflowQueue(ITransactionScope transactionScope, WorkflowQueueDto workflowQueueDto);
     }
 
     public class EventHandlingLogic : IEventHandlingLogic
@@ -45,9 +46,9 @@ namespace jarvis.server.model
             _eventRepository = eventRepository;
         }
 
-        public List<EventHandlerDto> GetAllEventHandler()
+        public List<EventHandlerDto> GetAllEventHandler(ITransactionScope transactionScope)
         {
-            return _eventHandlerRepository.GetAllEventHandler().Select(e => new EventHandlerDto()
+            return _eventHandlerRepository.GetAllEventHandler(transactionScope).Select(e => new EventHandlerDto()
                                                                                 {
                                                                                     Id = e.Id,
                                                                                     EventGroupType = e.EventGroupTypes,
@@ -59,10 +60,10 @@ namespace jarvis.server.model
                                                                                 }).ToList();
         }
 
-        public void AddEntryInWorkflowQueue(WorkflowQueueDto workflowQueueDto)
+        public void AddEntryInWorkflowQueue(ITransactionScope transactionScope, WorkflowQueueDto workflowQueueDto)
         {
             var workflow =
-                _definedWorkflowRepository.GetWorkflow(new DefinedWorkflowFilterCriteria()
+                _definedWorkflowRepository.GetWorkflow(transactionScope, new DefinedWorkflowFilterCriteria()
                                                            {
                                                                Id = workflowQueueDto.DefinedWorkflowId
                                                            });
@@ -71,9 +72,9 @@ namespace jarvis.server.model
             var workflowQueue = _workflowQueueRepository.Create();
             workflowQueue.DefinedWorkflow = workflow;
             workflowQueue.QueueDate = DateTime.UtcNow;
-            workflowQueue.Event = _eventRepository.GetById(workflowQueueDto.EventId);
+            workflowQueue.Event = _eventRepository.GetById(transactionScope, workflowQueueDto.EventId);
 
-            _workflowQueueRepository.Save(workflowQueue);
+            _workflowQueueRepository.Save(transactionScope, workflowQueue);
         }
     }
 }

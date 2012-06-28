@@ -18,10 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using RestSharp;
 using jarvis.client.common.ServiceClients;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Requests;
 using jarvis.common.dtos.Workflow;
+using log4net;
+using log4net.Config;
 
 namespace EventHandler
 {
@@ -29,13 +32,16 @@ namespace EventHandler
     {
         public static DateTime lastCheck = DateTime.UtcNow;
 
-        public static JarvisRestClient _client = new JarvisRestClient()
+        public static JarvisRestClient _client = new JarvisRestClient(LogManager.GetLogger("eventhandler"))
                                                      {
-                                                         BaseUrl = "http://10.140.0.2:7777/EventHandlingService"
+                                                         //BaseUrl = "http://localhost:7778/"
+                                                         BaseUrl = "http://10.140.0.2:7778/"
                                                      };
 
         private static void Main(string[] args)
         {
+
+            XmlConfigurator.Configure();
             Thread.Sleep(30000);
             while (true)
             {
@@ -69,37 +75,31 @@ namespace EventHandler
 
                 foreach (var eventHandlerDto in hittedEventHandler)
                 {
-                    var addWorkflowQueueRequest = _client.CreateRequest("workflowqueue", Method.POST);
 
-                    addWorkflowQueueRequest.AddBody(new WorkflowQueueDto
-                                                        {
-                                                            EventHandlerId = eventHandlerDto.Id,
-                                                            DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId,
-                                                            EventId = eventDto.Id
-                                                        });
-
-                    _client.Execute(addWorkflowQueueRequest);
+                    var workflowQueueDto = new WorkflowQueueDto
+                                               {
+                                                   EventHandlerId = eventHandlerDto.Id,
+                                                   DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId,
+                                                   EventId = eventDto.Id
+                                               };
+                    _client.Execute<ResultDto>(new AddWorkflowInQueueRequest(){WorkflowQueueDto = workflowQueueDto});
                 }
             }
         }
 
         private static List<EventDto> GetEvents()
         {
-            var getEvents = _client.CreateRequest("events/{ticks}", Method.GET);
 
-            getEvents.AddParameter("ticks", lastCheck.Ticks, ParameterType.UrlSegment);
-
-            var restResponse = _client.Execute<List<EventDto>>(getEvents);
-            return restResponse;
+            var restResponse = _client.Execute<ResultDto<List<EventDto>>>(new GetAllEventsSinceRequest(){Ticks = lastCheck.Ticks.ToString()});
+            return restResponse.Result;
         }
 
         private static List<EventHandlerDto> GetEventhandlers()
         {
-            var getEventHandler = _client.CreateRequest("eventhandler", Method.GET);
 
-            var result = _client.Execute<List<EventHandlerDto>>(getEventHandler);
+            var result = _client.Execute<ResultDto<List<EventHandlerDto>>>(new GetEventHandlerRequest());
 
-            return result;
+            return result.Result;
         }
     }
 }

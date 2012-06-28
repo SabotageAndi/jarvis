@@ -23,18 +23,14 @@ namespace jarvis.server.repositories
 {
     public interface IClientRepository : IRepositoryBase<Client>
     {
-        Client GetByName(string name);
+        Client GetByName(ITransactionScope transactionScope, string name);
     }
 
     public class ClientRepository : RepositoryBase<Client>, IClientRepository
     {
-        public ClientRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
+        public Client GetByName(ITransactionScope transactionScope, string name)
         {
-        }
-
-        public Client GetByName(string name)
-        {
-            return CurrentSession.Query<Client>().Where(c => c.Name == name).SingleOrDefault();
+            return transactionScope.CurrentSession.Query<Client>().Where(c => c.Name == name).SingleOrDefault();
         }
     }
 }

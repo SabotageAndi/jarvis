@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.server.common.Database;
 using jarvis.server.entities.Eventhandling;
 using jarvis.server.repositories;
 
@@ -26,10 +27,10 @@ namespace jarvis.server.model
 {
     public interface IEventLogic
     {
-        void eventRaised(EventDto eventDto);
-        List<Event> GetEvents(EventFilterCriteria eventFilterCriteria);
-        List<Event> GetLastEvents();
-        List<EventDto> GetAllEventsSince(DateTime date);
+        void eventRaised(ITransactionScope transactionScope, EventDto eventDto);
+        List<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria);
+        List<Event> GetLastEvents(ITransactionScope transactionScope);
+        List<EventDto> GetAllEventsSince(ITransactionScope transactionScope, DateTime date);
     }
 
     public class EventLogic : IEventLogic
@@ -43,9 +44,9 @@ namespace jarvis.server.model
             _clientRepository = clientRepository;
         }
 
-        public void eventRaised(EventDto eventDto)
+        public void eventRaised(ITransactionScope transactionScope, EventDto eventDto)
         {
-            var client = _clientRepository.GetById(eventDto.ClientId);
+            var client = _clientRepository.GetById(transactionScope, eventDto.ClientId);
 
             var raisedEvent = new Event()
                                   {
@@ -56,23 +57,24 @@ namespace jarvis.server.model
                                       Client = client
                                   };
 
-            _eventRepository.Save(raisedEvent);
+            _eventRepository.Save(transactionScope, raisedEvent);
         }
 
-        public List<Event> GetEvents(EventFilterCriteria eventFilterCriteria)
+        public List<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria)
         {
-            return _eventRepository.GetEvents(eventFilterCriteria).ToList();
+            return _eventRepository.GetEvents(transactionScope, eventFilterCriteria).ToList();
         }
 
-        public List<Event> GetLastEvents()
+        public List<Event> GetLastEvents(ITransactionScope transactionScope)
         {
-            return _eventRepository.GetEvents(new EventFilterCriteria()).OrderByDescending(e => e.TriggeredDate).ToList();
+            return _eventRepository.GetEvents(transactionScope, new EventFilterCriteria()).OrderByDescending(e => e.TriggeredDate).ToList();
         }
 
-        public List<EventDto> GetAllEventsSince(DateTime date)
+        public List<EventDto> GetAllEventsSince(ITransactionScope transactionScope, DateTime date)
         {
             return
-                _eventRepository.GetEvents(new EventFilterCriteria()
+                _eventRepository.GetEvents(transactionScope,
+                                            new EventFilterCriteria()
                                                {
                                                    MinTriggeredDate = date,
                                                    MaxTriggeredDate = DateTime.UtcNow

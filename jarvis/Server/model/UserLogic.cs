@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 using jarvis.server.repositories;
 
@@ -21,10 +22,10 @@ namespace jarvis.server.model
 {
     public interface IUserLogic
     {
-        User AddUser(string username, string password);
-        User Login(string username, string password);
-        bool ChangePassword(User user, string oldPassword, string newPassword);
-        User GetUser(string name);
+        User AddUser(ITransactionScope transactionScope, string username, string password);
+        User Login(ITransactionScope transactionScope, string username, string password);
+        bool ChangePassword(ITransactionScope transactionScope, User user, string oldPassword, string newPassword);
+        User GetUser(ITransactionScope transactionScope, string name);
     }
 
     public class UserLogic : IUserLogic
@@ -36,31 +37,31 @@ namespace jarvis.server.model
             _userRepository = userRepository;
         }
 
-        public User AddUser(string username, string password)
+        public User AddUser(ITransactionScope transactionScope, string username, string password)
         {
-            var user = _userRepository.Add(username, password);
+            var user = _userRepository.Add(transactionScope, username, password);
             return user;
         }
 
-        public User Login(string username, string password)
+        public User Login(ITransactionScope transactionScope, string username, string password)
         {
-            return _userRepository.Login(username, password);
+            return _userRepository.Login(transactionScope, username, password);
         }
 
-        public bool ChangePassword(User user, string oldPassword, string newPassword)
+        public bool ChangePassword(ITransactionScope transactionScope, User user, string oldPassword, string newPassword)
         {
             if (user.Password == oldPassword)
             {
-                _userRepository.ChangePassword(user, newPassword);
+                _userRepository.ChangePassword(transactionScope, user, newPassword);
                 return true;
             }
 
             return false;
         }
 
-        public User GetUser(string name)
+        public User GetUser(ITransactionScope transactionScope, string name)
         {
-            return _userRepository.GetUser(name);
+            return _userRepository.GetUser(transactionScope, name);
         }
     }
 }

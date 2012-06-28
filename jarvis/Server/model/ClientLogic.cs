@@ -24,25 +24,23 @@ namespace jarvis.server.model
 {
     public interface IClientLogic
     {
-        ClientDto RegisterClient(ClientDto clientDto);
-        void Logon(ClientDto clientDto);
-        void Logoff(ClientDto clientDto);
+        ClientDto RegisterClient(ITransactionScope transactionScope, ClientDto clientDto);
+        void Logon(ITransactionScope transactionScope, ClientDto clientDto);
+        void Logoff(ITransactionScope transactionScope, ClientDto clientDto);
     }
 
     public class ClientLogic : IClientLogic
     {
         private readonly IClientRepository _clientRepository;
-        private readonly ITransactionProvider _transactionProvider;
 
-        public ClientLogic(IClientRepository clientRepository, ITransactionProvider transactionProvider)
+        public ClientLogic(IClientRepository clientRepository)
         {
             _clientRepository = clientRepository;
-            _transactionProvider = transactionProvider;
         }
 
-        public ClientDto RegisterClient(ClientDto clientDto)
+        public ClientDto RegisterClient(ITransactionScope transactionScope, ClientDto clientDto)
         {
-            Client client = _clientRepository.GetByName(clientDto.Name);
+            Client client = _clientRepository.GetByName(transactionScope, clientDto.Name);
             ;
             if (client == null)
             {
@@ -54,30 +52,30 @@ namespace jarvis.server.model
             client.Type = clientDto.Type;
 
 
-            _clientRepository.Save(client);
+            _clientRepository.Save(transactionScope, client);
 
-            _transactionProvider.CurrentScope.Flush();
+            transactionScope.Flush();
 
-            _clientRepository.Refresh(client);
+            _clientRepository.Refresh(transactionScope, client);
 
             clientDto.Id = client.Id;
 
             return clientDto;
         }
 
-        public void Logon(ClientDto clientDto)
+        public void Logon(ITransactionScope transactionScope, ClientDto clientDto)
         {
-            SetIsOnlineState(clientDto, true);
+            SetIsOnlineState(transactionScope, clientDto, true);
         }
 
-        public void Logoff(ClientDto clientDto)
+        public void Logoff(ITransactionScope transactionScope, ClientDto clientDto)
         {
-            SetIsOnlineState(clientDto, false);
+            SetIsOnlineState(transactionScope, clientDto, false);
         }
 
-        private void SetIsOnlineState(ClientDto clientDto, bool isOnline)
+        private void SetIsOnlineState(ITransactionScope transactionScope, ClientDto clientDto, bool isOnline)
         {
-            var client = _clientRepository.GetById(clientDto.Id);
+            var client = _clientRepository.GetById(transactionScope, clientDto.Id);
 
             if (client == null)
             {
@@ -85,7 +83,7 @@ namespace jarvis.server.model
             }
 
             client.IsOnline = isOnline;
-            _clientRepository.Save(client);
+            _clientRepository.Save(transactionScope, client);
         }
     }
 }

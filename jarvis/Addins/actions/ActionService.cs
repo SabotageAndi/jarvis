@@ -17,59 +17,52 @@
 using System;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using ServiceStack.ServiceInterface;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
+using jarvis.common.dtos.Requests;
+using log4net;
 
 namespace jarvis.addins.actions
 {
-    [ServiceContract]
-    public interface IActionService
-    {
-        [OperationContract]
-        [WebInvoke(UriTemplate = "execute", RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json, Method = "POST")]
-        ActionResultDto Execute(ActionDto actionDto);
-
-        [OperationContract]
-        [WebGet(UriTemplate = "isExecuting", ResponseFormat = WebMessageFormat.Json, RequestFormat = WebMessageFormat.Json)]
-        ResultDto<Boolean> IsExecuting();
-    }
-
-
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
-    public class ActionService : IActionService
+    public class ActionService : ServiceBase<ActionExecuteRequest>
     {
         private readonly IActionRegistry _actionRegistry;
+        private readonly ILog _log;
         private bool _isExecuting;
 
-        public ActionService(IActionRegistry actionRegistry)
+        public ActionService(IActionRegistry actionRegistry, ILog log)
         {
             _actionRegistry = actionRegistry;
+            _log = log;
             _isExecuting = false;
         }
 
-        public ActionResultDto Execute(ActionDto actionDto)
+        protected override object HandleException(ActionExecuteRequest request, Exception ex)
+        {
+            _log.ErrorFormat("Error at executing action {0}.{1}: {2}", request.ActionDto.ActionGroup, request.ActionDto.Action, ex);
+            return base.HandleException(request, ex);
+        }
+
+        protected override object Run(ActionExecuteRequest request)
         {
             _isExecuting = true;
             try
             {
-                var actionHandler = _actionRegistry.GetActionHandler(actionDto.ActionGroup);
+                var actionHandler = _actionRegistry.GetActionHandler(request.ActionDto.ActionGroup);
 
-                if (!actionHandler.CanHandleAction(actionDto))
+                if (!actionHandler.CanHandleAction(request.ActionDto))
                 {
                     return null;
                 }
 
-                return actionHandler.DoAction(actionDto);
+                var actionResultDto = actionHandler.DoAction(request.ActionDto);
+                return new ResultDto<ActionResultDto>(actionResultDto);
             }
             finally
             {
                 _isExecuting = false;
             }
-        }
-
-        public ResultDto<bool> IsExecuting()
-        {
-            return new ResultDto<bool>(_isExecuting);
         }
     }
 }

@@ -39,13 +39,4 @@ namespace jarvis.server.entities
             target.CustomType(target.Property.PropertyType);
         }
     }
-
-    public class PrimaryKeyConvention : IIdConvention
-    {
-        public void Apply(IIdentityInstance instance)
-        {
-
-            instance.GeneratedBy.Native();
-        }
-    }
 }

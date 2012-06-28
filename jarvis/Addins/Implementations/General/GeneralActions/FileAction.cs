@@ -55,7 +55,6 @@ namespace jarvis.addins.generalactions
         public byte[] Read(string sourceClientName, string filePath)
         {
             var result = ExecuteFileOperation(sourceClientName, filePath, FileActionConstants.Action_Read);
-
             return JsonDeserializer.Deserialize<byte[]>(result.Data);
         }
 

@@ -26,53 +26,41 @@ namespace jarvis.server.repositories
     public interface IRepositoryBase<T> where T : Entity, new()
     {
         T Create();
-        void Save(T entity);
-        void Refresh(T entity);
-        T GetById(int id);
+        void Save(ITransactionScope transactionScope, T entity);
+        void Refresh(ITransactionScope transactionScope, T entity);
+        T GetById(ITransactionScope transactionScope, int id);
     }
 
     public class RepositoryBase<T> : IRepositoryBase<T> where T : Entity, new()
     {
-        private readonly ITransactionProvider _transactionProvider;
-
-        public RepositoryBase(ITransactionProvider transactionProvider)
-        {
-            _transactionProvider = transactionProvider;
-        }
-
-        protected ISession CurrentSession
-        {
-            get { return _transactionProvider.CurrentScope.CurrentSession; }
-        }
-
         public virtual T Create()
         {
             return new T();
         }
 
-        public virtual void Save(T entity)
+        public virtual void Save(ITransactionScope transactionScope, T entity)
         {
-            CurrentSession.SaveOrUpdate(entity);
+            transactionScope.CurrentSession.SaveOrUpdate(entity);
         }
 
-        public virtual void Refresh(T entity)
+        public virtual void Refresh(ITransactionScope transactionScope, T entity)
         {
-            CurrentSession.Refresh(entity);
+            transactionScope.CurrentSession.Refresh(entity);
         }
 
-        public virtual T GetById(int id)
+        public virtual T GetById(ITransactionScope transactionScope, int id)
         {
-            return CurrentSession.Query<T>().Where(e => e.Id == id).SingleOrDefault();
+            return transactionScope.CurrentSession.Query<T>().Where(e => e.Id == id).SingleOrDefault();
         }
 
-        public virtual void Delete(T entity)
+        public virtual void Delete(ITransactionScope transactionScope, T entity)
         {
-            CurrentSession.Delete(entity);
+            transactionScope.CurrentSession.Delete(entity);
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(ITransactionScope transactionScope)
         {
-            return CurrentSession.Query<T>();
+            return transactionScope.CurrentSession.Query<T>();
         }
     }
 }

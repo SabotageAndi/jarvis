@@ -128,18 +128,27 @@ namespace jarvis.client.worker
 
         private int Run(CompilerResults compile, RunnedTaskDto runnedTask, List<ParameterDto> parameters)
         {
-            var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + GetClassName(runnedTask)) as CompiledTask;
-
-            Client.Container.Inject(instance);
-
-            var properties = instance.GetType().GetProperties().Where(pi => pi.CanRead && pi.CanWrite);
-            foreach (var propertyInfo in properties)
+            try
             {
-                var value = propertyInfo.GetValue(instance, null);
-                Client.Container.Inject(value);
+                var instance = compile.CompiledAssembly.CreateInstance("jarvis.client.worker." + GetClassName(runnedTask)) as CompiledTask;
+
+                Client.Container.Inject(instance);
+
+                var properties = instance.GetType().GetProperties().Where(pi => pi.CanRead && pi.CanWrite);
+                foreach (var propertyInfo in properties)
+                {
+                    var value = propertyInfo.GetValue(instance, null);
+                    Client.Container.Inject(value);
+                }
+
+                return instance.run(parameters);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
 
-            return instance.run(parameters);
+            return -1;
         }
 
         private CompilerResults Compile(string source)

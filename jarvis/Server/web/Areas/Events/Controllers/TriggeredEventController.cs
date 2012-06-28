@@ -16,6 +16,7 @@
 
 using System.Linq;
 using System.Web.Mvc;
+using jarvis.server.common.Database;
 using jarvis.server.model;
 using jarvis.server.web.Areas.Events.Models;
 
@@ -24,17 +25,19 @@ namespace jarvis.server.web.Areas.Events.Controllers
     public class TriggeredEventController : Controller
     {
         private readonly IEventLogic _eventLogic;
+        private readonly ITransactionProvider _transactionProvider;
 
-        public TriggeredEventController(IEventLogic eventLogic)
+        public TriggeredEventController(IEventLogic eventLogic, ITransactionProvider transactionProvider)
         {
             _eventLogic = eventLogic;
+            _transactionProvider = transactionProvider;
         }
 
         //
         // GET: /Events/TriggeredEvent/
         public ActionResult Index()
         {
-            return View(_eventLogic.GetLastEvents().Select(e => new TriggeredEvent
+            return View(_eventLogic.GetLastEvents(_transactionProvider.CurrentScope).Select(e => new TriggeredEvent
                                                                     {
                                                                         EventGroupType = e.EventGroupType,
                                                                         EventType = e.EventType,

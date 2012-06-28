@@ -20,6 +20,7 @@ using System.Reflection;
 using System.Web.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using FluentNHibernate.Conventions;
 using NHibernate;
 using jarvis.server.entities;
 
@@ -71,15 +72,50 @@ namespace jarvis.server.configuration
                 .Database(GetDbConfiguration())
                 .Mappings(m =>
                               {
-                                  foreach (var assembly in _assemblies)
+                                  foreach (var convention in GetGeneralConvertion())
                                   {
-                                      m.FluentMappings.AddFromAssembly(assembly);
-                                      m.FluentMappings.Conventions.AddAssembly(assembly);
+                                      m.FluentMappings.Conventions.Add(convention);
                                   }
 
-                                  m.FluentMappings.AddFromAssemblyOf<Entity>();
-                                  m.FluentMappings.Conventions.AddFromAssemblyOf<Entity>();
+                                  foreach (var convention in GetDbSpecificConvention())
+                                  {
+                                      m.FluentMappings.Conventions.Add(convention);
+                                  }                                  m.FluentMappings.AddFromAssemblyOf<Entity>();
+
+                                  foreach (var assembly in _assemblies)
+                                  {
+                                      m.FluentMappings.Conventions.AddAssembly(assembly);
+                                      m.FluentMappings.AddFromAssembly(assembly);
+                                  }
                               });
+        }
+
+
+        private IEnumerable<IConvention> GetGeneralConvertion()
+        {
+            return new List<IConvention>()
+                       {
+                           new EnumConvention()
+                       };
+        }
+
+        private IEnumerable<IConvention> GetDbSpecificConvention()
+        {
+            switch (JarvisClientConfigurationSection.Type.Value.ToUpper())
+            {
+                case "POSTGRESQL":
+                    return new List<IConvention>()
+                               {
+                                    new PostgreSqlPrimaryKeyConvention()   
+                               };
+                case "MSSQL":
+                    return new List<IConvention>()
+                               {
+                                   new MsSqlPrimaryKeyConvention()
+                               };
+            }
+
+            throw new Exception("Database Type not found");
         }
 
         private IPersistenceConfigurer GetDbConfiguration()

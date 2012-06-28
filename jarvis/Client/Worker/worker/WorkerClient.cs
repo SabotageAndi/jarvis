@@ -5,6 +5,7 @@ using Ninject;
 using jarvis.addins.actions;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
+using log4net;
 
 namespace jarvis.client.worker
 {
@@ -13,8 +14,8 @@ namespace jarvis.client.worker
         private readonly IWorkflowEngine _workflowEngine;
 
         public WorkerClient(IClientService clientService, IConfiguration configuration, IServerStatusService serverStatusService,
-                            IWorkflowEngine workflowEngine)
-            : base(clientService, configuration, serverStatusService)
+                            IWorkflowEngine workflowEngine, ILog log)
+            : base(clientService, configuration, serverStatusService, log)
         {
             _workflowEngine = workflowEngine;
         }

@@ -27,35 +27,35 @@ namespace jarvis.addins.karma.server
         {
             base.Init(kernel);
 
-            _karmaRepository = new KarmaRepository(Kernel().Get<ITransactionProvider>());
+            _karmaRepository = new KarmaRepository();
         }
 
-        public override bool CanExecute(ActionDto actionDto)
+        protected override bool CanExecuteAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             return actionDto.ActionGroup == "Karma";
         }
 
-        public override ActionResultDto Execute(ActionDto actionDto)
+        protected override ActionResultDto ExecuteAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             switch (actionDto.Action)
             {
                 case "Increase":
-                    return ChangeKarma(actionDto, 1);
+                    return ChangeKarma(transactionScope, actionDto, 1);
                 case "Decrease":
-                    return ChangeKarma(actionDto, -1);
+                    return ChangeKarma(transactionScope, actionDto, -1);
                 case "GetKarma":
-                    return GetKarma();
+                    return GetKarma(transactionScope);
                 case "Stats":
-                    return GetStats();
+                    return GetStats(transactionScope);
 
             }
 
             throw new ArgumentOutOfRangeException();
         }
 
-        private ActionResultDto GetKarma()
+        private ActionResultDto GetKarma(ITransactionScope transactionScope)
         {
-            var karmaEntities = _karmaRepository.GetAll();
+            var karmaEntities = _karmaRepository.GetAll(transactionScope);
 
             Decimal stats = 0;
 
@@ -68,21 +68,21 @@ namespace jarvis.addins.karma.server
             return new ActionResultDto() {Data = stats.ToString()};
         }
 
-        private ActionResultDto GetStats()
+        private ActionResultDto GetStats(ITransactionScope transactionScope)
         {
-            var karmaEntities = _karmaRepository.GetAll();
+            var karmaEntities = _karmaRepository.GetAll(transactionScope);
 
             var result = String.Join(" ", karmaEntities.Select(k => k.KarmaKey + ": " + k.KarmaValue));
 
             return new ActionResultDto(){Data = result};
         }
 
-        private ActionResultDto ChangeKarma(ActionDto actionDto, int value)
+        private ActionResultDto ChangeKarma(ITransactionScope transactionScope, ActionDto actionDto, int value)
         {
             var keyParam = GetParameter(actionDto, ActionGroup, "Key");
             var key = keyParam.Value;
 
-            var karma = _karmaRepository.GetByKey(key);
+            var karma = _karmaRepository.GetByKey(transactionScope, key);
 
             if (karma == null)
             {
@@ -96,9 +96,9 @@ namespace jarvis.addins.karma.server
             var newValue = karma.KarmaValue;
 
             if (newValue == 0)
-                _karmaRepository.Delete(karma);
+                _karmaRepository.Delete(transactionScope, karma);
             else
-                _karmaRepository.Save(karma);
+                _karmaRepository.Save(transactionScope, karma);
 
             return new ActionResultDto() {Data = Convert.ToString(newValue)};
         }

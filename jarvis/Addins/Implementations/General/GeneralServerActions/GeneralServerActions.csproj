@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp">
       <HintPath>..\..\..\..\packages\RestSharp.102.7\lib\net35\RestSharp.dll</HintPath>
     </Reference>
@@ -57,6 +60,10 @@
       <Project>{65E668FE-B2D3-4A78-B8CA-187279F46365}</Project>
       <Name>logic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\Server\common\common.csproj">
+      <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>
+      <Name>common %28Server\common%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Server\entities\entities.csproj">
       <Project>{21FD2661-DDF3-45B7-9240-13EA4BF9EFAB}</Project>
       <Name>entities</Name>
@@ -70,9 +77,12 @@
       <Name>serverActions</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(TargetDir)$(TargetName).* $(SolutionDir)Addins\compiledServer</PostBuildEvent>
+    <PostBuildEvent>copy $(TargetDir)$(TargetName).* $(SolutionDir)Server\server\$(OutDir)addins</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

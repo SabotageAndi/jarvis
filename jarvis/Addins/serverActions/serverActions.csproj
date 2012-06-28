@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Ninject.3.0.0.15\lib\net40\Ninject.dll</HintPath>
@@ -54,6 +57,10 @@
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Server\common\common.csproj">
+      <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>
+      <Name>common %28Server\common%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Server\entities\entities.csproj">
       <Project>{21fd2661-ddf3-45b7-9240-13ea4bf9efab}</Project>
       <Name>entities</Name>
@@ -62,6 +69,9 @@
       <Project>{7123A497-FB6E-4DB5-87DD-3979D59CBDEE}</Project>
       <Name>repositories</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

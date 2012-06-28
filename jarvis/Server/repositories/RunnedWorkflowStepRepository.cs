@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using jarvis.server.common.Database;
 using jarvis.server.entities.Workflow;
 
 namespace jarvis.server.repositories
@@ -25,8 +24,5 @@ namespace jarvis.server.repositories
 
     public class RunnedWorkflowStepRepository : RepositoryBase<RunnedWorkflowStep>, IRunnedWorkflowStepRepository
     {
-        public RunnedWorkflowStepRepository(ITransactionProvider transactionProvider) : base(transactionProvider)
-        {
-        }
     }
 }

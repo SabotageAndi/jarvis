@@ -14,64 +14,49 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using RestSharp;
-using RestSharp.Serializers;
+
+using ServiceStack.ServiceClient.Web;
 using jarvis.common.domain;
+using jarvis.common.dtos.Requests;
+using log4net;
 
 namespace jarvis.client.common.ServiceClients
 {
     public interface IJarvisRestClient
     {
         string BaseUrl { get; set; }
-        RestRequest CreateRequest(string resource, Method method);
-        T Execute<T>(RestRequest restRequest) where T : new();
-        void Execute(RestRequest restRequest);
+        T Execute<T>(Request restRequest) where T : new();
+        void Execute(Request restRequest);
     }
 
     public class JarvisRestClient : IJarvisRestClient
     {
-        private readonly RestClient _restClient;
+        private readonly ILog _log;
+        private JsonServiceClient _jsonServiceClient;
 
-        public JarvisRestClient()
+        public JarvisRestClient(ILog log)
         {
-            _restClient = new RestClient();
-            _restClient.FollowRedirects = true;
-        }
-
-        public RestRequest CreateRequest(string resource, Method method)
-        {
-            var restRequest = new RestRequest(resource, method);
-            restRequest.JsonSerializer = JsonParser.GetJsonSerializer();
-            restRequest.RequestFormat = DataFormat.Json;
-            return restRequest;
+            _log = log;
+            _jsonServiceClient = new JsonServiceClient();
         }
 
         public string BaseUrl
         {
-            get { return _restClient.BaseUrl; }
-            set { _restClient.BaseUrl = value; }
+            get { return _jsonServiceClient.BaseUri; }
+            set { _jsonServiceClient.SetBaseUri(value); }
         }
 
-        public void Execute(RestRequest restRequest)
+        public Response Execute<Response>(Request restRequest) where Response : new()
         {
-            var restResponse = _restClient.Execute(restRequest);
-
-            if (restResponse.ErrorException != null)
-            {
-                throw restResponse.ErrorException;
-            }
+            _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            var response = _jsonServiceClient.Send<Response>(restRequest);
+            return response;
         }
 
-        public T Execute<T>(RestRequest restRequest) where T : new()
+        public void Execute(Request restRequest)
         {
-            var restResponse = _restClient.Execute<T>(restRequest);
-
-            if (restResponse.ErrorException != null)
-            {
-                throw restResponse.ErrorException;
-            }
-
-            return restResponse.Data;
+            _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            _jsonServiceClient.Send<object>(restRequest);
         }
     }
 }

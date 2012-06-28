@@ -82,6 +82,33 @@
     <Reference Include="Npgsql">
       <HintPath>..\..\packages\Npgsql.2.0.11\lib\Net40\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack">
+      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Common">
+      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Interfaces">
+      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite">
+      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.8.3\lib\ServiceStack.OrmLite.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.OrmLite.SqlServer">
+      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.8.3\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.RazorEngine">
+      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.RazorEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Redis">
+      <HintPath>..\..\packages\ServiceStack.Redis.3.8.4\lib\net35\ServiceStack.Redis.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.ServiceInterface">
+      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+    </Reference>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\..\packages\ServiceStack.Text.3.8.3\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
@@ -99,45 +126,22 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceAppHost.cs" />
     <Compile Include="ServiceHostManager.cs" />
-    <Compile Include="services\ActionService.svc.cs">
-      <DependentUpon>ActionService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="services\ClientService.svc.cs">
-      <DependentUpon>ClientService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="services\EventHandlingService.svc.cs">
-      <DependentUpon>EventHandlingService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="services\interfaces\IActionService.cs" />
-    <Compile Include="services\interfaces\IClientService.cs" />
-    <Compile Include="services\interfaces\IEventHandlingService.cs" />
-    <Compile Include="services\interfaces\IServerStatusService.cs" />
-    <Compile Include="services\interfaces\IService.cs" />
-    <Compile Include="services\interfaces\ITriggerService.cs" />
-    <Compile Include="services\interfaces\IWorkflowService.cs" />
-    <Compile Include="services\ServerStatusService.svc.cs">
-      <DependentUpon>ServerStatusService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="services\ServiceModule.cs" />
-    <Compile Include="services\TriggerService.svc.cs">
-      <DependentUpon>TriggerService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="services\WorkflowService.svc.cs">
-      <DependentUpon>WorkflowService.svc</DependentUpon>
-    </Compile>
+    <Compile Include="services\ActionExecuteService.cs" />
+    <Compile Include="services\client\LoginClientService.cs" />
+    <Compile Include="services\client\LogoffClientService.cs" />
+    <Compile Include="services\client\RegisterClientService.cs" />
+    <Compile Include="services\eventhandling\GetAllEventsSinceService.cs" />
+    <Compile Include="services\eventhandling\GetEventHandlerService.cs" />
+    <Compile Include="services\ServerStatusService.cs" />
+    <Compile Include="services\TriggerService.cs" />
+    <Compile Include="services\workflow\AddWorkflowInQueueService.cs" />
+    <Compile Include="services\workflow\GetWorkflowToExecuteService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="services\ActionService.svc" />
-    <Content Include="services\ClientService.svc" />
-    <Content Include="services\EventHandlingService.svc" />
-    <Content Include="services\ServerStatusService.svc" />
-    <Content Include="services\TriggerService.svc" />
-    <Content Include="services\WorkflowService.svc" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\domain\domain.csproj">
@@ -147,6 +151,10 @@
     <ProjectReference Include="..\..\Common\dtos\dtos.csproj">
       <Project>{062B8A18-91A0-458E-9BF3-31B0A0AD4148}</Project>
       <Name>dtos</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\logic\logic.csproj">
+      <Project>{65E668FE-B2D3-4A78-B8CA-187279F46365}</Project>
+      <Name>logic</Name>
     </ProjectReference>
     <ProjectReference Include="..\common\common.csproj">
       <Project>{0A58B331-FEBF-486A-8284-367B8DCD3D92}</Project>
@@ -169,6 +177,7 @@
       <Name>repositories</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using RestSharp;
 using jarvis.common.dtos;
+using jarvis.common.dtos.Requests;
 
 namespace jarvis.client.common.ServiceClients
 {
@@ -37,9 +37,7 @@ namespace jarvis.client.common.ServiceClients
 
         public bool isOnline()
         {
-            var isOnlineRequest = JarvisRestClient.CreateRequest("server/status", Method.GET);
-
-            return JarvisRestClient.Execute<ResultDto<bool>>(isOnlineRequest).Result;
+            return JarvisRestClient.Execute<ResultDto<bool>>(new ServiceStatusRequest()).Result;
         }
     }
 }
