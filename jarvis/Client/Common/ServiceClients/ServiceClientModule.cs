@@ -28,6 +28,7 @@ namespace jarvis.client.common.ServiceClients
             Bind<IServerStatusService>().To<ServerStatusService>().InSingletonScope();
             Bind<IActionService>().To<ActionService>().InSingletonScope();
             Bind<IWorkflowService>().To<WorkflowService>().InSingletonScope();
+            Bind<IEventHandlingService>().To<EventHandlingService>().InSingletonScope();
 
         }
     }

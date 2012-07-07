@@ -40,11 +40,10 @@ namespace jarvis.client.common.ServiceClients
                     _jarvisRestClient.BaseUrl = String.Format("{0}", _configuration.ServerUrl);
 
                     _clientInitialized = true;
+                    
                 }
                 return _jarvisRestClient;
             }
         }
-
-        protected abstract string ServiceName { get; }
     }
 }

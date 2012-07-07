@@ -18,6 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Ninject;
+using jarvis.client;
+using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
@@ -30,76 +33,16 @@ namespace EventHandler
 {
     internal class Program
     {
-        public static DateTime lastCheck = DateTime.UtcNow;
-
-        public static JarvisRestClient _client = new JarvisRestClient(LogManager.GetLogger("eventhandler"))
-                                                     {
-                                                         //BaseUrl = "http://localhost:7778/"
-                                                         BaseUrl = "http://10.140.0.2:7778/"
-                                                     };
-
+       
         private static void Main(string[] args)
         {
+            Bootstrapper.Init<EventhandlerClient>();
 
-            XmlConfigurator.Configure();
-            Thread.Sleep(30000);
-            while (true)
-            {
-                Thread.Sleep(10000);
-                Do();
-            }
+            var client = Bootstrapper.Container.Get<Client>();
+            client.Init(Bootstrapper.Container);
+            client.Run();
+            
         }
 
-        private static void Do()
-        {
-            var eventHandlers = GetEventhandlers();
-            var events = GetEvents();
-            lastCheck = DateTime.UtcNow;
-
-            HandleEvents(events, eventHandlers);
-        }
-
-        private static void HandleEvents(List<EventDto> events, List<EventHandlerDto> eventHandlers)
-        {
-            if (events == null)
-            {
-                return;
-            }
-
-            foreach (var eventDto in events)
-            {
-                var hittedEventHandler = from eh in eventHandlers
-                                         where (eh.EventGroupType == null || eh.EventGroupType  == eventDto.EventGroupType)
-                                               && (eh.EventType == null || eh.EventType == eventDto.EventType)
-                                         select eh;
-
-                foreach (var eventHandlerDto in hittedEventHandler)
-                {
-
-                    var workflowQueueDto = new WorkflowQueueDto
-                                               {
-                                                   EventHandlerId = eventHandlerDto.Id,
-                                                   DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId,
-                                                   EventId = eventDto.Id
-                                               };
-                    _client.Execute<ResultDto>(new AddWorkflowInQueueRequest(){WorkflowQueueDto = workflowQueueDto});
-                }
-            }
-        }
-
-        private static List<EventDto> GetEvents()
-        {
-
-            var restResponse = _client.Execute<ResultDto<List<EventDto>>>(new GetAllEventsSinceRequest(){Ticks = lastCheck.Ticks.ToString()});
-            return restResponse.Result;
-        }
-
-        private static List<EventHandlerDto> GetEventhandlers()
-        {
-
-            var result = _client.Execute<ResultDto<List<EventHandlerDto>>>(new GetEventHandlerRequest());
-
-            return result.Result;
-        }
     }
 }

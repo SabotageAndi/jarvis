@@ -39,6 +39,10 @@ namespace jarvis.client.common
         private readonly ILog _log;
         private readonly IServerStatusService _serverStatusService;
 
+        public ILog Log
+        {
+            get { return _log; }
+        }
 
         private ClientDto _clientDto;
 
@@ -63,6 +67,11 @@ namespace jarvis.client.common
         public static Client Current
         {
             get { return Container.Get<Client>(); }
+        }
+
+        public virtual bool EnableAddins
+        {
+            get { return true; }
         }
 
         private ClientDto ClientDto
@@ -107,7 +116,11 @@ namespace jarvis.client.common
 
             AddAddInConfigHandling();
             LoadLocalClientInformation();
-            LoadAddins();
+
+            if (EnableAddins)
+            {
+                LoadAddins();
+            }
 
             CheckIfServerIsOnlineAndWait();
 

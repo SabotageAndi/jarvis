@@ -15,10 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
+using System;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.ServiceInterface.ServiceModel;
 using jarvis.common.domain;
 using jarvis.common.dtos.Requests;
 using log4net;
+using System.Linq;
 
 namespace jarvis.client.common.ServiceClients
 {
@@ -27,6 +30,7 @@ namespace jarvis.client.common.ServiceClients
         string BaseUrl { get; set; }
         T Execute<T>(Request restRequest) where T : new();
         void Execute(Request restRequest);
+        void CheckForException(ResponseStatus responseStatus);
     }
 
     public class JarvisRestClient : IJarvisRestClient
@@ -50,6 +54,7 @@ namespace jarvis.client.common.ServiceClients
         {
             _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
             var response = _jsonServiceClient.Send<Response>(restRequest);
+
             return response;
         }
 
@@ -57,6 +62,17 @@ namespace jarvis.client.common.ServiceClients
         {
             _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
             _jsonServiceClient.Send<object>(restRequest);
+        }
+
+        public void CheckForException(ResponseStatus responseStatus)
+        {
+            if (responseStatus == null)
+                return;
+
+            if (!responseStatus.Errors.Any())
+                return;
+
+            throw new Exception(responseStatus.Message + Environment.NewLine + responseStatus.StackTrace);
         }
     }
 }

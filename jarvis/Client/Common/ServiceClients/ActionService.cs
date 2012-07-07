@@ -31,14 +31,16 @@ namespace jarvis.client.common.ServiceClients
         {
         }
 
-        protected override string ServiceName
+        protected virtual string ServiceName
         {
             get { return "ActionService"; }
         }
 
         public ActionResultDto Execute(ActionDto actionDto)
         {
-            return JarvisRestClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest() {ActionDto = actionDto}).Result;
+            var restResponse = JarvisRestClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest() {ActionDto = actionDto});
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
+            return restResponse.Result;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace jarvis.client.common.ServiceClients
         {
         }
 
-        protected override string ServiceName
+        protected virtual string ServiceName
         {
             get { return "TriggerService"; }
         }
@@ -40,7 +40,9 @@ namespace jarvis.client.common.ServiceClients
         {
             eventDto.ClientId = _configuration.ClientId.Value;
 
-            JarvisRestClient.Execute<ResultDto>(new TriggerRequest(){EventDto = eventDto});
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new TriggerRequest(){EventDto = eventDto});
+
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }
     }
 }

@@ -34,24 +34,29 @@ namespace jarvis.client.common.ServiceClients
         {
         }
 
-        protected override string ServiceName
+        protected virtual string ServiceName
         {
             get { return "ClientService"; }
         }
 
         public ClientDto Register(ClientDto clientDto)
         {
-            return JarvisRestClient.Execute<ResultDto<ClientDto>>(new RegisterClientRequest() { ClientDto = clientDto }).Result;
+            var restResponse = JarvisRestClient.Execute<ResultDto<ClientDto>>(new RegisterClientRequest() {ClientDto = clientDto});
+
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
+            return restResponse.Result;
         }
 
         public void Logon(ClientDto clientDto)
         {
-            JarvisRestClient.Execute<ResultDto>(new LoginClientRequest() { ClientDto = clientDto });
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new LoginClientRequest() { ClientDto = clientDto });
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }
 
         public void Logoff(ClientDto clientDto)
         {
-            JarvisRestClient.Execute<ResultDto>(new LogoffClientRequest() { ClientDto = clientDto });
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new LogoffClientRequest() { ClientDto = clientDto });
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }
     }
 }

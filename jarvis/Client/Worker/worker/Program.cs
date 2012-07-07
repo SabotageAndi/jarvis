@@ -27,38 +27,20 @@ namespace jarvis.client.worker
 {
     internal class Program
     {
-        public static IKernel _container;
-
-
-        private static void Bootstrap()
-        {
-            XmlConfigurator.Configure();
-            var log = LogManager.GetLogger("worker-client");
-
-            var containerBuilder = new StandardKernel();
-            containerBuilder.Bind<Func<IKernel>>().ToMethod(ctx => () => Client.Container);
-            containerBuilder.Load(new CommonModule(), new ClientModule(), new ServiceClientModule());
-            containerBuilder.Bind<Client>().To<WorkerClient>().InSingletonScope();
-            containerBuilder.Bind<IWorkflowEngine>().To<WorkflowEngine>().InSingletonScope();
-
-            containerBuilder.Bind<ILog>().ToConstant(log).InSingletonScope();
-
-            _container = containerBuilder;
-        }
 
 
         private static void Main(string[] args)
         {
             Thread.Sleep(10000);
 
-            Bootstrap();
-            var client = _container.Get<Client>();
+            Bootstrapper.Init<WorkerClient>();
+
+            Bootstrapper.Container.Bind<IWorkflowEngine>().To<WorkflowEngine>().InSingletonScope();
+            var client = Bootstrapper.Container.Get<Client>();
 
 
-            client.Init(_container);
+            client.Init(Bootstrapper.Container);
             client.Run();
-
-            Console.ReadLine();
         }
     }
 }

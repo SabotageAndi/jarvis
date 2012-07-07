@@ -49,6 +49,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="ActionTriggerClient.cs" />
+    <Compile Include="Bootstrapper.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="ClientModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

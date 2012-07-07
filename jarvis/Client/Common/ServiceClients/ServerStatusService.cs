@@ -30,14 +30,16 @@ namespace jarvis.client.common.ServiceClients
         {
         }
 
-        protected override string ServiceName
+        protected virtual string ServiceName
         {
             get { return "ServerStatusService"; }
         }
 
         public bool isOnline()
         {
-            return JarvisRestClient.Execute<ResultDto<bool>>(new ServiceStatusRequest()).Result;
+            var restResponse = JarvisRestClient.Execute<ResultDto<bool>>(new ServiceStatusRequest());
+            JarvisRestClient.CheckForException(restResponse.ResponseStatus);
+            return restResponse.Result;
         }
     }
 }
