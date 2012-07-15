@@ -57,6 +57,8 @@ namespace jarvis.server.model.ActionHandling
 
         public ActionResultDto Execute(ITransactionScope transactionScope, ActionDto actionDto)
         {
+            _log.InfoFormat("Executing {0}.{1}", actionDto.ActionGroup, actionDto.Action);
+
             var serverAction = _actionRegistry.GetActionHandler(actionDto.ActionGroup);
 
             if (serverAction.CanExecute(transactionScope, actionDto))

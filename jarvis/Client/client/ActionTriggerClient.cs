@@ -23,6 +23,7 @@ using jarvis.addins.actions;
 using jarvis.addins.trigger;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
+using jarvis.common.domain;
 using log4net;
 
 namespace jarvis.client
@@ -42,6 +43,12 @@ namespace jarvis.client
         }
 
         private List<Trigger> Triggers { get; set; }
+
+
+        protected override ClientTypeEnum Type
+        {
+            get { return ClientTypeEnum.Windows; }
+        }
 
         public override void Init(IKernel container)
         {

@@ -2,34 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
 using jarvis.client.common;
 using jarvis.client.common.ServiceClients;
-using jarvis.common.dtos;
+using jarvis.common.domain;
 using jarvis.common.dtos.Eventhandling;
-using jarvis.common.dtos.Requests;
 using jarvis.common.dtos.Workflow;
 using log4net;
 
-namespace EventHandler
+namespace jarvis.client.eventhandler
 {
     class EventhandlerClient : Client
     {
-        private readonly IEventHandlingService _eventHandlingService;
-        private readonly JarvisRestClient _client;
+        private readonly IEventhandlingServiceHost _eventhandlingServiceHost;
+        private IEventHandlingService _eventHandlingService;
+        private readonly IEventhandlingLockManager _eventhandlingLockManager;
         private DateTime _lastCheck;
 
         public EventhandlerClient(IClientService clientService,
             IConfiguration configuration,
             IServerStatusService serverStatusService,
             ILog log,
-            IEventHandlingService eventHandlingService)
+            IEventhandlingServiceHost eventhandlingServiceHost, IEventHandlingService eventHandlingService,
+            IEventhandlingLockManager eventhandlingLockManager)
             : base(clientService, configuration, serverStatusService, log)
         {
+            _eventhandlingServiceHost = eventhandlingServiceHost;
             _eventHandlingService = eventHandlingService;
-            _client = new JarvisRestClient(log);
-            _client.BaseUrl = configuration.ServerUrl;
+            _eventhandlingLockManager = eventhandlingLockManager;
         }
 
         public override bool EnableAddins
@@ -40,18 +39,34 @@ namespace EventHandler
             }
         }
 
+        protected override ClientTypeEnum Type
+        {
+            get { return ClientTypeEnum.Eventhandler; }
+        }
+
+        public override void Init(Ninject.IKernel container)
+        {
+            _lastCheck = DateTime.UtcNow;
+
+            base.Init(container);
+
+            _eventhandlingServiceHost.Init();
+        }
+
         public override void Run()
         {
             base.Run();
-            _lastCheck = DateTime.UtcNow;
+            _eventhandlingServiceHost.Start();
+
 
             while (true)
             {
-                Thread.Sleep(10000);
+                Log.Info("Waiting for event");
+                _eventhandlingLockManager.Block();
+                Log.Info("Event triggered");
                 Do();
             }
         }
-
 
         private void Do()
         {
@@ -133,5 +148,6 @@ namespace EventHandler
         {
             return _eventHandlingService.GetEventhandlers();
         }
+      
     }
 }

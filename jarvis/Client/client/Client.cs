@@ -18,6 +18,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Threading;
 using Ninject;
@@ -28,7 +30,7 @@ using log4net;
 
 namespace jarvis.client.common
 {
-    public class Client
+    public abstract class Client
     {
         public delegate void OnShutdownDelegate();
 
@@ -74,6 +76,8 @@ namespace jarvis.client.common
             get { return true; }
         }
 
+        protected abstract ClientTypeEnum Type { get; }
+
         private ClientDto ClientDto
         {
             get
@@ -82,14 +86,26 @@ namespace jarvis.client.common
                 {
                     _clientDto = new ClientDto()
                                      {
-                                         Hostname = String.Format("http://10.140.0.36:{0}/", _configuration.LocalPort),
-                                         Type = ClientTypeEnum.Windows,
+                                         Hostname = String.Format("http://{0}:{1}/", GetLocalHostname(), _configuration.LocalPort),
+                                         Type = Type, 
                                          Name = _configuration.Name
                                      };
                 }
                 return _clientDto;
             }
             set { _clientDto = value; }
+        }
+
+        private string GetLocalHostname()
+        {
+            var ips = Dns.GetHostAddresses(Dns.GetHostName()).ToList();
+            ips = ips.Where(ip => ip.AddressFamily != AddressFamily.InterNetworkV6).ToList();
+            var firstIp = ips.Where(ip => ip.ToString() != "127.0.0.1").FirstOrDefault();
+
+            if (firstIp == null)
+                return "localhost";
+
+            return firstIp.ToString();
         }
 
         public event OnShutdownDelegate OnShutDown;

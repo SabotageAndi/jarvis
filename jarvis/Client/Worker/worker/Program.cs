@@ -33,9 +33,12 @@ namespace jarvis.client.worker
         {
             Thread.Sleep(10000);
 
-            Bootstrapper.Init<WorkerClient>();
+            Bootstrapper.Init<WorkerClient>("worker-client");
 
             Bootstrapper.Container.Bind<IWorkflowEngine>().To<WorkflowEngine>().InSingletonScope();
+            Bootstrapper.Container.Bind<IWorkerLockManager>().To<WorkerLockManager>().InSingletonScope();
+            Bootstrapper.Container.Bind<IWorkerServiceHost>().To<WorkerServiceHost>().InSingletonScope();
+
             var client = Bootstrapper.Container.Get<Client>();
 
 

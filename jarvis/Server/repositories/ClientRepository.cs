@@ -14,23 +14,46 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using NHibernate.Linq;
+using jarvis.common.domain;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 
 namespace jarvis.server.repositories
 {
+
+    public class ClientFilterCriteria
+    {
+        public string Name { get; set; }
+        public ClientTypeEnum? Type { get; set; }
+
+        public bool? IsOnline { get; set; }
+    }
+
     public interface IClientRepository : IRepositoryBase<Client>
     {
-        Client GetByName(ITransactionScope transactionScope, string name);
+        IEnumerable<Client> GetClientsByFilterCriteria(ITransactionScope transactionScope, ClientFilterCriteria clientFilterCriteria);
     }
 
     public class ClientRepository : RepositoryBase<Client>, IClientRepository
     {
-        public Client GetByName(ITransactionScope transactionScope, string name)
+        public IEnumerable<Client> GetClientsByFilterCriteria(ITransactionScope transactionScope, ClientFilterCriteria clientFilterCriteria)
         {
-            return transactionScope.CurrentSession.Query<Client>().Where(c => c.Name == name).SingleOrDefault();
+            var clients = transactionScope.CurrentSession.Query<Client>();
+
+            if (!String.IsNullOrEmpty(clientFilterCriteria.Name))
+                clients = clients.Where(c => c.Name == clientFilterCriteria.Name);
+
+            if (clientFilterCriteria.Type.HasValue)
+                clients = clients.Where(c => c.Type == clientFilterCriteria.Type);
+
+            if (clientFilterCriteria.IsOnline.HasValue)
+                clients = clients.Where(c => c.IsOnline == clientFilterCriteria.IsOnline);
+
+            return clients;
         }
     }
 }

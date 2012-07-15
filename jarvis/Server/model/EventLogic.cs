@@ -17,11 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using jarvis.client.common.ServiceClients;
+using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Requests;
+using jarvis.common.logic;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Eventhandling;
+using jarvis.server.entities.Management;
 using jarvis.server.repositories;
+using log4net;
 
 namespace jarvis.server.model
 {
@@ -36,12 +42,16 @@ namespace jarvis.server.model
     public class EventLogic : IEventLogic
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IClientLogic _clientLogic;
+        private readonly ILog _log;
         private readonly IEventRepository _eventRepository;
 
-        public EventLogic(IEventRepository eventRepository, IClientRepository clientRepository)
+        public EventLogic(IEventRepository eventRepository, IClientRepository clientRepository, IClientLogic clientLogic, ILog log)
         {
             _eventRepository = eventRepository;
             _clientRepository = clientRepository;
+            _clientLogic = clientLogic;
+            _log = log;
         }
 
         public void eventRaised(ITransactionScope transactionScope, EventDto eventDto)
@@ -58,6 +68,15 @@ namespace jarvis.server.model
                                   };
 
             _eventRepository.Save(transactionScope, raisedEvent);
+
+            var eventhandlerClients = _clientLogic.GetClientByFilterCriteria(transactionScope, new ClientFilterCriteria() { Type = ClientTypeEnum.Eventhandler, IsOnline = true });
+
+            var eventhandlerClient = eventhandlerClients.FirstOrDefault();
+
+            if (eventhandlerClient != null)
+            {
+                TriggerEventForEventhandlerClient(eventhandlerClient);
+            }
         }
 
         public List<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria)
@@ -88,6 +107,24 @@ namespace jarvis.server.model
                                                                     EventType = e.EventType,
                                                                     Data = e.Data
                                                                 }).ToList();
+        }
+
+        public void TriggerEventForEventhandlerClient(Client client)
+        {
+            var restclient = new JarvisRestClient(_log);
+            restclient.BaseUrl = client.Hostname;
+
+            try
+            {
+                var result = restclient.Execute<ResultDto>(new EventhandlingTriggerRequest(), "POST");
+                restclient.CheckForException(result.ResponseStatus);
+            }
+            catch (Exception exception)
+            {
+                ExceptionDumper.Write(exception);
+            }
+
+            //restclient.ExecuteAsync(new EventhandlingTriggerRequest(), o => { }, (o, exception) => { _log.ErrorFormat("Error on triggering eventhandler: {0}", ExceptionDumper.Write(exception)); }, "POST");
         }
     }
 }

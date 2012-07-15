@@ -14,34 +14,27 @@
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using Ninject;
-using jarvis.client;
 using jarvis.client.common;
-using jarvis.client.common.ServiceClients;
-using jarvis.common.dtos;
-using jarvis.common.dtos.Eventhandling;
-using jarvis.common.dtos.Requests;
-using jarvis.common.dtos.Workflow;
-using log4net;
-using log4net.Config;
 
-namespace EventHandler
+namespace jarvis.client.eventhandler
 {
     internal class Program
     {
        
         private static void Main(string[] args)
         {
-            Bootstrapper.Init<EventhandlerClient>();
+
+            Bootstrapper.Init<EventhandlerClient>("eventhandler");
+
+            Bootstrapper.Container.Bind<IEventhandlingServiceHost>().To<EventhandlingServiceHost>().InSingletonScope();
+            Bootstrapper.Container.Bind<IEventhandlingLockManager>().To<EventhandlingLockManager>().InSingletonScope();
 
             var client = Bootstrapper.Container.Get<Client>();
             client.Init(Bootstrapper.Container);
             client.Run();
-            
+
+
         }
 
     }

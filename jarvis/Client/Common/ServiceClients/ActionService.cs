@@ -38,7 +38,7 @@ namespace jarvis.client.common.ServiceClients
 
         public ActionResultDto Execute(ActionDto actionDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest() {ActionDto = actionDto});
+            var restResponse = JarvisRestClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest() {ActionDto = actionDto}, "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse.Result;
         }

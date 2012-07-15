@@ -24,7 +24,7 @@ namespace jarvis.client.common.ServiceClients
 
         public List<EventHandlerDto> GetEventhandlers()
         {
-            var result = JarvisRestClient.Execute<ResultDto<List<EventHandlerDto>>>(new GetEventHandlerRequest());
+            var result = JarvisRestClient.Execute<ResultDto<List<EventHandlerDto>>>(new GetEventHandlerRequest(), "GET");
 
             JarvisRestClient.CheckForException(result.ResponseStatus);
 
@@ -35,7 +35,7 @@ namespace jarvis.client.common.ServiceClients
         {
             var ticks = lastCheck.Ticks.ToString();
 
-            var restResponse = JarvisRestClient.Execute<ResultDto<List<EventDto>>>(new GetAllEventsSinceRequest() { Ticks = ticks });
+            var restResponse = JarvisRestClient.Execute<ResultDto<List<EventDto>>>(new GetAllEventsSinceRequest() { Ticks = ticks }, "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
 
             return restResponse.Result;
@@ -43,7 +43,7 @@ namespace jarvis.client.common.ServiceClients
 
         public ResultDto AddWorkflowToQueue(WorkflowQueueDto workflowQueueDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto>(new AddWorkflowInQueueRequest {WorkflowQueueDto = workflowQueueDto});
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new AddWorkflowInQueueRequest {WorkflowQueueDto = workflowQueueDto}, "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse;
         }

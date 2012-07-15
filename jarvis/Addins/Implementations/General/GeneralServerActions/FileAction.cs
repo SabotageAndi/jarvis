@@ -9,6 +9,7 @@ using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 using jarvis.common.dtos.Requests;
 using jarvis.server.common.Database;
+using jarvis.server.repositories;
 
 namespace jarvis.addins.generalserveractions
 {
@@ -73,12 +74,12 @@ namespace jarvis.addins.generalserveractions
         private ActionResultDto ExecuteFileAction(ITransactionScope transactionScope, ActionDto actionDto)
         {
             var clientName = actionDto.Parameters.Where(p => p.Name == "Client").Single().Value;
-            var client = ClientRepository.GetByName(transactionScope, clientName);
+            var client = ClientRepository.GetClientsByFilterCriteria(transactionScope, new ClientFilterCriteria() {Name = clientName}).SingleOrDefault();
 
             var restClient = new JarvisRestClient(this.Log);
             restClient.BaseUrl = client.Hostname;
 
-            return restClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest(){ActionDto = actionDto}).Result;
+            return restClient.Execute<ResultDto<ActionResultDto>>(new ActionExecuteRequest(){ActionDto = actionDto}, "POST").Result;
         }
     }
 }

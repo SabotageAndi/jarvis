@@ -40,7 +40,7 @@ namespace jarvis.client.common.ServiceClients
         {
             eventDto.ClientId = _configuration.ClientId.Value;
 
-            var restResponse = JarvisRestClient.Execute<ResultDto>(new TriggerRequest(){EventDto = eventDto});
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new TriggerRequest(){EventDto = eventDto}, "POST");
 
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }

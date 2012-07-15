@@ -37,7 +37,7 @@ namespace jarvis.client.common.ServiceClients
 
         public bool isOnline()
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto<bool>>(new ServiceStatusRequest());
+            var restResponse = JarvisRestClient.Execute<ResultDto<bool>>(new ServiceStatusRequest(), "GET");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse.Result;
         }

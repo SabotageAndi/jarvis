@@ -15,10 +15,13 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
+using jarvis.common.domain;
 using jarvis.common.dtos.Management;
 using jarvis.server.common.Database;
 using jarvis.server.entities.Management;
 using jarvis.server.repositories;
+using System.Linq;
 
 namespace jarvis.server.model
 {
@@ -27,6 +30,7 @@ namespace jarvis.server.model
         ClientDto RegisterClient(ITransactionScope transactionScope, ClientDto clientDto);
         void Logon(ITransactionScope transactionScope, ClientDto clientDto);
         void Logoff(ITransactionScope transactionScope, ClientDto clientDto);
+        List<Client> GetClientByFilterCriteria(ITransactionScope transactionScope, ClientFilterCriteria clientFilterCriteria);
     }
 
     public class ClientLogic : IClientLogic
@@ -40,7 +44,7 @@ namespace jarvis.server.model
 
         public ClientDto RegisterClient(ITransactionScope transactionScope, ClientDto clientDto)
         {
-            Client client = _clientRepository.GetByName(transactionScope, clientDto.Name);
+            Client client = _clientRepository.GetClientsByFilterCriteria(transactionScope, new ClientFilterCriteria() {Name = clientDto.Name}).SingleOrDefault();
             ;
             if (client == null)
             {
@@ -72,6 +76,12 @@ namespace jarvis.server.model
         {
             SetIsOnlineState(transactionScope, clientDto, false);
         }
+
+        public List<Client> GetClientByFilterCriteria(ITransactionScope transactionScope, ClientFilterCriteria clientFilterCriteria)
+        {
+            return _clientRepository.GetClientsByFilterCriteria(transactionScope, clientFilterCriteria).ToList();
+        }
+
 
         private void SetIsOnlineState(ITransactionScope transactionScope, ClientDto clientDto, bool isOnline)
         {

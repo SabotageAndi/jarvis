@@ -17,10 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using jarvis.client.common.ServiceClients;
+using jarvis.common.domain;
+using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
+using jarvis.common.dtos.Requests;
 using jarvis.common.dtos.Workflow;
+using jarvis.common.logic;
 using jarvis.server.common.Database;
+using jarvis.server.entities.Management;
 using jarvis.server.repositories;
+using log4net;
 
 namespace jarvis.server.model
 {
@@ -35,15 +42,19 @@ namespace jarvis.server.model
         private readonly IDefinedWorkflowRepository _definedWorkflowRepository;
         private readonly IEventHandlerRepository _eventHandlerRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IClientLogic _clientLogic;
+        private readonly ILog _log;
         private readonly IWorkflowQueueRepository _workflowQueueRepository;
 
         public EventHandlingLogic(IEventHandlerRepository eventHandlerRepository, IDefinedWorkflowRepository definedWorkflowRepository,
-                                  IWorkflowQueueRepository workflowQueueRepository, IEventRepository eventRepository)
+                                  IWorkflowQueueRepository workflowQueueRepository, IEventRepository eventRepository, IClientLogic clientLogic, ILog log)
         {
             _eventHandlerRepository = eventHandlerRepository;
             _definedWorkflowRepository = definedWorkflowRepository;
             _workflowQueueRepository = workflowQueueRepository;
             _eventRepository = eventRepository;
+            _clientLogic = clientLogic;
+            _log = log;
         }
 
         public List<EventHandlerDto> GetAllEventHandler(ITransactionScope transactionScope)
@@ -64,9 +75,9 @@ namespace jarvis.server.model
         {
             var workflow =
                 _definedWorkflowRepository.GetWorkflow(transactionScope, new DefinedWorkflowFilterCriteria()
-                                                           {
-                                                               Id = workflowQueueDto.DefinedWorkflowId
-                                                           });
+                    {
+                        Id = workflowQueueDto.DefinedWorkflowId
+                    });
 
 
             var workflowQueue = _workflowQueueRepository.Create();
@@ -75,6 +86,34 @@ namespace jarvis.server.model
             workflowQueue.Event = _eventRepository.GetById(transactionScope, workflowQueueDto.EventId);
 
             _workflowQueueRepository.Save(transactionScope, workflowQueue);
+
+            var workerClients = _clientLogic.GetClientByFilterCriteria(transactionScope,
+                                                                             new ClientFilterCriteria()
+                                                                                 {Type = ClientTypeEnum.Worker, IsOnline = true});
+
+            var eventhandlerClient = workerClients.FirstOrDefault();
+
+            if (eventhandlerClient != null)
+            {
+                TriggerWorkerClient(eventhandlerClient);
+            }
+
+        }
+        public void TriggerWorkerClient(Client client)
+        {
+            var restclient = new JarvisRestClient(_log);
+            restclient.BaseUrl = client.Hostname;
+
+            try
+            {
+                var result = restclient.Execute<ResultDto>(new WorkerTriggerRequest(), "POST");
+                restclient.CheckForException(result.ResponseStatus);
+            }
+            catch (Exception exception)
+            {
+                ExceptionDumper.Write(exception);
+            }
+            //restclient.ExecuteAsync(new WorkerTriggerRequest(), o => { }, (o, exception) => _log.ErrorFormat("Error on triggering worker client: {0}", ExceptionDumper.Write(exception)), "POST");
         }
     }
 }

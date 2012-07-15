@@ -41,7 +41,7 @@ namespace jarvis.client.common.ServiceClients
 
         public ClientDto Register(ClientDto clientDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto<ClientDto>>(new RegisterClientRequest() {ClientDto = clientDto});
+            var restResponse = JarvisRestClient.Execute<ResultDto<ClientDto>>(new RegisterClientRequest() {ClientDto = clientDto}, "POST");
 
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse.Result;
@@ -49,13 +49,13 @@ namespace jarvis.client.common.ServiceClients
 
         public void Logon(ClientDto clientDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto>(new LoginClientRequest() { ClientDto = clientDto });
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new LoginClientRequest() { ClientDto = clientDto }, "PUT");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }
 
         public void Logoff(ClientDto clientDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto>(new LogoffClientRequest() { ClientDto = clientDto });
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new LogoffClientRequest() { ClientDto = clientDto }, "PUT");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
         }
     }

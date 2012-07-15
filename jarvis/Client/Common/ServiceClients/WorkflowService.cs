@@ -38,7 +38,7 @@ namespace jarvis.client.common.ServiceClients
 
         public RunnedWorkflowDto GetWorkflowToExecute()
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto<RunnedWorkflowDto>>(new GetWorkflowToExecuteRequest());
+            var restResponse = JarvisRestClient.Execute<ResultDto<RunnedWorkflowDto>>(new GetWorkflowToExecuteRequest(), "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse.Result;
         }

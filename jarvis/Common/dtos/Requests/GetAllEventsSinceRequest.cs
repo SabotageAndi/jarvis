@@ -1,9 +1,13 @@
 using System;
+using System.Runtime.Serialization;
 
 namespace jarvis.common.dtos.Requests
 {
+    [DataContract]
     public class GetAllEventsSinceRequest : Request
     {
-        public String Ticks { get; set; }    
+        [DataMember]
+        public String Ticks { get; set; }
+
     }
 }

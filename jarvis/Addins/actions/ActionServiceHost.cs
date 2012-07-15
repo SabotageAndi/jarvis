@@ -25,6 +25,7 @@ using ServiceStack.WebHost.Endpoints;
 using jarvis.client.common;
 using jarvis.common.dtos.Requests;
 using jarvis.common.logic;
+using log4net;
 
 namespace jarvis.addins.actions
 {
@@ -38,31 +39,15 @@ namespace jarvis.addins.actions
     {
         private readonly IKernel _kernel;
         private readonly IConfiguration _configuration;
+        private readonly ILog _log;
 
-        public ActionServiceHost(IKernel kernel, IConfiguration configuration)
+        public ActionServiceHost(IKernel kernel, IConfiguration configuration, ILog log)
             :base("JarvisWorker", Assembly.GetExecutingAssembly())
         {
             _kernel = kernel;
             _configuration = configuration;
+            _log = log;
         }
-
-        //public void Start()
-        //{
-        //    var baseAddress = GetBaseAddress();
-
-        //    var contractDescription = ContractDescription.GetContract(typeof (ActionService));
-        //    var restBinding = new WebHttpBinding(WebHttpSecurityMode.None);
-        //    var endpointAddress = new EndpointAddress(baseAddress + "action");
-
-        //    var restEndPoint = new ServiceEndpoint(contractDescription, restBinding, endpointAddress);
-
-        //    restEndPoint.Behaviors.Add(new WebHttpBehavior());
-
-        //    _serviceHost = new ServiceHost(_actionService, new Uri(baseAddress));
-        //    _serviceHost.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.None;
-        //    _serviceHost.AddServiceEndpoint(restEndPoint);
-        //    _serviceHost.Open();
-        //}
 
         private String GetBaseAddress()
         {
@@ -85,13 +70,16 @@ namespace jarvis.addins.actions
             });
 
 
-            Routes.Add<ActionExecuteRequest>("/action/execute");
+            Routes.Add<ActionExecuteRequest>("/action/execute", "POST");
         }
 
         public void Start()
         {
-            this.Start(GetBaseAddress());
-        }
+            var baseAddress = GetBaseAddress();
 
+            _log.InfoFormat("Starting ActionServiceHost on {0}", baseAddress);
+
+            this.Start(baseAddress);
+        }
     }
 }

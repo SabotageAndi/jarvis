@@ -17,6 +17,7 @@
 
 using System;
 using ServiceStack.ServiceClient.Web;
+using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
 using jarvis.common.domain;
 using jarvis.common.dtos.Requests;
@@ -28,15 +29,15 @@ namespace jarvis.client.common.ServiceClients
     public interface IJarvisRestClient
     {
         string BaseUrl { get; set; }
-        T Execute<T>(Request restRequest) where T : new();
-        void Execute(Request restRequest);
+        T Execute<T>(Request restRequest, string httpMethod) where T : new();
+        void Execute(Request restRequest, string httpMethod);
         void CheckForException(ResponseStatus responseStatus);
     }
 
     public class JarvisRestClient : IJarvisRestClient
     {
         private readonly ILog _log;
-        private JsonServiceClient _jsonServiceClient;
+        private readonly JsonServiceClient _jsonServiceClient;
 
         public JarvisRestClient(ILog log)
         {
@@ -50,18 +51,43 @@ namespace jarvis.client.common.ServiceClients
             set { _jsonServiceClient.SetBaseUri(value); }
         }
 
-        public Response Execute<Response>(Request restRequest) where Response : new()
+        public Response Execute<Response>(Request restRequest, string httpMethod) where Response : new()
         {
-            _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            restRequest.Version = "1.0";
+
+            _log.InfoFormat("Send request {0} to {1} via {2}", restRequest.GetType().Name, BaseUrl, httpMethod);
+            _jsonServiceClient.HttpMethod = httpMethod;
+            _jsonServiceClient.DisableAutoCompression = true;
+
             var response = _jsonServiceClient.Send<Response>(restRequest);
+            _log.InfoFormat("Received request {0} to {1}", restRequest.GetType().Name, BaseUrl);
 
             return response;
         }
 
-        public void Execute(Request restRequest)
+        public void ExecuteAsync<Response>(Request restRequest, Action<Response> onSuccess, Action<Response, Exception> onError, string httpMethod)
         {
+            restRequest.Version = "1.0";
             _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            _jsonServiceClient.HttpMethod = httpMethod; 
+            _jsonServiceClient.SendAsync(restRequest,onSuccess, onError);
+        }
+
+        public void Execute(Request restRequest, string httpMethod)
+        {
+            restRequest.Version = "1.0";
+            _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            _jsonServiceClient.HttpMethod = httpMethod; 
             _jsonServiceClient.Send<object>(restRequest);
+            _log.InfoFormat("Received request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+        }
+
+        public void ExecuteAsync(Request restRequest, Action<object> onSuccess, Action<object, Exception> onError, string httpMethod)
+        {
+            restRequest.Version = "1.0";
+            _log.InfoFormat("Send request {0} to {1}", restRequest.GetType().Name, BaseUrl);
+            _jsonServiceClient.HttpMethod = httpMethod; 
+            _jsonServiceClient.SendAsync(restRequest,onSuccess, onError);
         }
 
         public void CheckForException(ResponseStatus responseStatus)

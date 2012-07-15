@@ -4,7 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Funq;
+using NHibernate;
 using Ninject;
+using ServiceStack.Logging;
+using ServiceStack.Logging.Support.Logging;
 using ServiceStack.ServiceInterface;
 using ServiceStack.WebHost.Endpoints;
 using jarvis.common.dtos.Requests;
@@ -41,21 +44,24 @@ namespace jarvis.server
                     { "Access-Control-Allow-Origin", "*" },
                     { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                 },
-               
+
                 WsdlServiceNamespace = "http://www.servicestack.net/types",
                 DebugMode = true
             });
 
-            Routes.Add<ServiceStatusRequest>("/serverstatus");
-            Routes.Add<RegisterClientRequest>("/client/register");
-            Routes.Add<LoginClientRequest>("/client/login");
-            Routes.Add<LogoffClientRequest>("/client/logoff");
-            Routes.Add<ActionExecuteRequest>("/action/execute");
-            Routes.Add<TriggerRequest>("/trigger");
-            Routes.Add<GetAllEventsSinceRequest>("/events/{ticks}");
-            Routes.Add<GetEventHandlerRequest>("/eventhandler");
-            Routes.Add<AddWorkflowInQueueRequest>("/workflowqueue");
-            Routes.Add<GetWorkflowToExecuteRequest>("/workflow/gettoexecute");
+            Routes.Add<ServiceStatusRequest>("/serverstatus", "GET");
+            Routes.Add<RegisterClientRequest>("/client/register", "POST");
+            Routes.Add<LoginClientRequest>("/client/login", "PUT");
+            Routes.Add<LogoffClientRequest>("/client/logoff", "PUT");
+            Routes.Add<ActionExecuteRequest>("/action/execute", "POST");
+            Routes.Add<TriggerRequest>("/trigger", "POST");
+            Routes.Add<GetAllEventsSinceRequest>("/events/{ticks}", "POST");
+            Routes.Add<GetEventHandlerRequest>("/eventhandler", "GET");
+            Routes.Add<AddWorkflowInQueueRequest>("/workflowqueue", "POST");
+            Routes.Add<GetWorkflowToExecuteRequest>("/workflow/gettoexecute", "POST");
+
+
+            LogManager.LogFactory = new ConsoleLogFactory();
         }
     }
 }
