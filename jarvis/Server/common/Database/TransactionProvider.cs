@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Ninject;
-using ServiceStack.ServiceHost;
 
 namespace jarvis.server.common.Database
 {
@@ -30,8 +29,6 @@ namespace jarvis.server.common.Database
             _sessionFactory = sessionFactory;
             _kernel = kernel;
         }
-
-        public IRequestContext RequestContext { get { return _kernel.Get<IRequestContext>(); }  }
 
         public ITransactionScope CurrentScope
         {

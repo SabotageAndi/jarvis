@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using RestSharp;
 using jarvis.addins.serverActions;
-using jarvis.client.common.ServiceClients;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Actionhandling;
 using jarvis.common.dtos.Requests;
+using jarvis.common.logic;
 using jarvis.server.common.Database;
 using jarvis.server.repositories;
 

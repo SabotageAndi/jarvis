@@ -38,14 +38,17 @@
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack">
+      <HintPath>..\..\References\ServiceStack.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Common.dll</HintPath>
+      <HintPath>..\..\References\ServiceStack.Common.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Interfaces.dll</HintPath>
+      <HintPath>..\..\References\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
+      <HintPath>..\..\References\ServiceStack.ServiceInterface.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

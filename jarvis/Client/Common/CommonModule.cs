@@ -16,6 +16,7 @@
 
 using Ninject.Modules;
 using jarvis.client.common.ServiceClients;
+using jarvis.common.logic;
 
 namespace jarvis.client.common
 {

@@ -38,32 +38,8 @@
     <Reference Include="Ninject, Version=3.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ninject.3.0.1.10\lib\net40\Ninject.dll</HintPath>
     </Reference>
-    <Reference Include="ServiceStack">
-      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Common">
-      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Common.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Interfaces">
-      <HintPath>..\..\packages\ServiceStack.Common.3.8.3\lib\net35\ServiceStack.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite">
-      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.8.3\lib\ServiceStack.OrmLite.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.OrmLite.SqlServer">
-      <HintPath>..\..\packages\ServiceStack.OrmLite.SqlServer.3.8.3\lib\ServiceStack.OrmLite.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.RazorEngine">
-      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.RazorEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Redis">
-      <HintPath>..\..\packages\ServiceStack.Redis.3.8.4\lib\net35\ServiceStack.Redis.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.ServiceInterface">
-      <HintPath>..\..\packages\ServiceStack.3.8.3\lib\net35\ServiceStack.ServiceInterface.dll</HintPath>
-    </Reference>
-    <Reference Include="ServiceStack.Text">
-      <HintPath>..\..\packages\ServiceStack.Text.3.8.3\lib\net35\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\..\References\ServiceStack.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

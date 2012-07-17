@@ -14,7 +14,7 @@ del /F /Q linux\output\eventhandler\*.config
 xcopy /Y jarvis\Client\Linux\linux\bin\Debug\*.* linux\output\client
 del /F /Q linux\output\client\*.config
 
-xcopy /Y jarvis\Server\server\bin\Debug\*.* linux\output\server
+xcopy /Y /S jarvis\Server\server\bin\Debug\*.* linux\output\server
 del /F /Q linux\output\server\*.config
 
 xcopy /Y jarvis\Addins\compiledClient\* linux\output\addins

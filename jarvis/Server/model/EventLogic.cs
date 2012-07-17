@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using jarvis.client.common.ServiceClients;
 using jarvis.common.domain;
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;

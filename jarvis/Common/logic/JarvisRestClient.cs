@@ -17,14 +17,12 @@
 
 using System;
 using ServiceStack.ServiceClient.Web;
-using ServiceStack.ServiceInterface;
 using ServiceStack.ServiceInterface.ServiceModel;
-using jarvis.common.domain;
 using jarvis.common.dtos.Requests;
 using log4net;
 using System.Linq;
 
-namespace jarvis.client.common.ServiceClients
+namespace jarvis.common.logic
 {
     public interface IJarvisRestClient
     {

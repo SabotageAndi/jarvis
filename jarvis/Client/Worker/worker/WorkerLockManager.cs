@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace jarvis.client.worker
 {
@@ -14,7 +15,7 @@ namespace jarvis.client.worker
 
         public WorkerLockManager()
         {
-            _semaphore = new Semaphore(0,1);
+            _semaphore = new Semaphore(0,Int32.MaxValue);
         }
 
         public void Block()

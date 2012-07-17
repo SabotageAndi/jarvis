@@ -17,6 +17,7 @@
 using jarvis.common.dtos;
 using jarvis.common.dtos.Eventhandling;
 using jarvis.common.dtos.Requests;
+using jarvis.common.logic;
 
 namespace jarvis.client.common.ServiceClients
 {
