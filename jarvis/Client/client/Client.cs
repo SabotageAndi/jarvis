@@ -147,6 +147,7 @@ namespace jarvis.client.common
                 _configuration.ClientId = ClientDto.Id;
                 SaveSettings();
             }
+            ClientDto.Hostname = GetLocalHostname();
 
             Logon();
 

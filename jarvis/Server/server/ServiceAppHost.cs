@@ -44,7 +44,8 @@ namespace jarvis.server
                     { "Access-Control-Allow-Origin", "*" },
                     { "Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" },
                 },
-
+                
+                
                 WsdlServiceNamespace = "http://www.servicestack.net/types",
                 DebugMode = true
             });

@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Net;
 using ServiceStack.ServiceClient.Web;
 using ServiceStack.ServiceInterface.ServiceModel;
 using jarvis.common.dtos.Requests;
@@ -41,6 +42,12 @@ namespace jarvis.common.logic
         {
             _log = log;
             _jsonServiceClient = new JsonServiceClient();
+            _jsonServiceClient.LocalHttpWebRequestFilter = LocalHttpWebRequestFilter;
+        }
+
+        private void LocalHttpWebRequestFilter(HttpWebRequest httpWebRequest)
+        {
+            httpWebRequest.ProtocolVersion = HttpVersion.Version10;
         }
 
         public string BaseUrl
@@ -56,6 +63,8 @@ namespace jarvis.common.logic
             _log.InfoFormat("Send request {0} to {1} via {2}", restRequest.GetType().Name, BaseUrl, httpMethod);
             _jsonServiceClient.HttpMethod = httpMethod;
             _jsonServiceClient.DisableAutoCompression = true;
+
+           
 
             var response = _jsonServiceClient.Send<Response>(restRequest);
             _log.InfoFormat("Received request {0} to {1}", restRequest.GetType().Name, BaseUrl);

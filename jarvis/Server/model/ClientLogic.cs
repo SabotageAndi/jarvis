@@ -92,7 +92,9 @@ namespace jarvis.server.model
                 throw new Exception("client not registered");
             }
 
+
             client.IsOnline = isOnline;
+            clientDto.Hostname = clientDto.Hostname;
             _clientRepository.Save(transactionScope, client);
         }
     }
