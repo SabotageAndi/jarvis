@@ -90,64 +90,67 @@ namespace jarvis.client.eventhandler
                             Log.Error(exception);
                         }
                     }
-
                     Log.ErrorFormat("Response {0}\n, Status: {1}\n, Data: {2}", webEx.Response, webEx.Status, webEx.Data);
                 }
-                else
-                {
-                    Log.Error(e);
-                }
+                
+                Log.Error(e);
             }
         }
 
         private void ExecuteEventPipeline()
         {
             var eventHandlers = GetEventhandlers();
-            var events = GetEvents();
-            _lastCheck = DateTime.UtcNow;
 
-            HandleEvents(events, eventHandlers);
-        }
-
-        private void HandleEvents(List<EventDto> events, List<EventHandlerDto> eventHandlers)
-        {
-            if (events == null)
+            if (Log.IsDebugEnabled)
             {
-                return;
+                var eventHandlersString = String.Join(",", eventHandlers.Select(e => e.Id.ToString()).ToArray());
+                Log.Debug("Eventhandlers: " + eventHandlersString);
             }
 
-            foreach (var eventDto in events)
+            var eventToProcess = GetEventToProcess();
+
+            while (eventToProcess != null && eventToProcess.Id != -1)
             {
-                var hittedEventHandler = from eh in eventHandlers
-                                         where (eh.EventGroupType == null || eh.EventGroupType == eventDto.EventGroupType)
-                                               && (eh.EventType == null || eh.EventType == eventDto.EventType)
-                                         select eh;
+                HandleEvent(eventHandlers, eventToProcess);
+                eventToProcess = GetEventToProcess();
+            }
 
-                foreach (var eventHandlerDto in hittedEventHandler)
-                {
+        }
 
-                    var workflowQueueDto = new WorkflowQueueDto
+        private void HandleEvent(List<EventHandlerDto> eventHandlers, EventDto eventDto)
+        {
+            Log.InfoFormat("EventGroupType: {0}\nEventType: {1}\nClientId: {2}\nTriggeredDate: {3}", eventDto.EventGroupType, eventDto.EventType, eventDto.ClientId, eventDto.TriggeredDate);
+
+
+            var hittedEventHandler = from eh in eventHandlers
+                                     where (eh.EventGroupType == null || eh.EventGroupType == eventDto.EventGroupType)
+                                           && (eh.EventType == null || eh.EventType == eventDto.EventType)
+                                     select eh;
+
+            foreach (var eventHandlerDto in hittedEventHandler)
+            {
+                var workflowQueueDto = new WorkflowQueueDto
                     {
                         EventHandlerId = eventHandlerDto.Id,
                         DefinedWorkflowId = eventHandlerDto.DefinedWorkflowId,
                         EventId = eventDto.Id
                     };
 
-                    _eventHandlingService.AddWorkflowToQueue(workflowQueueDto);
-                }
+                Log.InfoFormat("Hitted Eventhandler: {0}", eventHandlerDto.Id);
+
+                _eventHandlingService.AddWorkflowToQueue(workflowQueueDto);
             }
         }
 
-        private List<EventDto> GetEvents()
+        private EventDto GetEventToProcess()
         {
-            Log.InfoFormat("Getting Events since: {0:yyyy-MM-dd hh:mm:ss.nnn}", _lastCheck);
-            return _eventHandlingService.GetEvents(_lastCheck);
+            return _eventHandlingService.GetEventToProcess();
         }
 
         private List<EventHandlerDto> GetEventhandlers()
         {
             return _eventHandlingService.GetEventhandlers();
         }
-      
+
     }
 }

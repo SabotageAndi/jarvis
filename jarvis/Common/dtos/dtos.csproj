@@ -68,7 +68,7 @@
     <Compile Include="Requests\ActionExecuteRequest.cs" />
     <Compile Include="Requests\AddWorkflowInQueueRequest.cs" />
     <Compile Include="Requests\EventhandlingTriggerRequest.cs" />
-    <Compile Include="Requests\GetAllEventsSinceRequest.cs" />
+    <Compile Include="Requests\GetEventsToProcess.cs" />
     <Compile Include="Requests\GetEventHandlerRequest.cs" />
     <Compile Include="Requests\GetWorkflowToExecuteRequest.cs" />
     <Compile Include="Requests\LoginClientRequest.cs" />

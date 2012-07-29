@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using jarvis.common.dtos;
@@ -13,13 +12,14 @@ namespace jarvis.client.common.ServiceClients
     public interface IEventHandlingService
     {
         List<EventHandlerDto> GetEventhandlers();
-        List<EventDto> GetEvents(DateTime lastCheck);
+        EventDto GetEventToProcess();
         ResultDto AddWorkflowToQueue(WorkflowQueueDto workflowQueueDto);
     }
 
     public class EventHandlingService : ServiceBase, IEventHandlingService
     {
-        public EventHandlingService(IJarvisRestClient jarvisRestClient, IConfiguration configuration) : base(jarvisRestClient, configuration)
+        public EventHandlingService(IJarvisRestClient jarvisRestClient, IConfiguration configuration)
+            : base(jarvisRestClient, configuration)
         {
         }
 
@@ -32,11 +32,9 @@ namespace jarvis.client.common.ServiceClients
             return result.Result;
         }
 
-        public List<EventDto> GetEvents(DateTime lastCheck)
+        public EventDto GetEventToProcess()
         {
-            var ticks = lastCheck.Ticks.ToString();
-
-            var restResponse = JarvisRestClient.Execute<ResultDto<List<EventDto>>>(new GetAllEventsSinceRequest() { Ticks = ticks }, "POST");
+            var restResponse = JarvisRestClient.Execute<ResultDto<EventDto>>(new GetEventsToProcess(), "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
 
             return restResponse.Result;
@@ -44,7 +42,7 @@ namespace jarvis.client.common.ServiceClients
 
         public ResultDto AddWorkflowToQueue(WorkflowQueueDto workflowQueueDto)
         {
-            var restResponse = JarvisRestClient.Execute<ResultDto>(new AddWorkflowInQueueRequest {WorkflowQueueDto = workflowQueueDto}, "POST");
+            var restResponse = JarvisRestClient.Execute<ResultDto>(new AddWorkflowInQueueRequest { WorkflowQueueDto = workflowQueueDto }, "POST");
             JarvisRestClient.CheckForException(restResponse.ResponseStatus);
             return restResponse;
         }

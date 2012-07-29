@@ -12,35 +12,33 @@ using log4net;
 
 namespace jarvis.server.services.eventhandling
 {
-    class GetAllEventsSinceService : ServiceBase<GetAllEventsSinceRequest>
+    class GetEventToProcessService : ServiceBase<GetEventsToProcess>
     {
         private readonly ITransactionProvider _transactionProvider;
         private readonly IEventLogic _eventLogic;
         private readonly ILog _log;
 
-        public GetAllEventsSinceService(ITransactionProvider transactionProvider, IEventLogic eventLogic, ILog log)
+        public GetEventToProcessService(ITransactionProvider transactionProvider, IEventLogic eventLogic, ILog log)
         {
             _transactionProvider = transactionProvider;
             _eventLogic = eventLogic;
             _log = log;
         }
 
-        protected override object HandleException(GetAllEventsSinceRequest request, Exception ex)
+        protected override object HandleException(GetEventsToProcess request, Exception ex)
         {
             _log.ErrorFormat("Error at getting event list: {0}", ex);
             return base.HandleException(request, ex);
         }
 
-        protected override object Run(GetAllEventsSinceRequest request)
+        protected override object Run(GetEventsToProcess request)
         {
             using (var transactionScope = _transactionProvider.StartReadWriteTransaction())
             {
-                var date = new DateTime(Convert.ToInt64(request.Ticks));
-
-                var allEventsSince = _eventLogic.GetAllEventsSince(transactionScope, date);
+                var eventsToProcess = _eventLogic.GetEventsToProcess(transactionScope);
 
                 transactionScope.Commit();
-                return new ResultDto<List<EventDto>>(allEventsSince);
+                return new ResultDto<EventDto>(eventsToProcess);
             }
         }
     }

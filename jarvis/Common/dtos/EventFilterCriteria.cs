@@ -27,5 +27,8 @@ namespace jarvis.common.dtos
 
         [DataMember]
         public DateTime? MinTriggeredDate { get; set; }
+
+        [DataMember]
+        public bool? IsProcessed { get; set; }
     }
 }

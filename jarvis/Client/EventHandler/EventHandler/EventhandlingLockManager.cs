@@ -15,6 +15,7 @@ namespace jarvis.client.eventhandler
     class EventhandlingLockManager : IEventhandlingLockManager
     {
         private Semaphore _semaphore;
+        private bool _isRunning;
 
         public EventhandlingLockManager()
         {
@@ -23,12 +24,17 @@ namespace jarvis.client.eventhandler
 
         public void Block()
         {
+            _isRunning = true;
             _semaphore.WaitOne();
         }
 
         public void Release()
         {
+            if (!_isRunning)
+                return;
+            
             _semaphore.Release();
+            _isRunning = false;
         }
     }
 }

@@ -40,5 +40,8 @@ namespace jarvis.common.dtos.Eventhandling
 
         [DataMember]
         public int ClientId { get; set; }
+
+        [DataMember]
+        public DateTime? ProcessedDate { get; set; }
     }
 }

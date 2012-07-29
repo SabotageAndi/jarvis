@@ -55,7 +55,7 @@ namespace jarvis.server
             Routes.Add<LogoffClientRequest>("/client/logoff", "PUT");
             Routes.Add<ActionExecuteRequest>("/action/execute", "POST");
             Routes.Add<TriggerRequest>("/trigger", "POST");
-            Routes.Add<GetAllEventsSinceRequest>("/events/{ticks}", "POST");
+            Routes.Add<GetEventsToProcess>("/events/{ticks}", "POST");
             Routes.Add<GetEventHandlerRequest>("/eventhandler", "GET");
             Routes.Add<AddWorkflowInQueueRequest>("/workflowqueue", "POST");
             Routes.Add<GetWorkflowToExecuteRequest>("/workflow/gettoexecute", "POST");

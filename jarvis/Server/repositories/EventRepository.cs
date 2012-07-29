@@ -43,6 +43,11 @@ namespace jarvis.server.repositories
                 events = events.Where(e => e.TriggeredDate >= eventFilterCriteria.MinTriggeredDate);
             }
 
+            if (eventFilterCriteria.IsProcessed.HasValue)
+            {
+                events = events.Where(e => (e.ProcessedDate != null) == eventFilterCriteria.IsProcessed);
+            }
+
             return events;
         }
     }

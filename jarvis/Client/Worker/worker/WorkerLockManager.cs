@@ -12,6 +12,7 @@ namespace jarvis.client.worker
     class WorkerLockManager : IWorkerLockManager
     {
         private Semaphore _semaphore;
+        private bool _isRunning;
 
         public WorkerLockManager()
         {
@@ -20,12 +21,17 @@ namespace jarvis.client.worker
 
         public void Block()
         {
+            _isRunning = true;
             _semaphore.WaitOne();
         }
 
         public void Release()
         {
+            if (!_isRunning)
+                return;
+
             _semaphore.Release();
+            _isRunning = false;
         }
     }
 }

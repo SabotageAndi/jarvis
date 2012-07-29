@@ -36,7 +36,7 @@ namespace jarvis.server.repositories
             if (workflowQueue != null)
             {
                 workflowQueue.StartDate = DateTime.UtcNow;
-                transactionScope.CurrentSession.SaveOrUpdate(workflowQueue);
+                Save(transactionScope, workflowQueue);
 
                 return workflowQueue;
             }

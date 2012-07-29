@@ -115,7 +115,7 @@
     <Compile Include="services\client\LoginClientService.cs" />
     <Compile Include="services\client\LogoffClientService.cs" />
     <Compile Include="services\client\RegisterClientService.cs" />
-    <Compile Include="services\eventhandling\GetAllEventsSinceService.cs" />
+    <Compile Include="services\eventhandling\GetEventToProcessService.cs" />
     <Compile Include="services\eventhandling\GetEventHandlerService.cs" />
     <Compile Include="services\ServerStatusService.cs" />
     <Compile Include="services\TriggerService.cs" />

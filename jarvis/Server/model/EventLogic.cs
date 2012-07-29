@@ -35,7 +35,7 @@ namespace jarvis.server.model
         void eventRaised(ITransactionScope transactionScope, EventDto eventDto);
         List<Event> GetEvents(ITransactionScope transactionScope, EventFilterCriteria eventFilterCriteria);
         List<Event> GetLastEvents(ITransactionScope transactionScope);
-        List<EventDto> GetAllEventsSince(ITransactionScope transactionScope, DateTime date);
+        EventDto GetEventsToProcess(ITransactionScope transactionScope);
     }
 
     public class EventLogic : IEventLogic
@@ -88,24 +88,31 @@ namespace jarvis.server.model
             return _eventRepository.GetEvents(transactionScope, new EventFilterCriteria()).OrderByDescending(e => e.TriggeredDate).ToList();
         }
 
-        public List<EventDto> GetAllEventsSince(ITransactionScope transactionScope, DateTime date)
+        public EventDto GetEventsToProcess(ITransactionScope transactionScope)
         {
-            return
-                _eventRepository.GetEvents(transactionScope,
-                                            new EventFilterCriteria()
-                                               {
-                                                   MinTriggeredDate = date,
-                                                   MaxTriggeredDate = DateTime.UtcNow
-                                               }).OrderBy(
-                                                   e => e.TriggeredDate).Select(
-                                                       e => new EventDto()
-                                                                {
-                                                                    Id = e.Id,
-                                                                    TriggeredDate = e.TriggeredDate,
-                                                                    EventGroupType = e.EventGroupType,
-                                                                    EventType = e.EventType,
-                                                                    Data = e.Data
-                                                                }).ToList();
+            var eventToProcess = _eventRepository.GetEvents(transactionScope, new EventFilterCriteria()
+                {
+                    IsProcessed = false
+                }).OrderBy(e => e.TriggeredDate).FirstOrDefault();
+
+
+            if (eventToProcess == null)
+                return new EventDto(){Id = -1};
+
+            eventToProcess.ProcessedDate = DateTime.UtcNow;
+
+            _eventRepository.Save(transactionScope, eventToProcess);
+            transactionScope.Flush();
+
+            return new EventDto()
+                    {
+                        Id = eventToProcess.Id,
+                        TriggeredDate = eventToProcess.TriggeredDate,
+                        ProcessedDate = eventToProcess.ProcessedDate,
+                        EventGroupType = eventToProcess.EventGroupType,
+                        EventType = eventToProcess.EventType,
+                        Data = eventToProcess.Data
+                    };
         }
 
         public void TriggerEventForEventhandlerClient(Client client)
